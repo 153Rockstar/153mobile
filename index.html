@@ -408,7 +408,7 @@ footer{background:var(--blue-deep);border-top:3px solid var(--red);padding:4rem 
     <div class="why-item">
       <div class="why-icon">📞</div>
       <strong>153 Picks Up</strong>
-      <span>Real human support, 24 hours, no call centres</span>
+      <span>Real human support, no call centres</span>
     </div>
     <div class="why-item">
       <div class="why-icon">🔓</div>
@@ -606,11 +606,11 @@ footer{background:var(--blue-deep);border-top:3px solid var(--red);padding:4rem 
           </a>
           <a href="tel:0839631238" class="contact-opt">
             <div class="contact-opt-icon">📞</div>
-            <div class="contact-opt-info"><strong>Call 083 963 1238</strong><span>Direct line — Brits picks up, 24 hours</span></div>
+            <div class="contact-opt-info"><strong>Call 083 963 1238</strong><span>Direct line — Brits picks up</span></div>
           </a>
-          <a href="mailto:support@153.co.za" class="contact-opt">
+          <a href="mailto:support@153mobile.co.za" class="contact-opt">
             <div class="contact-opt-icon">✉️</div>
-            <div class="contact-opt-info"><strong>support@153.co.za</strong><span>Email — same-day response guaranteed</span></div>
+            <div class="contact-opt-info"><strong>support@153mobile.co.za</strong><span>Email — same-day response</span></div>
           </a>
         </div>
       </div>
@@ -650,11 +650,11 @@ footer{background:var(--blue-deep);border-top:3px solid var(--red);padding:4rem 
         </div>
         <div class="contact-detail">
           <div class="cd-icon">✉️</div>
-          <div class="cd-info"><small>Support Email</small><a href="mailto:support@153.co.za">support@153.co.za</a></div>
+          <div class="cd-info"><small>Support Email</small><a href="mailto:support@153mobile.co.za">support@153mobile.co.za</a></div>
         </div>
         <div class="contact-detail">
           <div class="cd-icon">💼</div>
-          <div class="cd-info"><small>Accounts</small><a href="mailto:accounts@153.co.za">accounts@153.co.za</a></div>
+          <div class="cd-info"><small>Accounts</small><a href="mailto:accounts@153mobile.co.za">accounts@153mobile.co.za</a></div>
         </div>
         <div class="contact-detail">
           <div class="cd-icon">📍</div>
@@ -719,8 +719,8 @@ footer{background:var(--blue-deep);border-top:3px solid var(--red);padding:4rem 
         <p>Fast, reliable, premium internet for homes and businesses across South Africa. Real support from real people — since 1997.</p>
         <div class="footer-brits">
           <p>💬 <strong style="color:white;">WhatsApp &amp; Support:</strong> <a href="https://wa.me/27839631238" target="_blank">083 963 1238</a><br>
-          Meet Brits — our dedicated support superhero who answers 24/7, 365 days a year. Some swear he's secretly AI. Nope, 100% human and always ready to help.</p>
-          <p>Prefer email? <a href="mailto:support@153.co.za" class="email-link">support@153.co.za</a> &nbsp;|&nbsp; <a href="mailto:accounts@153.co.za" class="email-link">accounts@153.co.za</a></p>
+          Meet Brits — our dedicated support superhero who answers, 365 days a year. Some swear he's secretly AI. Nope, 100% human and always ready to help.</p>
+          <p>Prefer email? <a href="mailto:support@153mobile.co.za" class="email-link">support@153mobile.co.za</a> &nbsp;|&nbsp; <a href="mailto:accounts@153mobile.co.za" class="email-link">accounts@153mobile.co.za</a></p>
         </div>
       </div>
       <div class="footer-col">
@@ -756,22 +756,38 @@ function toggleNav() {
 }
 
 function submitForm() {
-  var fname   = document.getElementById('fname').value.trim();
-  var lname   = document.getElementById('lname').value.trim();
-  var email   = document.getElementById('email').value.trim();
-  var phone   = document.getElementById('phone').value.trim();
-  var address = document.getElementById('address').value.trim();
-  var consent = document.getElementById('consent').checked;
+  var fname    = document.getElementById('fname').value.trim();
+  var lname    = document.getElementById('lname').value.trim();
+  var email    = document.getElementById('email').value.trim();
+  var phone    = document.getElementById('phone').value.trim();
+  var address  = document.getElementById('address').value.trim();
+  var provider = document.getElementById('provider').value || 'Not specified';
+  var failover = document.getElementById('failover').value;
+  var consent  = document.getElementById('consent').checked;
 
   if (!fname || !lname || !email || !phone || !address) {
     alert('Please fill in all required fields.'); return;
   }
   if (!consent) {
-    alert('Please agree to the Terms & Conditions to continue.'); return;
+    alert('Please tick the box to agree to be contacted.'); return;
   }
 
-  var provider = document.getElementById('provider').value;
-  var failover = document.getElementById('failover').value;
+  var subject = encodeURIComponent('New 153 Mobile Website Lead');
+  var body = encodeURIComponent(
+    'New Switch Request from 153mobile.co.za\n\n' +
+    'Name: ' + fname + ' ' + lname + '\n' +
+    'Email: ' + email + '\n' +
+    'Phone: ' + phone + '\n' +
+    'Address: ' + address + '\n' +
+    'Current Provider: ' + provider + '\n' +
+    'Failover Interest: ' + failover
+  );
+
+  window.location.href = 'mailto:help@153mobile.co.za?subject=' + subject + '&body=' + body;
+
+  document.getElementById('signupForm').style.display = 'none';
+  document.getElementById('successMsg').style.display = 'block';
+}
 
   var msg = encodeURIComponent(
     'Hi Brits! New enquiry from the website:\n' +
