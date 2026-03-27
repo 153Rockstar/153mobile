@@ -7,6 +7,7 @@
   <meta name="description" content="Fast uncapped fibre internet from 153 Mobile. Compare speeds, choose your FNO and get connected month-to-month.">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://js.paystack.co/v1/inline.js"></script>
 <style>
 /* ═══════════════════════════════════════
    DESIGN TOKENS
@@ -1134,6 +1135,9 @@ footer {
       <button class="fno-tab" onclick="selectFno('MetroFibre',this)">MetroFibre</button>
       <button class="fno-tab" onclick="selectFno('Frogfoot',this)">Frogfoot</button>
       <button class="fno-tab" onclick="selectFno('Octotel',this)">Octotel</button>
+      <button class="fno-tab" onclick="selectFno('Cybersmart',this)">Cybersmart</button>
+      <button class="fno-tab" onclick="selectFno('MTN Fibre',this)">MTN Fibre</button>
+      <button class="fno-tab" onclick="selectFno('Vodacom Fibre',this)">Vodacom Fibre</button>
     </div>
 
     <div class="pkg-grid" id="pkgGrid"></div>
@@ -1203,7 +1207,7 @@ footer {
         </div>
 
         <div class="contact-detail"><span class="cd-icon">💬</span><div class="cd-info"><small>WhatsApp Support</small><a href="https://wa.me/27839631238" target="_blank">083 963 1238 · Brits</a></div></div>
-        <div class="contact-detail"><span class="cd-icon">📧</span><div class="cd-info"><small>Email</small><a href="mailto:support@153mobile.co.za">support@153mobile.co.za</a></div></div>
+        <div class="contact-detail"><span class="cd-icon">📧</span><div class="cd-info"><small>Email Support</small><a href="mailto:support@153.co.za">support@153.co.za</a></div></div>
       </div>
 
       <!-- Right: form -->
@@ -1283,9 +1287,9 @@ footer {
 
           <button class="pay-btn" onclick="initiateFibrePayment()">
             <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:#fff"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
-            Pay Securely with Peach Payments
+            Pay Securely with Paystack
           </button>
-          <p class="form-note">🔒 Secured by <strong>Peach Payments</strong> · 256-bit SSL · PCI DSS Compliant<br>Questions? <a href="https://wa.me/27839631238">WhatsApp Brits</a> before you pay.</p>
+          <p class="form-note">🔒 Secured by <strong>Paystack</strong> · 256-bit SSL · PCI DSS Compliant<br>Questions? <a href="https://wa.me/27839631238">WhatsApp Brits</a> before you pay.</p>
         </div>
 
         <div id="fibreCheckoutSuccess" style="display:none;background:white;border-radius:20px;padding:3rem 2rem;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,0.28);">
@@ -1312,7 +1316,7 @@ footer {
         <div class="footer-brits">
           <p>💬 <strong style="color:white;">WhatsApp & Support:</strong> <a href="https://wa.me/27839631238" target="_blank">083 963 1238</a><br>
           Meet Brits — our dedicated support superhero who answers 24/7, 365 days a year. Some swear he's secretly AI. Nope, 100% human and always ready to help.</p>
-          <p>Prefer email? <a href="/cdn-cgi/l/email-protection#44373134342b3630047571776a272b6a3e25" class="email-link"><span class="__cf_email__" data-cfemail="added8ddddc2dfd9ed9c989e83cec283d7cc">[email&#160;protected]</span></a> &nbsp;|&nbsp; <a href="/cdn-cgi/l/email-protection#26474545495348525566171315084549085c47" class="email-link"><span class="__cf_email__" data-cfemail="610002020e140f1512215054524f020e4f1b00">[email&#160;protected]</span></a></p>
+          <p>Prefer email? <a href="mailto:help@153mobile.co.za" class="email-link">help@153mobile.co.za</a> &nbsp;|&nbsp; <a href="mailto:accounts@153mobile.co.za" class="email-link">accounts@153mobile.co.za</a></p>
         </div>
       </div>
       <!-- Useful Links -->
@@ -1352,158 +1356,173 @@ footer {
 </footer>
 
 <script>
-/* ── Fibre Checkout JS ─────────────────────────────────────────────────── */
-var fibreSelectedFno = '';
+var fibreSelectedFno   = '';
 var fibreSelectedSpeed = '';
 var fibreSelectedPrice = 0;
-var fbBizOpen = false;
+var fbBizOpen          = false;
 
 function selectFibrePkg(fno, speed, price) {
-  fibreSelectedFno = fno;
+  fibreSelectedFno   = fno;
   fibreSelectedSpeed = speed;
-  // strip R and commas, parse to int
   fibreSelectedPrice = parseInt(price.replace(/[R,]/g, '')) || 0;
 
-  // Highlight selected card
-  document.querySelectorAll('.pkg-card').forEach(function(card) { card.style.outline = ''; });
-  var cardId = 'pkg-' + speed.replace('/', '_');
-  var selCard = document.getElementById(cardId);
-  if (selCard) selCard.style.outline = '3px solid #25D366';
-
-  // Populate summary
-  document.getElementById('fibre-sum-fno').textContent = fno;
+  document.querySelectorAll('.pkg-card').forEach(function(c){ c.style.outline = ''; });
+  document.getElementById('fibre-sum-fno').textContent   = fno;
   document.getElementById('fibre-sum-speed').textContent = speed + ' Mbps';
   document.getElementById('fibre-sum-price').textContent = price + '/pm';
 
-  // Reset hardware selection
   document.querySelectorAll('input[name="fb-hardware"]').forEach(function(r){ r.checked = false; });
   document.getElementById('fibre-sum-hardware-row').style.display = 'none';
-  document.getElementById('fibre-sum-total-row').style.display = 'none';
+  document.getElementById('fibre-sum-total-row').style.display    = 'none';
 
-  // Scroll to checkout
   document.getElementById('fibre-checkout').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function updateFibreTotal() {
-  var selected = document.querySelector('input[name="fb-hardware"]:checked');
-  if (!selected) return;
-  var hwPrice = parseInt(selected.getAttribute('data-price')) || 0;
-  var hwRow = document.getElementById('fibre-sum-hardware-row');
+  var sel = document.querySelector('input[name="fb-hardware"]:checked');
+  if (!sel) return;
+  var hwPrice  = parseInt(sel.getAttribute('data-price')) || 0;
+  var hwRow    = document.getElementById('fibre-sum-hardware-row');
   var totalRow = document.getElementById('fibre-sum-total-row');
-
   if (hwPrice > 0) {
     document.getElementById('fibre-sum-hardware').textContent = 'R' + hwPrice.toLocaleString();
     hwRow.style.display = 'flex';
-    document.getElementById('fibre-sum-total').textContent = 'R' + (fibreSelectedPrice + hwPrice).toLocaleString();
-    totalRow.style.display = 'flex';
   } else {
     hwRow.style.display = 'none';
-    document.getElementById('fibre-sum-total').textContent = 'R' + fibreSelectedPrice.toLocaleString();
-    totalRow.style.display = 'flex';
   }
-
-  // Highlight radio label
-  document.querySelectorAll('#fb-hw-options label').forEach(function(lbl){
-    lbl.style.borderColor = '';
-    lbl.style.background = '';
-  });
-  var parentLabel = selected.closest('label');
-  if (parentLabel) {
-    parentLabel.style.borderColor = 'var(--blue)';
-    parentLabel.style.background = 'var(--blue-pale)';
-  }
+  document.getElementById('fibre-sum-total').textContent = 'R' + (fibreSelectedPrice + hwPrice).toLocaleString();
+  totalRow.style.display = 'flex';
+  document.querySelectorAll('#fb-hw-options label').forEach(function(l){ l.style.borderColor=''; l.style.background=''; });
+  var pl = sel.closest('label');
+  if (pl) { pl.style.borderColor='var(--blue)'; pl.style.background='var(--blue-pale)'; }
 }
 
 function toggleFbBiz() {
   fbBizOpen = !fbBizOpen;
-  var cb = document.getElementById('fbBizCheckbox');
-  var fields = document.getElementById('fbBizFields');
-  if (fbBizOpen) {
-    cb.classList.add('checked');
-    fields.classList.add('open');
-  } else {
-    cb.classList.remove('checked');
-    fields.classList.remove('open');
-  }
+  document.getElementById('fbBizCheckbox').classList.toggle('checked', fbBizOpen);
+  document.getElementById('fbBizFields').classList.toggle('open', fbBizOpen);
 }
 
 function handleFbFileUpload(inputId, displayId) {
-  var input = document.getElementById(inputId);
+  var input   = document.getElementById(inputId);
   var display = document.getElementById(displayId);
   if (input && input.files && input.files[0]) {
     var file = input.files[0];
-    if (file.size > 5 * 1024 * 1024) {
-      alert('File too large. Please upload a file under 5MB.');
-      input.value = '';
-      display.textContent = '';
-      return;
-    }
+    if (file.size > 5 * 1024 * 1024) { alert('File too large. Max 5MB.'); input.value=''; display.textContent=''; return; }
     display.textContent = '✓ ' + file.name;
     display.style.color = 'var(--green)';
-    // highlight upload box
     input.closest('.file-upload-box').style.borderColor = 'var(--green)';
-    input.closest('.file-upload-box').style.background = '#f0fdf4';
+    input.closest('.file-upload-box').style.background  = '#f0fdf4';
   }
 }
 
-function initiateFibrePayment() {
+async function initiateFibrePayment() {
   if (!fibreSelectedFno || !fibreSelectedSpeed) {
-    alert('Please select a fibre package first by clicking "Sign Up" on one of the packages above.');
+    alert('Please select a fibre package first.');
     document.getElementById('packages').scrollIntoView({ behavior: 'smooth' });
     return;
   }
-  var fname = document.getElementById('fb-fname').value.trim();
-  var lname = document.getElementById('fb-lname').value.trim();
-  var phone = document.getElementById('fb-phone').value.trim();
-  var email = document.getElementById('fb-email').value.trim();
-  var address = document.getElementById('fb-address').value.trim();
-  var idFile = document.getElementById('fb-id-upload').files;
+  var fname      = document.getElementById('fb-fname').value.trim();
+  var lname      = document.getElementById('fb-lname').value.trim();
+  var phone      = document.getElementById('fb-phone').value.trim();
+  var email      = document.getElementById('fb-email').value.trim();
+  var address    = document.getElementById('fb-address').value.trim();
+  var idFile     = document.getElementById('fb-id-upload').files;
   var hwSelected = document.querySelector('input[name="fb-hardware"]:checked');
-  var terms = document.getElementById('fb-terms-check').checked;
+  var terms      = document.getElementById('fb-terms-check').checked;
 
-  if (!fname || !lname || !phone || !email || !address) {
-    alert('Please fill in all personal details.'); return;
-  }
-  if (!idFile || idFile.length === 0) {
-    alert('Please upload your ID document for RICA verification.'); return;
-  }
-  if (!hwSelected) {
-    alert('Please select a router / hardware option.'); return;
-  }
-  if (!terms) {
-    alert('Please accept the Terms & Conditions to continue.'); return;
-  }
+  if (!fname || !lname || !phone || !email || !address) { alert('Please fill in all personal details.'); return; }
+  if (!idFile || idFile.length === 0) { alert('Please upload your ID document for RICA.'); return; }
+  if (!hwSelected) { alert('Please select a router / hardware option.'); return; }
+  if (!terms) { alert('Please accept the Terms & Conditions.'); return; }
 
-  // Collect biz details if open
-  var bizInfo = '';
-  if (fbBizOpen) {
-    var bizName = document.getElementById('fb-biz-name').value.trim();
-    var bizAddr = document.getElementById('fb-biz-address').value.trim();
-    var bizVat  = document.getElementById('fb-biz-vat').value.trim();
-    if (bizName) bizInfo = ' | Business: ' + bizName + (bizVat ? ' VAT: ' + bizVat : '');
-  }
-
+  var hwPrice = parseInt(hwSelected.getAttribute('data-price')) || 0;
   var hwLabel = hwSelected.closest('label').querySelector('strong').textContent;
-  var waMsg = encodeURIComponent(
-    'Hi Brits! New Fibre Order:\n' +
-    'Name: ' + fname + ' ' + lname + '\n' +
-    'Phone: ' + phone + '\n' +
-    'Email: ' + email + '\n' +
-    'Address: ' + address + '\n' +
-    'FNO: ' + fibreSelectedFno + '\n' +
-    'Speed: ' + fibreSelectedSpeed + ' Mbps\n' +
-    'Package: R' + fibreSelectedPrice + '/pm\n' +
-    'Hardware: ' + hwLabel + bizInfo
-  );
+  var bizMeta = '';
+  if (fbBizOpen) {
+    var bn = document.getElementById('fb-biz-name').value.trim();
+    var bv = document.getElementById('fb-biz-vat').value.trim();
+    if (bn) bizMeta = ' | Biz: ' + bn + (bv ? ' VAT:' + bv : '');
+  }
 
-  /* ── PEACH PAYMENTS integration point ──────────────────────────────────
-     POST order details to your backend → backend creates Peach checkout ID
-     → redirect to: https://oppwa.com/v1/paymentWidgets.js?checkoutId=<ID>
-     Until live, we open WhatsApp as fallback:
-  ─────────────────────────────────────────────────────────────────────── */
-  document.getElementById('fibreFormWrap').style.display = 'none';
-  document.getElementById('fibreCheckoutSuccess').style.display = 'block';
-  window.open('https://wa.me/27839631238?text=' + waMsg, '_blank');
+  var payBtn = document.querySelector('.pay-btn');
+  payBtn.disabled = true;
+  payBtn.textContent = 'Setting up payment…';
+
+  var planCode = null;
+  try {
+    var res  = await fetch('https://fibre-plans.153-1c7.workers.dev', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amount: fibreSelectedPrice, fno: fibreSelectedFno, speed: fibreSelectedSpeed })
+    });
+    var data = await res.json();
+    planCode = data.planCode || null;
+  } catch(e) { console.error('Worker:', e); }
+
+  if (!planCode) {
+    var waf = encodeURIComponent(
+      'Hi Brits! New Fibre Order:\nName: ' + fname + ' ' + lname +
+      '\nPhone: ' + phone + '\nEmail: ' + email + '\nAddress: ' + address +
+      '\nFNO: ' + fibreSelectedFno + '\nSpeed: ' + fibreSelectedSpeed + ' Mbps' +
+      '\nPackage: R' + fibreSelectedPrice + '/pm\nHardware: ' + hwLabel + bizMeta +
+      '\n\n⚠️ Online payment unavailable — please process manually.'
+    );
+    payBtn.disabled = false;
+    payBtn.innerHTML = '<svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:#fff"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg> Pay Securely with Paystack';
+    window.open('https://wa.me/27839631238?text=' + waf, '_blank');
+    document.getElementById('fibreFormWrap').style.display = 'none';
+    document.getElementById('fibreCheckoutSuccess').innerHTML = '<div style="font-size:3rem;margin-bottom:1rem;">💬</div><h3 style="color:var(--blue);">Order Sent to Brits!</h3><p style="font-size:0.88rem;color:var(--muted);line-height:1.7;">Online payment temporarily unavailable. Brits will call you back within 2 hours to process payment.</p>';
+    document.getElementById('fibreCheckoutSuccess').style.display = 'block';
+    return;
+  }
+
+  payBtn.textContent = 'Opening payment…';
+  var handler = PaystackPop.setup({
+    key:      'pk_live_5e08b063a60134bdb009aa6a16bdaa86b2c1bc5e',
+    email:    email,
+    amount:   (fibreSelectedPrice + hwPrice) * 100,
+    currency: 'ZAR',
+    ref:      'FB-' + Date.now(),
+    label:    fname + ' ' + lname,
+    plan:     planCode,
+    metadata: {
+      custom_fields: [
+        { display_name:'Customer Name',   variable_name:'customer_name',   value: fname+' '+lname },
+        { display_name:'Phone',           variable_name:'phone',           value: phone },
+        { display_name:'Address',         variable_name:'address',         value: address },
+        { display_name:'FNO',             variable_name:'fno',             value: fibreSelectedFno },
+        { display_name:'Speed',           variable_name:'speed',           value: fibreSelectedSpeed+' Mbps' },
+        { display_name:'Monthly Package', variable_name:'monthly_package', value: 'R'+fibreSelectedPrice+'/pm' },
+        { display_name:'Hardware',        variable_name:'hardware',        value: hwLabel+bizMeta },
+        { display_name:'Plan Code',       variable_name:'plan_code',       value: planCode }
+      ]
+    },
+    callback: function(response) {
+      var was = encodeURIComponent(
+        '✅ New Fibre Payment!\n\nRef: ' + response.reference +
+        '\nName: ' + fname + ' ' + lname + '\nEmail: ' + email + '\nPhone: ' + phone +
+        '\nAddress: ' + address + '\nFNO: ' + fibreSelectedFno +
+        '\nSpeed: ' + fibreSelectedSpeed + ' Mbps\nMonthly: R' + fibreSelectedPrice + '/pm' +
+        '\nHardware: ' + hwLabel + '\nPaid Today: R' + (fibreSelectedPrice + hwPrice) +
+        '\nPlan: ' + planCode + bizMeta + '\n\n✅ Subscription active via Paystack.'
+      );
+      window.open('https://wa.me/27839631238?text=' + was, '_blank');
+      document.getElementById('fibreFormWrap').style.display = 'none';
+      document.getElementById('fibreCheckoutSuccess').innerHTML =
+        '<div style="font-size:3rem;margin-bottom:1rem;">🎉</div>' +
+        '<h3 style="color:var(--blue);font-size:1.3rem;margin-bottom:0.6rem;">Payment Successful!</h3>' +
+        '<p style="font-size:0.88rem;color:var(--muted);line-height:1.7;">Your first month' + (hwPrice>0?' and hardware':'') +
+        ' have been charged. Your monthly subscription is now active.<br><br>Brits will contact you within 2 hours to confirm your installation date.</p>' +
+        '<a href="https://wa.me/27839631238" target="_blank" style="display:inline-block;margin-top:1.5rem;background:var(--blue);color:white;padding:0.75rem 1.75rem;border-radius:8px;font-weight:700;text-decoration:none;font-family:Poppins,sans-serif;font-size:0.88rem;">💬 WhatsApp Brits</a>';
+      document.getElementById('fibreCheckoutSuccess').style.display = 'block';
+    },
+    onClose: function() {
+      payBtn.disabled = false;
+      payBtn.innerHTML = '<svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:#fff"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg> Pay Securely with Paystack';
+    }
+  });
+  handler.openIframe();
 }
 
 function toggleNav() {
@@ -1511,49 +1530,75 @@ function toggleNav() {
 }
 
 const fibrePackages = {
-   "Openserve": [
-    {speed:"30/30",    price:"R499",   popular:false},
+  "Openserve": [
+    {speed:"30/30",    price:"R699",   popular:false},
+    {speed:"50/25",    price:"R799",   popular:false},
     {speed:"50/50",    price:"R899",   popular:false},
-    {speed:"100/100",  price:"R999",   popular:true},
-    {speed:"200/200",  price:"R1,399",   popular:false},
-    {speed:"300/200",  price:"R1,799", popular:false},
-    {speed:"500/250",price:"R2,099", popular:false}
+    {speed:"100/50",   price:"R999",   popular:false},
+    {speed:"100/100",  price:"R1,099", popular:true},
+    {speed:"200/100",  price:"R1,199", popular:false},
+    {speed:"200/200",  price:"R1,299", popular:false},
+    {speed:"300/150",  price:"R1,499", popular:false},
+    {speed:"500/250",  price:"R1,799", popular:false}
   ],
   "Vumatel": [
     {speed:"30/30",    price:"R699",   popular:false},
     {speed:"50/25",    price:"R899",   popular:false},
-    {speed:"50/50",    price:"R999",   popular:true},
-    {speed:"100/50",   price:"R1099",   popular:true},
-    {speed:"100/100",  price:"R1,299", popular:false},
+    {speed:"50/50",    price:"R999",   popular:false},
+    {speed:"100/50",   price:"R1,099", popular:false},
+    {speed:"100/100",  price:"R1,299", popular:true},
     {speed:"200/200",  price:"R1,499", popular:false},
-    {speed:"500/200", price:"R1,799", popular:false},
-    {speed:"1000/250", price:"R2,099", popular:false},
-    {speed:"1000/500", price:"R2,599", popular:false}
+    {speed:"500/200",  price:"R1,599", popular:false},
+    {speed:"1000/250", price:"R1,899", popular:false},
+    {speed:"1000/500", price:"R2,499", popular:false}
   ],
   "MetroFibre": [
-    {speed:"45/45",    price:"R950",   popular:false},
-    {speed:"75/75",    price:"R629",   popular:false},
-    {speed:"150/150",  price:"R1,150",   popular:true},
-    {speed:"250/250",  price:"R1,350", popular:false},
-    {speed:"500/500",  price:"R1,650", popular:false},
-    {speed:"1000/500",price:"R2,050", popular:false}
+    {speed:"40/40",    price:"R899",   popular:false},
+    {speed:"60/60",    price:"R999",   popular:false},
+    {speed:"100/100",  price:"R1,099", popular:false},
+    {speed:"150/150",  price:"R1,199", popular:true},
+    {speed:"250/250",  price:"R1,299", popular:false},
+    {speed:"500/500",  price:"R1,599", popular:false},
+    {speed:"1000/500", price:"R1,699", popular:false}
   ],
   "Frogfoot": [
-    {speed:"60/30",    price:"R899",   popular:false},
-    {speed:"60/60",    price:"R999",   popular:false},
-    {speed:"120/120",   price:"R1,099",   popular:true},
-    {speed:"240/240",  price:"R1,599",   popular:false},
-    {speed:"400/400",  price:"R1,999", popular:false},
-    {speed:"1000/1000", price:"R2,499", popular:false}
+    {speed:"60/30",     price:"R999",   popular:false},
+    {speed:"60/60",     price:"R1,099", popular:false},
+    {speed:"120/60",    price:"R1,199", popular:false},
+    {speed:"120/120",   price:"R1,199", popular:true},
+    {speed:"240/120",   price:"R1,299", popular:false},
+    {speed:"240/240",   price:"R1,499", popular:false},
+    {speed:"400/200",   price:"R1,599", popular:false},
+    {speed:"400/400",   price:"R1,699", popular:false},
+    {speed:"1000/500",  price:"R1,999", popular:false},
+    {speed:"1000/1000", price:"R2,099", popular:false}
   ],
   "Octotel": [
-    {speed:"55/25",    price:"R899",   popular:false},
-    {speed:"100/100",    price:"R1,199",   popular:false},
-    {speed:"150/150",   price:"R1,399",   popular:true},
-    {speed:"300/200",  price:"R1,699",   popular:false},
-    {speed:"500/200",  price:"R1,999", popular:false},
-    {speed:"1000/200", price:"R2,549", popular:false}
+    {speed:"55/25",     price:"R899",   popular:false},
+    {speed:"100/100",   price:"R1,199", popular:false},
+    {speed:"150/150",   price:"R1,299", popular:true},
+    {speed:"300/200",   price:"R1,499", popular:false},
+    {speed:"500/200",   price:"R1,799", popular:false},
+    {speed:"1000/200",  price:"R2,099", popular:false},
+    {speed:"2500/2500", price:"R2,399", popular:false},
+    {speed:"5000/2500", price:"R3,099", popular:false}
   ],
+  "Cybersmart": [
+    {speed:"1000/1000", price:"R1,099", popular:true}
+  ],
+  "MTN Fibre": [
+    {speed:"50/50",    price:"R1,099", popular:false},
+    {speed:"100/100",  price:"R1,299", popular:true},
+    {speed:"200/200",  price:"R1,399", popular:false},
+    {speed:"500/500",  price:"R1,599", popular:false}
+  ],
+  "Vodacom Fibre": [
+    {speed:"30/30",    price:"R699",   popular:false},
+    {speed:"50/25",    price:"R1,099", popular:false},
+    {speed:"50/50",    price:"R1,199", popular:false},
+    {speed:"100/100",  price:"R1,299", popular:true},
+    {speed:"200/200",  price:"R1,499", popular:false}
+  ]
 };
 
 let currentFno = 'Openserve';
@@ -1564,32 +1609,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function selectFno(fno, btn) {
   currentFno = fno;
-  document.querySelectorAll('.fno-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.fno-tab').forEach(function(t){ t.classList.remove('active'); });
   if (btn) btn.classList.add('active');
   renderPackages(fno);
-  const sel = document.getElementById('speedFnoSelect');
-  if (sel) sel.value = fno;
 }
 
 function renderPackages(fno) {
-  const pkgs = fibrePackages[fno] || [];
-  const grid = document.getElementById('pkgGrid');
+  var pkgs = fibrePackages[fno] || [];
+  var grid = document.getElementById('pkgGrid');
   if (!grid) return;
-  grid.innerHTML = pkgs.map(p => `
-    <div class="pkg-card${p.popular ? ' popular' : ''}">
-      ${p.popular ? '<div class="popular-badge">Most Popular</div>' : ''}
-      <div class="pkg-speed">${p.speed.split('/')[0]}</div>
-      <div class="pkg-speed-unit">Mbps download / ${p.speed.split('/')[1]} Mbps upload</div>
-      <div class="pkg-price">${p.price}</div>
-      <div class="pkg-pm">per month</div>
-      <button onclick="selectFibrePkg(currentFno, '${p.speed}', '${p.price}')" class="pkg-btn">Sign Up &rarr;</button>
-    </div>
-  `).join('');
-}
-
-function updateSpeedTable() {
-  var sel = document.getElementById('speedFnoSelect');
-  if (sel && sel.value) selectFno(sel.value, document.querySelector('.fno-tab.active'));
+  grid.innerHTML = pkgs.map(function(p) {
+    return '<div class="pkg-card' + (p.popular ? ' popular' : '') + '">' +
+      (p.popular ? '<div class="popular-badge">Most Popular</div>' : '') +
+      '<div class="pkg-speed">' + p.speed.split('/')[0] + '</div>' +
+      '<div class="pkg-speed-unit">Mbps download / ' + p.speed.split('/')[1] + ' Mbps upload</div>' +
+      '<div class="pkg-price">' + p.price + '</div>' +
+      '<div class="pkg-pm">per month</div>' +
+      '<button onclick="selectFibrePkg(\'' + fno + '\', \'' + p.speed + '\', \'' + p.price + '\')" class="pkg-btn">Sign Up &rarr;</button>' +
+      '</div>';
+  }).join('');
 }
 </script>
 </body>
