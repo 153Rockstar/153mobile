@@ -1317,7 +1317,7 @@ footer {
         <div class="footer-brits">
           <p>💬 <strong style="color:white;">WhatsApp & Support:</strong> <a href="https://wa.me/27839631238" target="_blank">083 963 1238</a><br>
           Meet Brits — our dedicated support superhero who answers 24/7, 365 days a year. Some swear he's secretly AI. Nope, 100% human and always ready to help.</p>
-          <p>Prefer email? <a href="mailto:help@153mobile.co.za" class="email-link">help@153mobile.co.za</a> &nbsp;|&nbsp; <a href="mailto:accounts@153mobile.co.za" class="email-link">accounts@153mobile.co.za</a></p>
+          <p>Prefer email? <a href="mailto:support@153.co.za" class="email-link">support@153.co.za</a> &nbsp;|&nbsp; <a href="mailto:support@153.co.za" class="email-link">support@153.co.za</a></p>
         </div>
       </div>
       <!-- Useful Links -->
@@ -1366,7 +1366,6 @@ function selectFibrePkg(fno, speed, price) {
   fibreSelectedFno   = fno;
   fibreSelectedSpeed = speed;
   fibreSelectedPrice = parseInt(price.replace(/[R,]/g, '')) || 0;
-
   document.querySelectorAll('.pkg-card').forEach(function(c){ c.style.outline=''; });
   document.getElementById('fibre-sum-fno').textContent   = fno;
   document.getElementById('fibre-sum-speed').textContent = speed + ' Mbps';
@@ -1415,51 +1414,39 @@ function handleFbFileUpload(inputId, displayId) {
   }
 }
 
-// ── Generate signup PDF using jsPDF ──────────────────────────
 function generateSignupPdf(clientData) {
   var doc = new window.jspdf.jsPDF();
   var y   = 20;
-
-  // Header
   doc.setFillColor(0, 43, 127);
   doc.rect(0, 0, 210, 30, 'F');
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(16);
   doc.setFont('helvetica', 'bold');
   doc.text('153 Mobile — Fibre Signup Record', 14, 19);
-
   y = 42;
   doc.setTextColor(0, 43, 127);
   doc.setFontSize(11);
   doc.setFont('helvetica', 'bold');
   doc.text('Client Details', 14, y); y += 8;
-
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(60, 60, 60);
   doc.setFontSize(10);
   var lines = [
-    ['Full Name',    clientData.fname + ' ' + clientData.lname],
-    ['Email',        clientData.email],
-    ['Phone',        clientData.phone],
-    ['Address',      clientData.address],
-    ['IP Address',   clientData.ipAddress],
-    ['Signed Up',    new Date(clientData.timestamp).toLocaleString('en-ZA', {timeZone:'Africa/Johannesburg'})]
+    ['Full Name',  clientData.fname + ' ' + clientData.lname],
+    ['Email',      clientData.email],
+    ['Phone',      clientData.phone],
+    ['Address',    clientData.address],
+    ['IP Address', clientData.ipAddress],
+    ['Signed Up',  new Date(clientData.timestamp).toLocaleString('en-ZA', {timeZone:'Africa/Johannesburg'})]
   ];
   lines.forEach(function(row) {
     doc.setFont('helvetica', 'bold'); doc.text(row[0] + ':', 14, y);
-    doc.setFont('helvetica', 'normal'); doc.text(row[1] || '—', 65, y);
-    y += 7;
+    doc.setFont('helvetica', 'normal'); doc.text(row[1] || '—', 65, y); y += 7;
   });
-
   y += 4;
-  doc.setFont('helvetica', 'bold');
-  doc.setTextColor(0, 43, 127);
-  doc.setFontSize(11);
+  doc.setFont('helvetica', 'bold'); doc.setTextColor(0, 43, 127); doc.setFontSize(11);
   doc.text('Package Details', 14, y); y += 8;
-
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(60, 60, 60);
-  doc.setFontSize(10);
+  doc.setFont('helvetica', 'normal'); doc.setTextColor(60, 60, 60); doc.setFontSize(10);
   var pkgLines = [
     ['FNO / Network',    clientData.fno],
     ['Speed',            clientData.speed + ' Mbps'],
@@ -1471,63 +1458,45 @@ function generateSignupPdf(clientData) {
   ];
   pkgLines.forEach(function(row) {
     doc.setFont('helvetica', 'bold'); doc.text(row[0] + ':', 14, y);
-    doc.setFont('helvetica', 'normal'); doc.text(row[1] || '—', 65, y);
-    y += 7;
+    doc.setFont('helvetica', 'normal'); doc.text(row[1] || '—', 65, y); y += 7;
   });
-
   if (clientData.bizName) {
     y += 4;
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(0, 43, 127);
-    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold'); doc.setTextColor(0, 43, 127); doc.setFontSize(11);
     doc.text('Business Details', 14, y); y += 8;
     doc.setFont('helvetica', 'normal'); doc.setTextColor(60,60,60); doc.setFontSize(10);
     doc.setFont('helvetica', 'bold'); doc.text('Business Name:', 14, y);
     doc.setFont('helvetica', 'normal'); doc.text(clientData.bizName, 65, y); y += 7;
+    if (clientData.bizAddress) {
+      doc.setFont('helvetica', 'bold'); doc.text('Business Address:', 14, y);
+      doc.setFont('helvetica', 'normal'); doc.text(clientData.bizAddress, 65, y); y += 7;
+    }
     if (clientData.bizVat) {
       doc.setFont('helvetica', 'bold'); doc.text('VAT Number:', 14, y);
       doc.setFont('helvetica', 'normal'); doc.text(clientData.bizVat, 65, y); y += 7;
     }
   }
-
   y += 6;
-  doc.setFillColor(239, 26, 45);
-  doc.rect(0, y, 210, 1, 'F'); y += 8;
-
-  doc.setFont('helvetica', 'bold');
-  doc.setTextColor(0, 43, 127);
-  doc.setFontSize(11);
+  doc.setFillColor(239, 26, 45); doc.rect(0, y, 210, 1, 'F'); y += 8;
+  doc.setFont('helvetica', 'bold'); doc.setTextColor(0, 43, 127); doc.setFontSize(11);
   doc.text('Terms & Conditions Acceptance', 14, y); y += 8;
-
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(60, 60, 60);
-  doc.setFontSize(9);
-  doc.text('The client confirmed the following by ticking the acceptance checkbox at signup:', 14, y); y += 7;
-
-  doc.setFillColor(230, 236, 248);
-  doc.rect(12, y - 2, 186, 26, 'F');
+  doc.setFont('helvetica', 'normal'); doc.setTextColor(60, 60, 60); doc.setFontSize(9);
+  doc.text('The client confirmed acceptance by ticking the checkbox at signup:', 14, y); y += 7;
+  doc.setFillColor(230, 236, 248); doc.rect(12, y - 2, 186, 26, 'F');
   doc.setFont('helvetica', 'bold');
   doc.text('[✓] I agree to the Terms & Conditions and Privacy Policy.', 16, y + 4); y += 9;
   doc.setFont('helvetica', 'normal');
   doc.text('    I confirm the information above is accurate.', 16, y + 2); y += 9;
   doc.setTextColor(0, 43, 127);
-  doc.text('    Terms available at: https://153mobile.co.za/legal', 16, y); y += 14;
-
-  doc.setTextColor(60, 60, 60);
-  doc.setFontSize(8);
-  doc.text('Per Clause 1 of the 153 Mobile Terms & Conditions: continued use of our services constitutes', 14, y); y += 5;
-  doc.text('acceptance of updated terms as and when they change.', 14, y); y += 10;
-
-  doc.setFillColor(0, 43, 127);
-  doc.rect(0, 280, 210, 17, 'F');
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(8);
+  doc.text('    Terms: https://153mobile.co.za/legal', 16, y); y += 14;
+  doc.setTextColor(60, 60, 60); doc.setFontSize(8);
+  doc.text('Per Clause 1: continued use constitutes acceptance of updated terms.', 14, y); y += 10;
+  doc.setFillColor(0, 43, 127); doc.rect(0, 280, 210, 17, 'F');
+  doc.setTextColor(255, 255, 255); doc.setFontSize(8);
   doc.text('153 Mobile (Pty) Ltd  |  153mobile.co.za  |  support@153.co.za  |  083 963 1238', 14, 291);
-
   return doc.output('arraybuffer');
 }
 
-// ── Background upload to Drive + email ───────────────────────
 async function uploadSignupRecord(clientData, idFile) {
   try {
     var pdfBuffer = generateSignupPdf(clientData);
@@ -1536,25 +1505,18 @@ async function uploadSignupRecord(clientData, idFile) {
     formData.append('pdf', new Blob([pdfBuffer], {type:'application/pdf'}), '153Mobile-Signup-Record.pdf');
     if (idFile) formData.append('idFile', idFile, idFile.name);
     formData.append('idFilename', idFile ? idFile.name : 'id-document.pdf');
-
-    await fetch('https://fibre-plans.153-1c7.workers.dev/signup', {
-      method: 'POST',
-      body: formData
-    });
+    await fetch('https://fibre-plans.153-1c7.workers.dev/signup', { method:'POST', body:formData });
   } catch(e) {
     console.error('Background upload failed:', e);
-    // Silent fail — payment already succeeded
   }
 }
 
-// ── Main payment function ─────────────────────────────────────
 async function initiateFibrePayment() {
   if (!fibreSelectedFno || !fibreSelectedSpeed) {
     alert('Please select a fibre package first.');
     document.getElementById('packages').scrollIntoView({ behavior:'smooth' });
     return;
   }
-
   var fname      = document.getElementById('fb-fname').value.trim();
   var lname      = document.getElementById('fb-lname').value.trim();
   var phone      = document.getElementById('fb-phone').value.trim();
@@ -1569,24 +1531,23 @@ async function initiateFibrePayment() {
   if (!hwSelected) { alert('Please select a router / hardware option.'); return; }
   if (!terms) { alert('Please accept the Terms & Conditions to continue.'); return; }
 
-  var hwPrice  = parseInt(hwSelected.getAttribute('data-price')) || 0;
-  var hwLabel  = hwSelected.closest('label').querySelector('strong').textContent;
-  var bizName  = fbBizOpen ? document.getElementById('fb-biz-name').value.trim() : '';
-  var bizVat   = fbBizOpen ? document.getElementById('fb-biz-vat').value.trim()  : '';
+  var hwPrice    = parseInt(hwSelected.getAttribute('data-price')) || 0;
+  var hwLabel    = hwSelected.closest('label').querySelector('strong').textContent;
+  var bizName    = fbBizOpen ? document.getElementById('fb-biz-name').value.trim()    : '';
+  var bizAddress = fbBizOpen ? document.getElementById('fb-biz-address').value.trim() : '';
+  var bizVat     = fbBizOpen ? document.getElementById('fb-biz-vat').value.trim()     : '';
 
   var payBtn = document.querySelector('.pay-btn');
   payBtn.disabled = true;
   payBtn.textContent = 'Setting up payment…';
 
-  // Fetch client IP for record
   var ipAddress = 'Unknown';
   try {
-    var ipRes = await fetch('https://api.ipify.org?format=json');
+    var ipRes  = await fetch('https://api.ipify.org?format=json');
     var ipData = await ipRes.json();
-    ipAddress = ipData.ip || 'Unknown';
+    ipAddress  = ipData.ip || 'Unknown';
   } catch(e) {}
 
-  // Get or create Paystack plan
   var planCode = null;
   try {
     var planRes  = await fetch('https://fibre-plans.153-1c7.workers.dev/plan', {
@@ -1596,9 +1557,8 @@ async function initiateFibrePayment() {
     });
     var planData = await planRes.json();
     planCode = planData.planCode || null;
-  } catch(e) { console.error('Plan fetch error:', e); }
+  } catch(e) { console.error('Plan error:', e); }
 
-  // WhatsApp fallback if worker unreachable
   if (!planCode) {
     var waFallback = encodeURIComponent(
       'Hi Brits! New Fibre Order:\nName: ' + fname + ' ' + lname +
@@ -1611,7 +1571,7 @@ async function initiateFibrePayment() {
     payBtn.innerHTML = '<svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:#fff"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg> Pay Securely with Paystack';
     window.open('https://wa.me/27839631238?text=' + waFallback, '_blank');
     document.getElementById('fibreFormWrap').style.display = 'none';
-    document.getElementById('fibreCheckoutSuccess').innerHTML = '<div style="font-size:3rem;margin-bottom:1rem;">💬</div><h3 style="color:var(--blue);">Order Sent to Brits!</h3><p style="color:var(--muted);line-height:1.7;">Online payment temporarily unavailable. Brits will call you back within 2 hours to process payment.</p>';
+    document.getElementById('fibreCheckoutSuccess').innerHTML = '<div style="font-size:3rem;margin-bottom:1rem;">💬</div><h3 style="color:var(--blue);">Order Sent to Brits!</h3><p style="color:var(--muted);line-height:1.7;">Online payment temporarily unavailable. Brits will call you back within 2 hours.</p>';
     document.getElementById('fibreCheckoutSuccess').style.display = 'block';
     return;
   }
@@ -1639,19 +1599,17 @@ async function initiateFibrePayment() {
       ]
     },
     callback: function(response) {
-      // Payment succeeded — show success screen immediately
       document.getElementById('fibreFormWrap').style.display = 'none';
       document.getElementById('fibreCheckoutSuccess').innerHTML =
         '<div style="font-size:3rem;margin-bottom:1rem;">🎉</div>' +
         '<h3 style="color:var(--blue);font-size:1.3rem;margin-bottom:0.6rem;">Payment Successful!</h3>' +
         '<p style="font-size:0.88rem;color:var(--muted);line-height:1.7;">Your first month' + (hwPrice>0?' and hardware':'') +
         ' have been charged. Your monthly subscription is now active.<br><br>' +
-        'A confirmation email with your signup record is on its way to <strong>' + email + '</strong>.<br><br>' +
+        'A confirmation email is on its way to <strong>' + email + '</strong>.<br><br>' +
         'Brits will contact you within 2 hours on business days to confirm your installation date.</p>' +
         '<a href="https://wa.me/27839631238" target="_blank" style="display:inline-block;margin-top:1.5rem;background:var(--blue);color:white;padding:0.75rem 1.75rem;border-radius:8px;font-weight:700;text-decoration:none;font-family:Poppins,sans-serif;font-size:0.88rem;">💬 WhatsApp Brits</a>';
       document.getElementById('fibreCheckoutSuccess').style.display = 'block';
 
-      // Build client data record
       var clientData = {
         fname: fname, lname: lname, email: email, phone: phone,
         address: address, fno: fibreSelectedFno, speed: fibreSelectedSpeed,
@@ -1659,14 +1617,12 @@ async function initiateFibrePayment() {
         hwPrice: hwPrice, totalPaid: fibreSelectedPrice + hwPrice,
         paystackRef: response.reference, planCode: planCode,
         ipAddress: ipAddress, timestamp: new Date().toISOString(),
-        bizName: bizName, bizVat: bizVat,
+        bizName: bizName, bizAddress: bizAddress, bizVat: bizVat,
         tcAccepted: true, tcUrl: 'https://153mobile.co.za/legal'
       };
 
-      // Background: generate PDF, upload to Drive, send emails
       uploadSignupRecord(clientData, idFile);
 
-      // WhatsApp notification to Brits
       var waMsg = encodeURIComponent(
         '✅ New Fibre Payment!\n\nRef: ' + response.reference +
         '\nName: ' + fname + ' ' + lname +
@@ -1692,11 +1648,12 @@ function toggleNav() {
 
 const fibrePackages = {
   "Openserve": [
+    {speed:"0/0",      price:"R1",     popular:false},
     {speed:"30/30",    price:"R699",   popular:false},
     {speed:"50/25",    price:"R799",   popular:false},
     {speed:"50/50",    price:"R899",   popular:false},
-    {speed:"100/50",   price:"R999",   popular:false},
-    {speed:"100/100",  price:"R1,099", popular:true},
+    {speed:"100/50",   price:"R999",   popular:true},
+    {speed:"100/100",  price:"R1,099", popular:false},
     {speed:"200/100",  price:"R1,199", popular:false},
     {speed:"200/200",  price:"R1,299", popular:false},
     {speed:"300/150",  price:"R1,499", popular:false},
@@ -1706,18 +1663,18 @@ const fibrePackages = {
     {speed:"30/30",    price:"R699",   popular:false},
     {speed:"50/25",    price:"R899",   popular:false},
     {speed:"50/50",    price:"R999",   popular:false},
-    {speed:"100/50",   price:"R1,099", popular:false},
-    {speed:"100/100",  price:"R1,299", popular:true},
+    {speed:"100/50",   price:"R1,099", popular:true},
+    {speed:"100/100",  price:"R1,299", popular:false},
     {speed:"200/200",  price:"R1,499", popular:false},
     {speed:"500/200",  price:"R1,599", popular:false},
     {speed:"1000/250", price:"R1,899", popular:false},
     {speed:"1000/500", price:"R2,499", popular:false}
   ],
   "MetroFibre": [
-    {speed:"25/25",    price:"R899",   popular:false},
-    {speed:"45/45",    price:"R999",   popular:false},
+    {speed:"40/40",    price:"R899",   popular:false},
+    {speed:"60/60",    price:"R999",   popular:true},
     {speed:"75/75",    price:"R1,099", popular:false},
-    {speed:"150/150",  price:"R1,199", popular:true},
+    {speed:"150/150",  price:"R1,199", popular:false},
     {speed:"250/250",  price:"R1,299", popular:false},
     {speed:"500/500",  price:"R1,599", popular:false},
     {speed:"1000/500", price:"R1,699", popular:false}
@@ -1725,8 +1682,8 @@ const fibrePackages = {
   "Frogfoot": [
     {speed:"60/30",     price:"R999",   popular:false},
     {speed:"60/60",     price:"R1,099", popular:false},
-    {speed:"120/60",    price:"R1,199", popular:false},
-    {speed:"120/120",   price:"R1,199", popular:true},
+    {speed:"120/60",    price:"R1,199", popular:true},
+    {speed:"120/120",   price:"R1,199", popular:false},
     {speed:"240/120",   price:"R1,299", popular:false},
     {speed:"240/240",   price:"R1,499", popular:false},
     {speed:"400/200",   price:"R1,599", popular:false},
@@ -1736,8 +1693,8 @@ const fibrePackages = {
   ],
   "Octotel": [
     {speed:"55/25",     price:"R899",   popular:false},
-    {speed:"100/100",   price:"R1,199", popular:false},
-    {speed:"150/150",   price:"R1,299", popular:true},
+    {speed:"100/100",   price:"R1,199", popular:true},
+    {speed:"150/150",   price:"R1,299", popular:false},
     {speed:"300/200",   price:"R1,499", popular:false},
     {speed:"500/200",   price:"R1,799", popular:false},
     {speed:"1000/200",  price:"R2,099", popular:false},
