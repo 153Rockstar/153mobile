@@ -1214,7 +1214,7 @@ footer {
         </div>
 
         <div class="contact-detail"><span class="cd-icon">💬</span><div class="cd-info"><small>WhatsApp Support</small><a href="https://wa.me/27839631238" target="_blank">083 963 1238 · Brits</a></div></div>
-        <div class="contact-detail"><span class="cd-icon">📧</span><div class="cd-info"><small>Email Support</small><a href="mailto:support@153.co.za">support@153.co.za</a></div></div>
+        <div class="contact-detail"><span class="cd-icon">📧</span><div class="cd-info"><small>Email Support</small><a href="/cdn-cgi/l/email-protection#f88b8d8888978a8cb8c9cdcbd69b97d68299"><span class="__cf_email__" data-cfemail="03707673736c7177433236302d606c2d7962">[email&#160;protected]</span></a></div></div>
       </div>
 
       <!-- Right: form -->
@@ -1272,11 +1272,11 @@ footer {
           </div>
 
           <div class="form-section-title">Business Invoice <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:0.75rem;color:var(--muted);">(optional)</span></div>
-          <div class="biz-toggle-row" id="fbBizToggleRow" onclick="toggleFbBiz()">
-            <div class="biz-checkbox-custom" id="fbBizCheckbox"></div>
+          <div class="biz-toggle-row" id="fbBizToggleRow">
+            <div class="biz-checkbox-custom" id="fbBizCheckbox" onclick="toggleFbBiz()"></div>
             <div>
-              <div class="biz-toggle-label">Need a Business Invoice</div>
-              <div class="biz-toggle-sub">I need a VAT invoice — tap to expand &amp; fill in business details</div>
+              <div class="biz-toggle-label" onclick="toggleFbBiz()" style="cursor:pointer;">Need a Business Invoice</div>
+              <div class="biz-toggle-sub" onclick="toggleFbBiz()" style="cursor:pointer;">I need a VAT invoice — tap to expand &amp; fill in business details</div>
               <div style="font-size:0.75rem;color:var(--muted);margin-top:3px;">All fees are quoted exclusive of VAT. 15% VAT will be added to business invoices.</div>
             </div>
           </div>
@@ -1324,7 +1324,7 @@ footer {
         <div class="footer-brits">
           <p>💬 <strong style="color:white;">WhatsApp & Support:</strong> <a href="https://wa.me/27839631238" target="_blank">083 963 1238</a><br>
           Meet Brits — our dedicated support superhero who answers 24/7, 365 days a year. Some swear he's secretly AI. Nope, 100% human and always ready to help.</p>
-          <p>Prefer email? <a href="mailto:support@153.co.za" class="email-link">support@153.co.za</a> &nbsp;|&nbsp; <a href="mailto:support@153.co.za" class="email-link">support@153.co.za</a></p>
+          <p>Prefer email? <a href="/cdn-cgi/l/email-protection#463533363629343206777375682529683c27" class="email-link"><span class="__cf_email__" data-cfemail="097a7c7979667b7d49383c3a276a66277368">[email&#160;protected]</span></a> &nbsp;|&nbsp; <a href="/cdn-cgi/l/email-protection#a3d0d6d3d3ccd1d7e39296908dc0cc8dd9c2" class="email-link"><span class="__cf_email__" data-cfemail="2a595f5a5a45585e6a1b1f1904494504504b">[email&#160;protected]</span></a></p>
         </div>
       </div>
       <!-- Useful Links -->
@@ -1363,7 +1363,7 @@ footer {
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 var fibreSelectedFno   = '';
 var fibreSelectedSpeed = '';
 var fibreSelectedPrice = 0;
@@ -1688,15 +1688,4 @@ function renderPackages(fno) {
   if (!grid) return;
   grid.innerHTML = pkgs.map(function(p) {
     return '<div class="pkg-card'+(p.popular?' popular':'')+'">' +
-      (p.popular?'<div class="popular-badge">Most Popular</div>':'')+
-      '<div class="pkg-speed">'+p.speed.split('/')[0]+'</div>'+
-      '<div class="pkg-speed-unit">Mbps down / '+p.speed.split('/')[1]+' Mbps up</div>'+
-      '<div class="pkg-price">'+p.price+'</div>'+
-      '<div class="pkg-pm">per month</div>'+
-      '<button onclick="selectFibrePkg(\''+fno+'\',\''+p.speed+'\',\''+p.price+'\')" class="pkg-btn">Sign Up &rarr;</button>'+
-      '</div>';
-  }).join('');
-}
-</script>
-</body>
-</html>
+   
