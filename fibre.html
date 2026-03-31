@@ -1203,7 +1203,7 @@ footer {
         </div>
 
         <div class="contact-detail"><span class="cd-icon">💬</span><div class="cd-info"><small>WhatsApp Support</small><a href="https://wa.me/27839631238" target="_blank">083 963 1238 · Brits</a></div></div>
-        <div class="contact-detail"><span class="cd-icon">📧</span><div class="cd-info"><small>Email Support</small><a href="mailto:support@153.co.za">support@153.co.za</a></div></div>
+        <div class="contact-detail"><span class="cd-icon">📧</span><div class="cd-info"><small>Email Support</small><a href="/cdn-cgi/l/email-protection#02717772726d7076423337312c616d2c7863"><span class="__cf_email__" data-cfemail="30434540405f4244700105031e535f1e4a51">[email&#160;protected]</span></a></div></div>
       </div>
 
       <!-- Right: form -->
@@ -1313,7 +1313,7 @@ footer {
         <div class="footer-brits">
           <p>💬 <strong style="color:white;">WhatsApp & Support:</strong> <a href="https://wa.me/27839631238" target="_blank">083 963 1238</a><br>
           Meet Brits — our dedicated support superhero who answers 24/7, 365 days a year. Some swear he's secretly AI. Nope, 100% human and always ready to help.</p>
-          <p>Prefer email? <a href="mailto:support@153.co.za" class="email-link">support@153.co.za</a> &nbsp;|&nbsp; <a href="mailto:support@153.co.za" class="email-link">support@153.co.za</a></p>
+          <p>Prefer email? <a href="/cdn-cgi/l/email-protection#e89b9d9898879a9ca8d9dddbc68b87c69289" class="email-link"><span class="__cf_email__" data-cfemail="02717772726d7076423337312c616d2c7863">[email&#160;protected]</span></a> &nbsp;|&nbsp; <a href="/cdn-cgi/l/email-protection#99eaece9e9f6ebedd9a8acaab7faf6b7e3f8" class="email-link"><span class="__cf_email__" data-cfemail="8dfef8fdfde2fff9cdbcb8bea3eee2a3f7ec">[email&#160;protected]</span></a></p>
         </div>
       </div>
       <!-- Useful Links -->
@@ -1352,7 +1352,7 @@ footer {
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 var fibreSelectedFno="",fibreSelectedSpeed="",fibreSelectedPrice=0,fbBizOpen=false;
 
 function selectFibrePkg(fno,speed,price){
@@ -1499,7 +1499,7 @@ async function initiateFibrePayment(){
   try{ipAddress=(await(await fetch("https://api.ipify.org?format=json")).json()).ip||"Unknown";}catch(e){}
   var planCode=null;
   try{
-    var planRes=await fetch("https://fibre-plans.153-1c7.workers.dev/plan",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({amount:fibreSelectedPrice,fno:fibreSelectedFno,speed:fibreSelectedSpeed})});
+    var planRes=await fetch("https://fibre-plans.153-1c7.workers.dev/plan",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({amount:fibreSelectedPrice,fno:fibreSelectedFno,speed:fibreSelectedSpeed,isBusiness:!!(bizName)})});
     planCode=(await planRes.json()).planCode||null;
   }catch(e){console.error("Plan error:",e);}
   if(!planCode){
@@ -1519,7 +1519,8 @@ async function initiateFibrePayment(){
     currency:"ZAR",
     ref:"FB-"+Date.now(),
     label:fname+" "+lname,
-    plan:planCode,
+    // plan code NOT passed here — allows Paystack to charge the correct amount (fibre+hardware+VAT)
+    // subscription is created separately via /subscribe after payment succeeds
     firstname:fname,
     lastname:lname,
     metadata:{custom_fields:[
@@ -1653,14 +1654,14 @@ function renderPackages(fno){
   for(var i=0;i<pkgs.length;i++){
     var p=pkgs[i];
     var sp=p.speed.split("/");
-    html+='<div class="pkg-card'+(p.popular?" popular":"")+'">'+
-      (p.popular?'<div class="popular-badge">Most Popular</div>':"")+
-      '<div class="pkg-speed">'+sp[0]+'</div>'+
-      '<div class="pkg-speed-unit">Mbps down / '+sp[1]+' Mbps up</div>'+
-      '<div class="pkg-price">'+p.price+'</div>'+
-      '<div class="pkg-pm">per month</div>'+
-      '<button onclick="selectFibrePkg(\''+fno+'\',\''+p.speed+'\',\''+p.price+'\')" class="pkg-btn">Sign Up &rarr;</button>'+
-      '</div>';
+    html+='<div class="pkg-card'+(p.popular?" popular":"")+'">';
+    if(p.popular)html+='<div class="popular-badge">Most Popular</div>';
+    html+='<div class="pkg-speed">'+sp[0]+'</div>';
+    html+='<div class="pkg-speed-unit">Mbps down / '+sp[1]+' Mbps up</div>';
+    html+='<div class="pkg-price">'+p.price+'</div>';
+    html+='<div class="pkg-pm">per month</div>';
+    html+='<button onclick="selectFibrePkg(\''+fno+'\',\''+p.speed+'\',\''+p.price+'\')" class="pkg-btn">Sign Up &rarr;</button>';
+    html+='</div>';
   }
   grid.innerHTML=html;
 }
