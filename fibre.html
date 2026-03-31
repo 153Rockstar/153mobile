@@ -1039,7 +1039,7 @@ footer {
         <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         WhatsApp 153
       </a>
-      <a href="#contact" class="nav-cta">Get Connected</a>
+      <a href="#fibre-checkout" class="nav-cta">Get Connected</a>
     </div>
     <button class="hamburger" onclick="toggleNav()" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -1050,7 +1050,7 @@ footer {
     <a href="lte.html">5G LTE</a>
     <a href="esims.html">eSims</a>
     <a href="https://wa.me/27839631238" target="_blank">💬 WhatsApp 153 — 083 963 1238</a>
-    <a href="#contact">Get Connected →</a>
+    <a href="#fibre-checkout">Get Connected →</a>
   </div>
 </nav>
 
@@ -1277,7 +1277,7 @@ footer {
             <div>
               <div class="biz-toggle-label">Need a Business Invoice</div>
               <div class="biz-toggle-sub">I need a VAT invoice — tap to expand &amp; fill in business details</div>
-			  <div style="font-size:0.75rem;color:var(--muted);margin-top:3px;">All fees are quoted exclusive of VAT. 15% VAT will be added to business invoices.</div>
+              <div style="font-size:0.75rem;color:var(--muted);margin-top:3px;">All fees are quoted exclusive of VAT. 15% VAT will be added to business invoices.</div>
             </div>
           </div>
           <div class="biz-fields" id="fbBizFields">
@@ -1379,6 +1379,7 @@ function selectFibrePkg(fno, speed, price) {
   document.getElementById('fibre-sum-price').textContent = price + '/pm';
   document.querySelectorAll('input[name="fb-hardware"]').forEach(function(r){ r.checked=false; });
   document.getElementById('fibre-sum-hardware-row').style.display = 'none';
+  document.getElementById('fibre-sum-vat-row').style.display      = 'none';
   document.getElementById('fibre-sum-total-row').style.display    = 'none';
   document.getElementById('fibre-checkout').scrollIntoView({ behavior:'smooth', block:'start' });
 }
@@ -1419,13 +1420,11 @@ function toggleFbBiz() {
   fbBizOpen = !fbBizOpen;
   document.getElementById('fbBizCheckbox').classList.toggle('checked', fbBizOpen);
   document.getElementById('fbBizFields').classList.toggle('open', fbBizOpen);
-  // Recalculate VAT in summary if a package and hardware are already selected
   if (fibreSelectedPrice > 0) {
     var sel = document.querySelector('input[name="fb-hardware"]:checked');
     if (sel) { updateFibreTotal(); }
     else {
-      // Package selected but no hardware yet — still update VAT on price row
-      var vatRow = document.getElementById('fibre-sum-vat-row');
+      var vatRow   = document.getElementById('fibre-sum-vat-row');
       var totalRow = document.getElementById('fibre-sum-total-row');
       if (fbBizOpen) {
         var vat = Math.round(fibreSelectedPrice * 0.15);
@@ -1487,13 +1486,11 @@ function generateSignupPdf(clientData) {
   doc.setFont('helvetica','bold'); doc.setTextColor(0,43,127); doc.setFontSize(11);
   doc.text('Terms & Conditions Acceptance',14,y); y+=8;
   doc.setFont('helvetica','normal'); doc.setTextColor(60,60,60); doc.setFontSize(9);
-  doc.text('Client confirmed by ticking the checkbox at signup:',14,y); y+=7;
+  doc.text('Client confirmed acceptance by ticking the checkbox at signup:',14,y); y+=7;
   doc.setFillColor(230,236,248); doc.rect(12,y-2,186,26,'F');
   doc.setFont('helvetica','bold'); doc.text('[+] I agree to the Terms & Conditions and Privacy Policy.',16,y+4); y+=9;
   doc.setFont('helvetica','normal'); doc.text('    I confirm the information above is accurate.',16,y+2); y+=9;
   doc.setTextColor(0,43,127); doc.text('    Terms: https://153mobile.co.za/legal',16,y); y+=14;
-  doc.setTextColor(60,60,60); doc.setFontSize(8);
-  doc.text('Per Clause 1: continued use constitutes acceptance of updated terms.',14,y);
   doc.setFillColor(0,43,127); doc.rect(0,280,210,17,'F');
   doc.setTextColor(255,255,255); doc.setFontSize(8);
   doc.text('153 Mobile (Pty) Ltd  |  153mobile.co.za  |  support@153.co.za  |  083 963 1238',14,291);
@@ -1522,7 +1519,7 @@ async function uploadSignupRecord(clientData, idFile) {
     formData.append('idFilename', idFile ? idFile.name : 'id-document.pdf');
     var res  = await fetch('https://fibre-plans.153-1c7.workers.dev/signup', {method:'POST', body:formData});
     var data = await res.json();
-    console.log('Signup upload result:', JSON.stringify(data));
+    console.log('Signup result:', JSON.stringify(data));
   } catch(e) { console.error('Background upload failed:', e); }
 }
 
@@ -1580,7 +1577,7 @@ async function initiateFibrePayment() {
   payBtn.textContent='Opening payment...';
   var handler = PaystackPop.setup({
     key: 'pk_test_c7832f8b06f6db75127e8fcbaf999f56797f66ad',
-    email:email, amount: Math.round((fibreSelectedPrice+hwPrice)*(bizName?1.15:1))*100, currency:'ZAR',
+    email:email, amount:Math.round((fibreSelectedPrice+hwPrice)*(bizName?1.15:1))*100, currency:'ZAR',
     ref:'FB-'+Date.now(), label:fname+' '+lname, plan:planCode,
     firstname:fname, lastname:lname,
     metadata:{custom_fields:[
@@ -1608,7 +1605,8 @@ async function initiateFibrePayment() {
       var clientData = {
         fname:fname, lname:lname, email:email, phone:phone, address:address,
         fno:fibreSelectedFno, speed:fibreSelectedSpeed, monthlyPrice:fibreSelectedPrice,
-        hardware:hwLabel, hwPrice:hwPrice, totalPaid:Math.round((fibreSelectedPrice+hwPrice)*(bizName?1.15:1)),
+        hardware:hwLabel, hwPrice:hwPrice,
+        totalPaid:Math.round((fibreSelectedPrice+hwPrice)*(bizName?1.15:1)),
         paystackRef:response.reference, planCode:planCode,
         ipAddress:ipAddress, timestamp:new Date().toISOString(),
         bizName:bizName, bizAddress:bizAddress, bizVat:bizVat,
@@ -1630,82 +1628,55 @@ function toggleNav(){ document.getElementById('mobileNav').classList.toggle('ope
 
 const fibrePackages = {
   "Openserve":[
-    {speed:"30/30",    price:"R100",   popular:false},
-    {speed:"50/25",    price:"R799",   popular:false},
-    {speed:"50/50",    price:"R899",   popular:false},
-    {speed:"100/50",   price:"R999",   popular:false},
-    {speed:"100/100",  price:"R1,099", popular:true},
-    {speed:"200/100",  price:"R1,199", popular:false},
-    {speed:"200/200",  price:"R1,299", popular:false},
-    {speed:"300/150",  price:"R1,499", popular:false},
-    {speed:"500/250",  price:"R1,799", popular:false}
+    {speed:"30/30",price:"R100",popular:false},{speed:"50/25",price:"R799",popular:false},
+    {speed:"50/50",price:"R899",popular:false},{speed:"100/50",price:"R999",popular:false},
+    {speed:"100/100",price:"R1,099",popular:true},{speed:"200/100",price:"R1,199",popular:false},
+    {speed:"200/200",price:"R1,299",popular:false},{speed:"300/150",price:"R1,499",popular:false},
+    {speed:"500/250",price:"R1,799",popular:false}
   ],
   "Vumatel":[
-    {speed:"30/30",    price:"R699",   popular:false},
-    {speed:"50/25",    price:"R899",   popular:false},
-    {speed:"50/50",    price:"R999",   popular:false},
-    {speed:"100/50",   price:"R1,099", popular:false},
-    {speed:"100/100",  price:"R1,299", popular:true},
-    {speed:"200/200",  price:"R1,499", popular:false},
-    {speed:"500/200",  price:"R1,599", popular:false},
-    {speed:"1000/250", price:"R1,899", popular:false},
-    {speed:"1000/500", price:"R2,499", popular:false}
+    {speed:"30/30",price:"R699",popular:false},{speed:"50/25",price:"R899",popular:false},
+    {speed:"50/50",price:"R999",popular:false},{speed:"100/50",price:"R1,099",popular:false},
+    {speed:"100/100",price:"R1,299",popular:true},{speed:"200/200",price:"R1,499",popular:false},
+    {speed:"500/200",price:"R1,599",popular:false},{speed:"1000/250",price:"R1,899",popular:false},
+    {speed:"1000/500",price:"R2,499",popular:false}
   ],
   "MetroFibre":[
-    {speed:"25/25",    price:"R899",   popular:false},
-    {speed:"45/45",    price:"R999",   popular:false},
-    {speed:"75/75",    price:"R1,099", popular:false},
-    {speed:"150/150",  price:"R1,199", popular:true},
-    {speed:"250/250",  price:"R1,299", popular:false},
-    {speed:"500/500",  price:"R1,599", popular:false},
-    {speed:"1000/500", price:"R1,699", popular:false}
+    {speed:"25/25",price:"R899",popular:false},{speed:"45/45",price:"R999",popular:false},
+    {speed:"75/75",price:"R1,099",popular:false},{speed:"150/150",price:"R1,199",popular:true},
+    {speed:"250/250",price:"R1,299",popular:false},{speed:"500/500",price:"R1,599",popular:false},
+    {speed:"1000/500",price:"R1,699",popular:false}
   ],
   "Frogfoot":[
-    {speed:"60/30",     price:"R999",   popular:false},
-    {speed:"60/60",     price:"R1,099", popular:false},
-    {speed:"120/60",    price:"R1,199", popular:false},
-    {speed:"120/120",   price:"R1,199", popular:true},
-    {speed:"240/120",   price:"R1,299", popular:false},
-    {speed:"240/240",   price:"R1,499", popular:false},
-    {speed:"400/200",   price:"R1,599", popular:false},
-    {speed:"400/400",   price:"R1,699", popular:false},
-    {speed:"1000/500",  price:"R1,999", popular:false},
-    {speed:"1000/1000", price:"R2,099", popular:false}
+    {speed:"60/30",price:"R999",popular:false},{speed:"60/60",price:"R1,099",popular:false},
+    {speed:"120/60",price:"R1,199",popular:false},{speed:"120/120",price:"R1,199",popular:true},
+    {speed:"240/120",price:"R1,299",popular:false},{speed:"240/240",price:"R1,499",popular:false},
+    {speed:"400/200",price:"R1,599",popular:false},{speed:"400/400",price:"R1,699",popular:false},
+    {speed:"1000/500",price:"R1,999",popular:false},{speed:"1000/1000",price:"R2,099",popular:false}
   ],
   "Octotel":[
-    {speed:"55/25",     price:"R899",   popular:false},
-    {speed:"100/100",   price:"R1,199", popular:false},
-    {speed:"150/150",   price:"R1,299", popular:true},
-    {speed:"300/200",   price:"R1,499", popular:false},
-    {speed:"500/200",   price:"R1,799", popular:false},
-    {speed:"1000/200",  price:"R2,099", popular:false},
-    {speed:"2500/2500", price:"R2,399", popular:false},
-    {speed:"5000/2500", price:"R3,099", popular:false}
+    {speed:"55/25",price:"R899",popular:false},{speed:"100/100",price:"R1,199",popular:false},
+    {speed:"150/150",price:"R1,299",popular:true},{speed:"300/200",price:"R1,499",popular:false},
+    {speed:"500/200",price:"R1,799",popular:false},{speed:"1000/200",price:"R2,099",popular:false},
+    {speed:"2500/2500",price:"R2,399",popular:false},{speed:"5000/2500",price:"R3,099",popular:false}
   ],
   "Cybersmart":[{speed:"1000/1000",price:"R1,099",popular:true}],
   "MTN Fibre":[
-    {speed:"50/50",    price:"R1,099", popular:false},
-    {speed:"100/100",  price:"R1,299", popular:true},
-    {speed:"200/200",  price:"R1,399", popular:false},
-    {speed:"500/500",  price:"R1,599", popular:false}
+    {speed:"50/50",price:"R1,099",popular:false},{speed:"100/100",price:"R1,299",popular:true},
+    {speed:"200/200",price:"R1,399",popular:false},{speed:"500/500",price:"R1,599",popular:false}
   ],
   "Vodacom Fibre":[
-    {speed:"30/30",    price:"R699",   popular:false},
-    {speed:"50/25",    price:"R1,099", popular:false},
-    {speed:"50/50",    price:"R1,199", popular:false},
-    {speed:"100/100",  price:"R1,299", popular:true},
-    {speed:"200/200",  price:"R1,499", popular:false}
+    {speed:"30/30",price:"R699",popular:false},{speed:"50/25",price:"R1,099",popular:false},
+    {speed:"50/50",price:"R1,199",popular:false},{speed:"100/100",price:"R1,299",popular:true},
+    {speed:"200/200",price:"R1,499",popular:false}
   ]
 };
-
-let currentFno = 'Openserve';
 
 document.addEventListener('DOMContentLoaded', function() {
   selectFno('Openserve', document.querySelector('.fno-tab.active'));
 });
 
 function selectFno(fno, btn) {
-  currentFno = fno;
   document.querySelectorAll('.fno-tab').forEach(function(t){ t.classList.remove('active'); });
   if (btn) btn.classList.add('active');
   renderPackages(fno);
