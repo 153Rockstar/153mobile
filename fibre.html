@@ -1444,7 +1444,7 @@ function generateSignupPdf(d){
   y+=4;doc.setFont("helvetica","bold");doc.setTextColor(0,43,127);doc.setFontSize(11);
   doc.text("Package Details",14,y);y+=8;
   doc.setFont("helvetica","normal");doc.setTextColor(60,60,60);doc.setFontSize(10);
-  [["FNO",d.fno],["Speed",d.speed+" Mbps"],["Monthly","R"+d.monthlyPrice+"/pm"],["Hardware",d.hardware],["Total Paid","R"+d.totalPaid],["Paystack Ref",d.paystackRef]].forEach(function(r){doc.setFont("helvetica","bold");doc.text(r[0]+":",14,y);doc.setFont("helvetica","normal");doc.text(r[1]||"-",65,y);y+=7;});
+  [["FNO",d.fno],["Speed",d.speed+" Mbps"],["Monthly","R"+d.monthlyPrice+"/pm"],["Hardware",d.hardware],["Total Paid","R"+d.totalPaid],["Paystack Ref",d.paystackRef],["Client ID",d.paystackCustomerCode||d.paystackRef]].forEach(function(r){doc.setFont("helvetica","bold");doc.text(r[0]+":",14,y);doc.setFont("helvetica","normal");doc.text(r[1]||"-",65,y);y+=7;});
   if(d.bizName){y+=4;doc.setFont("helvetica","bold");doc.setTextColor(0,43,127);doc.setFontSize(11);doc.text("Business Details",14,y);y+=8;doc.setFont("helvetica","normal");doc.setTextColor(60,60,60);doc.setFontSize(10);[["Business Name",d.bizName],["Address",d.bizAddress],["VAT",d.bizVat]].forEach(function(r){if(r[1]){doc.setFont("helvetica","bold");doc.text(r[0]+":",14,y);doc.setFont("helvetica","normal");doc.text(r[1],65,y);y+=7;}});}
   doc.setFillColor(0,43,127);doc.rect(0,280,210,17,"F");
   doc.setTextColor(255,255,255);doc.setFontSize(8);
