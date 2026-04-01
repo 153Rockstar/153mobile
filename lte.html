@@ -7,6 +7,8 @@
 <meta name="description" content="Fast, reliable 5G LTE internet from 153 Mobile. MTN, Telkom and Vodacom reseller. Month-to-month, no contracts.">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://js.paystack.co/v1/inline.js"></script>
 <style>
 /* ═══════════════════════════════════════
    DESIGN TOKENS
@@ -432,7 +434,9 @@ footer{background:var(--blue-deep);border-top:3px solid var(--red);padding:4rem 
           <div class="pkg-sum-row"><span>Package</span><strong id="sum-package">—</strong></div>
           <div class="pkg-sum-row pkg-sum-divider"><span>Monthly</span><strong id="sum-price">—</strong></div>
           <div class="pkg-sum-row" id="sum-hw-row" style="display:none"><span>Hardware (once off)</span><strong id="sum-hardware">—</strong></div>
-          <div class="pkg-sum-row pkg-sum-total" id="sum-total-row" style="display:none"><span>Due today</span><strong id="sum-total">—</strong></div>
+          <div class="pkg-sum-row" id="sum-shipping-row" style="display:none"><span>Shipping (once off)</span><strong id="sum-shipping">R250</strong></div>
+          <div class="pkg-sum-row" id="sum-vat-row" style="display:none"><span>VAT (15%)</span><strong id="sum-vat" style="color:white;">—</strong></div>
+          <div class="pkg-sum-row pkg-sum-total" id="sum-total-row" style="display:none"><span id="sum-total-label">Due today</span><strong id="sum-total">—</strong></div>
         </div>
 
         <div class="contact-detail">
@@ -441,7 +445,7 @@ footer{background:var(--blue-deep);border-top:3px solid var(--red);padding:4rem 
         </div>
         <div class="contact-detail">
           <span class="cd-icon">✉️</span>
-          <div class="cd-info"><small>Email</small><a href="mailto:support@153.co.za">support@153.co.za</a></div>
+          <div class="cd-info"><small>Email</small><a href="/cdn-cgi/l/email-protection#d4a7a1a4a4bba6a094e5e1e7fab7bbfaaeb5"><span class="__cf_email__" data-cfemail="6b181e1b1b04191f2b5a5e5845080445110a">[email&#160;protected]</span></a></div>
         </div>
       </div>
 
@@ -464,45 +468,34 @@ footer{background:var(--blue-deep);border-top:3px solid var(--red);padding:4rem 
             <strong>Selected Package:</strong> <span id="pkgLabel">—</span>
           </div>
 
-          <div class="form-section-title">Once-Off Hardware <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:0.75rem;color:var(--muted);">(select one)</span></div>
-          <div class="hw-options">
+          <div class="form-section-title">Once-Off Hardware <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:0.75rem;color:var(--muted);">(select all that apply — at least one required)</span></div>
+          <div class="hw-options" id="hwOptions">
 
-            <label class="hw-option">
-              <input type="radio" name="hardware" value="own" data-price="0" onchange="updateTotal()">
-              <div><strong>I have my own router</strong><span>I confirm my existing router supports 5G/LTE SIM cards</span></div>
+            <label class="hw-option" id="hw-own-label">
+              <input type="checkbox" name="hardware" value="own" data-price="0" data-label="I have my own compatible unlocked router" data-router="true" onchange="handleHwChange(this)">
+              <div><strong>I have my own compatible unlocked router</strong><span>I confirm my router is unlocked and supports 5G/LTE SIM cards on this network</span></div>
             </label>
 
-            <label class="hw-option">
-              <input type="radio" name="hardware" value="failover-sim" data-price="199" onchange="updateTotal()">
-              <div><strong>Fibre Failover SIM — R199pm 10GB FUP</strong><span>Add a 5G/LTE failover SIM to your existing fibre — auto-switches when fibre goes down</span></div>
-            </label>
-
-            <label class="hw-option">
-              <input type="radio" name="hardware" value="lte-router" data-price="2000" onchange="updateTotal()">
+            <label class="hw-option" id="hw-lte-label">
+              <input type="checkbox" name="hardware" value="lte-router" data-price="2000" data-label="LTE Router — R2,000" data-router="true" onchange="handleHwChange(this)">
               <div><strong>LTE Router — R2,000</strong><span>Once-off purchase · Plug &amp; play · We'll help you set it up</span></div>
             </label>
 
-            <label class="hw-option">
-              <input type="radio" name="hardware" value="5g-router" data-price="2999" onchange="updateTotal()">
+            <label class="hw-option" id="hw-5g-label">
+              <input type="checkbox" name="hardware" value="5g-router" data-price="2999" data-label="5G Router — R2,999" data-router="true" onchange="handleHwChange(this)">
               <div><strong>5G Router — R2,999</strong><span>Once-off purchase · Super-fast 5G speeds · Future-proof</span></div>
             </label>
 
-            <label class="hw-option">
-              <input type="radio" name="hardware" value="antenna-2cable" data-price="2500" onchange="updateTotal()">
+            <label class="hw-option" id="hw-ant2-label">
+              <input type="checkbox" name="hardware" value="antenna-2cable" data-price="2500" data-label="External 5G LTE Antenna (2 cables) — R2,500" data-router="false" data-antenna="true" onchange="handleHwChange(this)">
               <div><strong>External 5G LTE Antenna (2 cables) — R2,500</strong><span>Boost weak signal · Once-off purchase · Big difference in fringe areas</span></div>
             </label>
 
-            <label class="hw-option">
-              <input type="radio" name="hardware" value="antenna-4cable" data-price="3500" onchange="updateTotal()">
+            <label class="hw-option" id="hw-ant4-label">
+              <input type="checkbox" name="hardware" value="antenna-4cable" data-price="3500" data-label="External 5G LTE Antenna (4 cables) — R3,500" data-router="false" data-antenna="true" onchange="handleHwChange(this)">
               <div><strong>External 5G LTE Antenna (4 cables) — R3,500</strong><span>Maximum signal boost · Once-off purchase · For serious signal challenges</span></div>
             </label>
 
-          </div>
-
-          <div class="order-total-box" id="totalBox">
-            <div class="order-total-row"><span>Monthly package</span><span id="tot-monthly">R0</span></div>
-            <div class="order-total-row"><span>Once-off hardware</span><span id="tot-hardware">R0</span></div>
-            <div class="order-total-final"><span>Due today (1st month + hardware)</span><span id="tot-due">R0</span></div>
           </div>
 
           <div class="form-section-title">Identity Verification (RICA)</div>
@@ -523,6 +516,7 @@ footer{background:var(--blue-deep);border-top:3px solid var(--red);padding:4rem 
             <div>
               <div class="biz-toggle-label">Need a Business Invoice</div>
               <div class="biz-toggle-sub">I need a VAT invoice — tap to expand &amp; fill in business details</div>
+              <div style="font-size:0.72rem;color:var(--muted);margin-top:3px;">All fees are quoted exclusive of VAT. 15% VAT will be added to business invoices.</div>
             </div>
           </div>
           <div class="biz-fields" id="bizFields">
@@ -538,16 +532,18 @@ footer{background:var(--blue-deep);border-top:3px solid var(--red);padding:4rem 
             <label for="terms">I accept the <a href="legal/index.html" target="_blank">Terms &amp; Conditions</a> and confirm all details above are correct.</label>
           </div>
 
-          <button class="pay-btn" onclick="submitOrder()">
-            🔒 Pay Securely with Peach Payments
+          <button class="pay-btn" id="ltePayBtn" onclick="initiateLtePayment()">
+            <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:#fff"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+            Pay Securely with Paystack
           </button>
-          <p class="form-note">Secured by <strong>Peach Payments</strong> · 256-bit SSL · PCI DSS Compliant<br>Questions? <a href="https://wa.me/27839631238" target="_blank">WhatsApp Brits</a> before you pay.</p>
+          <p class="form-note">🔒 Secured by <strong>Paystack</strong> · 256-bit SSL · PCI DSS Compliant<br>Questions? <a href="https://wa.me/27839631238" target="_blank">WhatsApp Brits</a> before you pay.</p>
         </div>
 
         <div class="success-msg" id="successMsg">
           <div class="s-icon">🎉</div>
-          <h3>You're almost connected!</h3>
-          <p>Your order has been submitted. Brits will be in touch shortly via WhatsApp to confirm and get everything sorted. Welcome to the 153 Mobile family!</p>
+          <h3>Payment Successful!</h3>
+          <p id="successBody">Your first month and hardware have been charged. Your monthly subscription starts on the 1st of next month.<br><br>A confirmation email is on its way. Brits will contact you within 2 hours on business days to confirm your delivery.</p>
+          <a href="https://wa.me/27839631238" target="_blank" style="display:inline-block;margin-top:1.5rem;background:var(--blue);color:white;padding:0.75rem 1.75rem;border-radius:8px;font-weight:700;text-decoration:none;">💬 WhatsApp Brits</a>
         </div>
       </div>
 
@@ -567,7 +563,7 @@ footer{background:var(--blue-deep);border-top:3px solid var(--red);padding:4rem 
         <div class="footer-brits">
           <p>💬 <strong style="color:white;">WhatsApp &amp; Support:</strong> <a href="https://wa.me/27839631238" target="_blank">083 963 1238</a><br>
           Meet Brits — our dedicated support superhero who answers 24/7, 365 days a year. Some swear he's secretly AI. Nope, 100% human and always ready to help.</p>
-          <p>Prefer email? <a href="mailto:support@153.co.za" class="email-link">support@153.co.za</a> &nbsp;|&nbsp; <a href="mailto:accounts@153.co.za" class="email-link">accounts@153.co.za</a></p>
+          <p>Prefer email? <a href="/cdn-cgi/l/email-protection#42313732322d3036027377716c212d6c3823" class="email-link"><span class="__cf_email__" data-cfemail="82f1f7f2f2edf0f6c2b3b7b1ace1edacf8e3">[email&#160;protected]</span></a> &nbsp;|&nbsp; <a href="/cdn-cgi/l/email-protection#b4d5d7d7dbc1dac0c7f48581879ad7db9aced5" class="email-link"><span class="__cf_email__" data-cfemail="503133333f253e2423106165637e333f7e2a31">[email&#160;protected]</span></a></p>
         </div>
       </div>
       <div class="footer-col">
@@ -597,9 +593,12 @@ footer{background:var(--blue-deep);border-top:3px solid var(--red);padding:4rem 
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+
+const SHIPPING = 250;
+
 /* ═══════════════════════════════════════
-   PACKAGES DATA
+   LTE PACKAGE DATA
 ═══════════════════════════════════════ */
 const ltePkgs = {
   MTN: [
@@ -630,8 +629,7 @@ const ltePkgs = {
     {type:'Business LTE', data:'80GB',  validity:'Per Month', price:'R799',   popular:false},
     {type:'Business LTE', data:'200GB', validity:'Per Month', price:'R999',   popular:false},
     {type:'CISP 5G/LTE',  data:'300GB', validity:'Per Month', price:'R699',   popular:false},
-    {type:'CISP 5G/LTE',  data:'450GB', validity:'Per Month', price:'R899',   popular:false},
-    {type:'CISP 5G/LTE',  data:'600GB', validity:'Per Month', price:'R999',   popular:true}
+    {type:'CISP 5G/LTE',  data:'450GB', validity:'Per Month', price:'R899',   popular:false}
   ]
 };
 
@@ -639,15 +637,10 @@ const ltePkgs = {
    STATE
 ═══════════════════════════════════════ */
 let currentNetwork = 'MTN';
-let selectedPkg = null; // {network, type, data, validity, price, priceNum}
+let selectedPkg = null;
 let bizOpen = false;
 
-/* ═══════════════════════════════════════
-   NAV
-═══════════════════════════════════════ */
-function toggleNav() {
-  document.getElementById('mobileNav').classList.toggle('open');
-}
+function toggleNav() { document.getElementById('mobileNav').classList.toggle('open'); }
 
 /* ═══════════════════════════════════════
    RENDER PACKAGES
@@ -672,7 +665,7 @@ function renderPkgs() {
       <div class="lte-pkg-validity">${p.validity}</div>
       <div class="lte-pkg-price">${p.price}</div>
       <div class="lte-pkg-pm">per month</div>
-      <button class="lte-pkg-btn" onclick="event.stopPropagation();selectPkg(${i})">Sign Up →</button>
+      <button class="lte-pkg-btn" onclick="event.stopPropagation();selectPkg(${i})">Sign Up \u2192</button>
     </div>
   `).join('');
 }
@@ -681,57 +674,107 @@ function selectPkg(index) {
   const pkgs = ltePkgs[currentNetwork];
   const p = pkgs[index];
   const priceNum = parseInt(p.price.replace(/[R,]/g, '')) || 0;
-
   selectedPkg = { network: currentNetwork, type: p.type, data: p.data, validity: p.validity, price: p.price, priceNum };
 
-  // Highlight selected card
   document.querySelectorAll('.lte-pkg-card').forEach(c => c.classList.remove('selected'));
   const card = document.getElementById('pkg-card-' + index);
   if (card) card.classList.add('selected');
 
-  // Update left summary
   document.getElementById('sum-network').textContent = currentNetwork;
   document.getElementById('sum-package').textContent = p.type + ' · ' + p.data;
   document.getElementById('sum-price').textContent = p.price + '/pm';
   document.getElementById('sum-hw-row').style.display = 'none';
+  document.getElementById('sum-vat-row').style.display = 'none';
+  document.getElementById('sum-shipping-row').style.display = 'flex';
+  document.getElementById('sum-shipping').textContent = 'R' + SHIPPING.toLocaleString();
   document.getElementById('sum-total-row').style.display = 'flex';
-  document.getElementById('sum-total').textContent = p.price + '/pm (+ hardware)';
+  document.getElementById('sum-total-label').textContent = 'Due Today (1st month + hardware + shipping)';
+  document.getElementById('sum-total').textContent = 'R' + (p.priceNum !== undefined ? (parseInt(p.price.replace(/[R,]/g,''))||0) + SHIPPING : SHIPPING).toLocaleString();
 
-  // Show package display in form
   document.getElementById('pkgDisplay').style.display = 'block';
   document.getElementById('pkgLabel').textContent = currentNetwork + ' · ' + p.type + ' · ' + p.data + ' · ' + p.price + '/month';
 
-  // Reset hardware selection
-  document.querySelectorAll('input[name="hardware"]').forEach(r => r.checked = false);
-  document.getElementById('totalBox').style.display = 'none';
-
-  // Smooth scroll to order form
+  document.querySelectorAll('input[name="hardware"]').forEach(r => { r.checked = false; });
+  document.querySelectorAll('.hw-option').forEach(l => { l.style.borderColor = ''; l.style.background = ''; });
+  updateTotal();
   document.getElementById('order').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 /* ═══════════════════════════════════════
-   ORDER TOTAL
+   HARDWARE CHECKBOX LOGIC
+   - "own router" / lte-router / 5g-router are mutually exclusive
+   - antennas are free to combine
+   - R250 shipping always baked in
+═══════════════════════════════════════ */
+function handleHwChange(changed) {
+  const isRouter  = changed.getAttribute('data-router') === 'true';
+  const isAntenna = changed.getAttribute('data-antenna') === 'true';
+
+  if (isRouter && changed.checked) {
+    // Only one router type allowed — uncheck all other routers
+    document.querySelectorAll('input[name="hardware"][data-router="true"]').forEach(cb => {
+      if (cb.value !== changed.value) {
+        cb.checked = false;
+        const lbl = cb.closest('.hw-option');
+        if (lbl) { lbl.style.borderColor = ''; lbl.style.background = ''; }
+      }
+    });
+  }
+
+  if (isAntenna && changed.checked) {
+    // Only one antenna allowed — uncheck all other antennas
+    document.querySelectorAll('input[name="hardware"][data-antenna="true"]').forEach(cb => {
+      if (cb.value !== changed.value) {
+        cb.checked = false;
+        const lbl = cb.closest('.hw-option');
+        if (lbl) { lbl.style.borderColor = ''; lbl.style.background = ''; }
+      }
+    });
+  }
+
+  // Update visual highlight on changed item
+  const label = changed.closest('.hw-option');
+  if (label) {
+    label.style.borderColor = changed.checked ? 'var(--blue)' : '';
+    label.style.background  = changed.checked ? 'var(--blue-pale)' : '';
+  }
+  updateTotal();
+}
+
+/* ═══════════════════════════════════════
+   ORDER TOTAL — updates LEFT summary panel only
+   Shipping R250 always shown once package selected
+   VAT shown in white when business toggle is on
 ═══════════════════════════════════════ */
 function updateTotal() {
-  const hwRadio = document.querySelector('input[name="hardware"]:checked');
-  if (!hwRadio) return;
+  if (!selectedPkg) return;
+  const checkedHw  = Array.from(document.querySelectorAll('input[name="hardware"]:checked'));
+  const hwTotal    = checkedHw.reduce((sum, cb) => sum + (parseInt(cb.getAttribute('data-price')) || 0), 0);
+  const subTotal   = selectedPkg.priceNum + hwTotal + SHIPPING;
+  const vatAmount  = bizOpen ? Math.round(subTotal * 0.15) : 0;
+  const dueToday   = subTotal + vatAmount;
 
-  const hwPrice = parseInt(hwRadio.getAttribute('data-price')) || 0;
-  const monthlyPrice = selectedPkg ? selectedPkg.priceNum : 0;
-  const dueToday = monthlyPrice + hwPrice;
+  // Hardware row
+  document.getElementById('sum-hw-row').style.display = hwTotal > 0 ? 'flex' : 'none';
+  if (hwTotal > 0) document.getElementById('sum-hardware').textContent = 'R' + hwTotal.toLocaleString();
 
-  document.getElementById('tot-monthly').textContent = selectedPkg ? selectedPkg.price : 'R0';
-  document.getElementById('tot-hardware').textContent = hwPrice > 0 ? 'R' + hwPrice.toLocaleString() : 'None';
-  document.getElementById('tot-due').textContent = 'R' + dueToday.toLocaleString();
-  document.getElementById('totalBox').style.display = 'block';
+  // Shipping row — always show once package is selected
+  document.getElementById('sum-shipping-row').style.display = 'flex';
+  document.getElementById('sum-shipping').textContent = 'R' + SHIPPING.toLocaleString();
 
-  // Update left panel
-  if (selectedPkg) {
-    document.getElementById('sum-hw-row').style.display = hwPrice > 0 ? 'flex' : 'none';
-    if (hwPrice > 0) document.getElementById('sum-hardware').textContent = 'R' + hwPrice.toLocaleString();
-    document.getElementById('sum-total-row').style.display = 'flex';
-    document.getElementById('sum-total').textContent = 'R' + dueToday.toLocaleString();
+  // VAT row — only when business toggle is ON
+  if (bizOpen) {
+    document.getElementById('sum-vat-row').style.display = 'flex';
+    document.getElementById('sum-vat').textContent = 'R' + vatAmount.toLocaleString();
+    document.getElementById('sum-total-label').textContent = 'Total inc VAT (Due Today)';
+  } else {
+    document.getElementById('sum-vat-row').style.display = 'none';
+    document.getElementById('sum-total-label').textContent = 'Due Today (1st month + hardware + shipping)';
   }
+
+  // Due Today (green)
+  document.getElementById('sum-total-row').style.display = 'flex';
+  document.getElementById('sum-total').textContent = 'R' + dueToday.toLocaleString();
 }
 
 /* ═══════════════════════════════════════
@@ -742,13 +785,8 @@ function handleFileUpload() {
   const display = document.getElementById('idFileName');
   if (input && input.files && input.files[0]) {
     const file = input.files[0];
-    if (file.size > 5 * 1024 * 1024) {
-      alert('File too large. Please upload a file under 5MB.');
-      input.value = '';
-      display.textContent = '';
-      return;
-    }
-    display.textContent = '✓ ' + file.name;
+    if (file.size > 5 * 1024 * 1024) { alert('File too large. Max 5MB.'); input.value = ''; display.textContent = ''; return; }
+    display.textContent = '\u2713 ' + file.name;
     display.style.color = 'var(--green)';
     input.closest('.file-upload-box').style.borderColor = 'var(--green)';
     input.closest('.file-upload-box').style.background = '#f0fdf4';
@@ -760,74 +798,177 @@ function handleFileUpload() {
 ═══════════════════════════════════════ */
 function toggleBiz() {
   bizOpen = !bizOpen;
-  const cb = document.getElementById('bizCheckbox');
-  const fields = document.getElementById('bizFields');
+  document.getElementById('bizCheckbox').classList.toggle('checked', bizOpen);
+  document.getElementById('bizFields').classList.toggle('open', bizOpen);
   const row = document.getElementById('bizToggleRow');
-  if (bizOpen) {
-    cb.classList.add('checked');
-    fields.classList.add('open');
-    row.style.borderColor = 'var(--blue)';
-    row.style.background = 'var(--blue-pale)';
-  } else {
-    cb.classList.remove('checked');
-    fields.classList.remove('open');
-    row.style.borderColor = '';
-    row.style.background = '';
-  }
+  row.style.borderColor = bizOpen ? 'var(--blue)' : '';
+  row.style.background  = bizOpen ? 'var(--blue-pale)' : '';
+  updateTotal();
 }
 
 /* ═══════════════════════════════════════
-   SUBMIT ORDER
+   PDF GENERATION
 ═══════════════════════════════════════ */
-function submitOrder() {
+function generateLtePdf(d) {
+  var doc = new window.jspdf.jsPDF(), y = 20;
+  doc.setFillColor(0,43,127); doc.rect(0,0,210,30,'F');
+  doc.setTextColor(255,255,255); doc.setFontSize(16); doc.setFont('helvetica','bold');
+  doc.text('153 Mobile - 5G LTE Signup Record',14,19);
+  y=42; doc.setTextColor(0,43,127); doc.setFontSize(11); doc.setFont('helvetica','bold');
+  doc.text('Client Details',14,y); y+=8;
+  doc.setFont('helvetica','normal'); doc.setTextColor(60,60,60); doc.setFontSize(10);
+  [['Full Name',d.fname+' '+d.lname],['Email',d.email],['Phone',d.phone],['Address',d.address],['IP',d.ipAddress],['Signed Up',new Date(d.timestamp).toLocaleString('en-ZA',{timeZone:'Africa/Johannesburg'})]].forEach(r=>{doc.setFont('helvetica','bold');doc.text(r[0]+':',14,y);doc.setFont('helvetica','normal');doc.text(r[1]||'-',65,y);y+=7;});
+  y+=4; doc.setFont('helvetica','bold'); doc.setTextColor(0,43,127); doc.setFontSize(11);
+  doc.text('Package Details',14,y); y+=8;
+  doc.setFont('helvetica','normal'); doc.setTextColor(60,60,60); doc.setFontSize(10);
+  [['Network',d.network],['Package',d.pkgType+' · '+d.pkgData],['Monthly','R'+d.monthlyPrice+'/pm'],['Hardware',d.hardwareLabel||'None'],['Shipping','R'+SHIPPING+' (once-off)'],['Total Paid','R'+d.totalPaid],['Paystack Ref',d.paystackRef],['Client ID',d.paystackCustomerCode||d.paystackRef]].forEach(r=>{doc.setFont('helvetica','bold');doc.text(r[0]+':',14,y);doc.setFont('helvetica','normal');doc.text(String(r[1]||'-'),65,y);y+=7;});
+  if(d.bizName){y+=4;doc.setFont('helvetica','bold');doc.setTextColor(0,43,127);doc.setFontSize(11);doc.text('Business Details',14,y);y+=8;doc.setFont('helvetica','normal');doc.setTextColor(60,60,60);doc.setFontSize(10);[['Business Name',d.bizName],['Address',d.bizAddress],['VAT',d.bizVat]].forEach(r=>{if(r[1]){doc.setFont('helvetica','bold');doc.text(r[0]+':',14,y);doc.setFont('helvetica','normal');doc.text(r[1],65,y);y+=7;}});}
+  doc.setFillColor(0,43,127); doc.rect(0,280,210,17,'F');
+  doc.setTextColor(255,255,255); doc.setFontSize(8);
+  doc.text('153 Mobile (Pty) Ltd  |  153mobile.co.za  |  support@153.co.za  |  083 963 1238',14,291);
+  return doc.output('arraybuffer');
+}
+
+/* ═══════════════════════════════════════
+   RESOLVE → PDF → UPLOAD
+═══════════════════════════════════════ */
+async function uploadLteSignupRecord(clientData, idFile) {
+  try {
+    try {
+      const resolveRes = await fetch('https://fibre-plans.153-1c7.workers.dev/resolve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({paystackRef:clientData.paystackRef})});
+      const resolveData = await resolveRes.json();
+      if (resolveData.cusCode) { clientData.paystackCustomerCode = resolveData.cusCode; console.log('CUS_xxx resolved:', resolveData.cusCode); }
+      else { console.error('Resolve no cusCode:', JSON.stringify(resolveData)); }
+    } catch(e) { console.error('Resolve failed:', e); }
+
+    const pdfBuffer = generateLtePdf(clientData);
+    const formData = new FormData();
+    formData.append('clientData', JSON.stringify(clientData));
+    formData.append('pdf', new Blob([pdfBuffer],{type:'application/pdf'}), '153Mobile-LTE-Signup-Record.pdf');
+    if (idFile) formData.append('idFile', idFile, idFile.name);
+    formData.append('idFilename', idFile ? idFile.name : 'id-document.pdf');
+    const res = await fetch('https://fibre-plans.153-1c7.workers.dev/signup',{method:'POST',body:formData});
+    const data = await res.json();
+    console.log('LTE signup result:', JSON.stringify(data));
+  } catch(e) { console.error('LTE signup failed:', e); }
+}
+
+async function createLteSubscription(reference, planCode, fname, lname, phone) {
+  try {
+    const res = await fetch('https://fibre-plans.153-1c7.workers.dev/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reference,planCode,fname,lname,phone})});
+    const data = await res.json();
+    if (data.success) console.log('LTE subscription created:', data.subscriptionCode);
+    else console.error('LTE subscription failed:', data.error);
+  } catch(e) { console.error('LTE subscription error:', e); }
+}
+
+/* ═══════════════════════════════════════
+   INITIATE PAYMENT
+═══════════════════════════════════════ */
+async function initiateLtePayment() {
+  if (!selectedPkg) { alert('Please select a 5G LTE package first.'); document.getElementById('packages').scrollIntoView({behavior:'smooth'}); return; }
+
   const fname   = document.getElementById('fname').value.trim();
   const lname   = document.getElementById('lname').value.trim();
   const email   = document.getElementById('email').value.trim();
   const phone   = document.getElementById('phone').value.trim();
   const address = document.getElementById('address').value.trim();
-  const hwRadio = document.querySelector('input[name="hardware"]:checked');
-  const idFiles = document.getElementById('idUpload').files;
+  const idFile  = document.getElementById('idUpload').files[0];
   const terms   = document.getElementById('terms').checked;
+  const checkedHw = Array.from(document.querySelectorAll('input[name="hardware"]:checked'));
 
-  if (!selectedPkg) { alert('Please select a 5G LTE package first.'); document.getElementById('packages').scrollIntoView({behavior:'smooth'}); return; }
-  if (!fname || !lname || !email || !phone || !address) { alert('Please fill in all personal details.'); return; }
-  if (!idFiles || idFiles.length === 0) { alert('Please upload your ID document for RICA verification.'); return; }
-  if (!hwRadio) { alert('Please select a hardware option.'); return; }
+  if (!fname||!lname||!email||!phone||!address) { alert('Please fill in all personal details.'); return; }
+  if (!idFile) { alert('Please upload your ID document for RICA verification.'); return; }
+  if (checkedHw.length === 0) { alert('Please select at least one hardware option.'); return; }
   if (!terms) { alert('Please accept the Terms & Conditions to continue.'); return; }
 
-  const hwLabel = hwRadio.parentElement.querySelector('strong').textContent;
-  const hwPrice = parseInt(hwRadio.getAttribute('data-price')) || 0;
-  const dueToday = selectedPkg.priceNum + hwPrice;
+  const bizName    = bizOpen ? document.getElementById('bizName').value.trim() : '';
+  const bizAddress = bizOpen ? document.getElementById('bizAddress').value.trim() : '';
+  const bizVat     = bizOpen ? document.getElementById('bizVat').value.trim() : '';
+  const hwTotal    = checkedHw.reduce((sum,cb)=>sum+(parseInt(cb.getAttribute('data-price'))||0),0);
+  const hwLabels   = checkedHw.map(cb=>cb.getAttribute('data-label')).join(', ');
+  const subTotal   = selectedPkg.priceNum + hwTotal + SHIPPING;
+  const vatAmount  = bizOpen ? Math.round(subTotal * 0.15) : 0;
+  const totalPaid  = subTotal + vatAmount;
 
-  let msg = 'Hi Brits! 🎉 New 5G LTE Order:\n\n';
-  msg += 'Name: ' + fname + ' ' + lname + '\n';
-  msg += 'Email: ' + email + '\n';
-  msg += 'Phone: ' + phone + '\n';
-  msg += 'Delivery address: ' + address + '\n';
-  msg += 'Network: ' + selectedPkg.network + '\n';
-  msg += 'Package: ' + selectedPkg.type + ' · ' + selectedPkg.data + ' · ' + selectedPkg.price + '/pm\n';
-  msg += 'Hardware: ' + hwLabel + '\n';
-  msg += 'Due today: R' + dueToday.toLocaleString();
+  const payBtn = document.getElementById('ltePayBtn');
+  payBtn.disabled = true; payBtn.textContent = 'Setting up payment...';
 
-  if (bizOpen) {
-    const bn = document.getElementById('bizName').value.trim();
-    const bv = document.getElementById('bizVat').value.trim();
-    if (bn) msg += '\nBusiness Invoice: ' + bn + (bv ? ' | VAT: ' + bv : '');
+  let ipAddress = 'Unknown';
+  try { ipAddress = (await (await fetch('https://api.ipify.org?format=json')).json()).ip || 'Unknown'; } catch(e) {}
+
+  let planCode = null;
+  try {
+    const planRes = await fetch('https://fibre-plans.153-1c7.workers.dev/plan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:selectedPkg.priceNum,isBusiness:!!(bizName)})});
+    planCode = (await planRes.json()).planCode || null;
+  } catch(e) { console.error('Plan error:',e); }
+
+  if (!planCode) {
+    payBtn.disabled = false;
+    payBtn.innerHTML = '<svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:#fff"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg> Pay Securely with Paystack';
+    window.open('https://wa.me/27839631238?text='+encodeURIComponent('Hi Brits! New 5G LTE Order:\nName: '+fname+' '+lname+'\nEmail: '+email+'\nPhone: '+phone+'\nNetwork: '+selectedPkg.network+'\nPackage: '+selectedPkg.type+' · '+selectedPkg.data+' · '+selectedPkg.price+'/pm\nHardware: '+hwLabels+'\nTotal: R'+totalPaid+'\n\nOnline payment unavailable.'),'_blank');
+    return;
   }
 
-  /* ── PEACH PAYMENTS INTEGRATION POINT ──────────────────────────────
-     POST order to your backend → get checkoutId → redirect to Peach.
-     Until live: WhatsApp Brits as fallback.
-  ─────────────────────────────────────────────────────────────────── */
-  document.getElementById('formWrap').style.display = 'none';
-  document.getElementById('successMsg').style.display = 'block';
-  setTimeout(() => window.open('https://wa.me/27839631238?text=' + encodeURIComponent(msg), '_blank'), 600);
+  payBtn.textContent = 'Opening payment...';
+
+  const handler = PaystackPop.setup({
+    key:      'pk_test_c7832f8b06f6db75127e8fcbaf999f56797f66ad',
+    email:    email,
+    amount:   totalPaid * 100,
+    currency: 'ZAR',
+    ref:      'LTE-' + Date.now(),
+    label:    fname + ' ' + lname,
+    firstname: fname,
+    lastname:  lname,
+    metadata: {custom_fields:[
+      {display_name:'Customer Name',   variable_name:'customer_name',   value:fname+' '+lname},
+      {display_name:'Phone',           variable_name:'phone',           value:phone},
+      {display_name:'Network',         variable_name:'network',         value:selectedPkg.network},
+      {display_name:'Package',         variable_name:'package',         value:selectedPkg.type+' · '+selectedPkg.data},
+      {display_name:'Monthly Package', variable_name:'monthly_package', value:selectedPkg.price+'/pm'},
+      {display_name:'Hardware',        variable_name:'hardware',        value:hwLabels},
+      {display_name:'Shipping',        variable_name:'shipping',        value:'R'+SHIPPING},
+      {display_name:'Plan Code',       variable_name:'plan_code',       value:planCode}
+    ]},
+    callback: function(response) {
+      document.getElementById('formWrap').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+
+      const clientData = {
+        productType:   'lte',
+        fname, lname, email, phone, address,
+        network:       selectedPkg.network,
+        pkgType:       selectedPkg.type,
+        pkgData:       selectedPkg.data,
+        fno:           selectedPkg.network + ' 5G LTE',
+        speed:         selectedPkg.data + ' per month',
+        monthlyPrice:  selectedPkg.priceNum,
+        hardwareLabel: hwLabels,
+        hwPrice:       hwTotal,
+        shipping:      SHIPPING,
+        totalPaid,
+        paystackRef:   response.reference,
+        planCode,
+        ipAddress,
+        timestamp:     new Date().toISOString(),
+        bizName, bizAddress, bizVat,
+        tcAccepted:    true,
+        tcUrl:         'https://153mobile.co.za/legal'
+      };
+
+      uploadLteSignupRecord(clientData, idFile);
+      createLteSubscription(response.reference, planCode, fname, lname, phone);
+    },
+    onClose: function() {
+      payBtn.disabled = false;
+      payBtn.innerHTML = '<svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:#fff"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg> Pay Securely with Paystack';
+    }
+  });
+  handler.openIframe();
 }
 
-/* ═══════════════════════════════════════
-   INIT
-═══════════════════════════════════════ */
-document.addEventListener('DOMContentLoaded', () => renderPkgs());
+renderPkgs();
 </script>
 </body>
 </html>

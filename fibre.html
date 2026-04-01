@@ -1199,7 +1199,7 @@ footer {
             <span style="color:rgba(200,215,255,0.65);">Monthly Package</span>
             <strong id="fibre-sum-price" style="color:white;font-size:1.1rem;">—</strong>
           </div>
-          <div id="fibre-sum-hardware-row" style="display:none;justify-content:space-between;align-items:center;margin-top:0.4rem;font-size:0.85rem;"><span style="color:rgba(200,215,255,0.65);">Hardware (once off)</span><strong id="fibre-sum-hardware" style="color:white;">-</strong></div><div id="fibre-sum-vat-row" style="display:none;justify-content:space-between;align-items:center;margin-top:0.4rem;font-size:0.85rem;"><span style="color:rgba(200,215,255,0.65);">VAT (15%)</span><strong id="fibre-sum-vat" style="color:rgba(255,200,100,0.9);">-</strong></div><div id="fibre-sum-total-row" style="display:none;justify-content:space-between;align-items:center;margin-top:0.6rem;padding-top:0.6rem;border-top:1px solid rgba(255,255,255,0.12);"><span id="fibre-sum-total-label" style="color:rgba(200,215,255,0.65);">Due Today (1st month + hardware)</span><strong id="fibre-sum-total" style="color:#25D366;font-size:1.05rem;">-</strong></div>
+          <div id="fibre-sum-hardware-row" style="display:none;justify-content:space-between;align-items:center;margin-top:0.4rem;font-size:0.85rem;"><span style="color:rgba(200,215,255,0.65);">Hardware (once off)</span><strong id="fibre-sum-hardware" style="color:white;">-</strong></div><div id="fibre-sum-sim-row" style="display:none;justify-content:space-between;align-items:center;margin-top:0.4rem;font-size:0.85rem;"><span style="color:rgba(200,215,255,0.65);">Failover SIM (monthly)</span><strong id="fibre-sum-sim" style="color:white;">-</strong></div><div id="fibre-sum-vat-row" style="display:none;justify-content:space-between;align-items:center;margin-top:0.4rem;font-size:0.85rem;"><span style="color:rgba(200,215,255,0.65);">VAT (15%)</span><strong id="fibre-sum-vat" style="color:white;">-</strong></div><div id="fibre-sum-total-row" style="display:none;justify-content:space-between;align-items:center;margin-top:0.6rem;padding-top:0.6rem;border-top:1px solid rgba(255,255,255,0.12);"><span id="fibre-sum-total-label" style="color:rgba(200,215,255,0.65);">Due Today (1st month + hardware)</span><strong id="fibre-sum-total" style="color:#25D366;font-size:1.05rem;">-</strong></div>
         </div>
 
         <div class="contact-detail"><span class="cd-icon">💬</span><div class="cd-info"><small>WhatsApp Support</small><a href="https://wa.me/27839631238" target="_blank">083 963 1238 · Brits</a></div></div>
@@ -1235,26 +1235,31 @@ footer {
             </div>
           </div>
 
-          <div class="form-section-title">Router / Hardware <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:0.75rem;color:var(--muted);">(select one)</span></div>
+          <div class="form-section-title">Router / Hardware <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:0.75rem;color:var(--muted);">(select all that apply — at least one required)</span></div>
           <div style="display:flex;flex-direction:column;gap:0.55rem;margin-bottom:1.1rem;" id="fb-hw-options">
 
             <label style="display:flex;align-items:flex-start;gap:0.75rem;border:2px solid var(--line);border-radius:10px;padding:0.85rem 1rem;cursor:pointer;transition:border-color 0.18s,background 0.18s;">
-              <input type="radio" name="fb-hardware" value="own" data-price="0" style="margin-top:0.2rem;accent-color:var(--blue);" onchange="updateFibreTotal()">
+              <input type="checkbox" name="fb-hardware" value="own" data-price="0" data-sim-price="0" data-router="true" style="margin-top:0.2rem;accent-color:var(--blue);" onchange="handleFbHwChange(this)">
               <div><strong style="font-size:0.85rem;color:var(--blue);display:block;">I have my own router</strong><span style="font-size:0.75rem;color:var(--muted);">Just send me the configs via email and assist me with setup</span></div>
             </label>
 
             <label style="display:flex;align-items:flex-start;gap:0.75rem;border:2px solid var(--line);border-radius:10px;padding:0.85rem 1rem;cursor:pointer;transition:border-color 0.18s,background 0.18s;">
-              <input type="radio" name="fb-hardware" value="basic-router" data-price="250" style="margin-top:0.2rem;accent-color:var(--blue);" onchange="updateFibreTotal()">
+              <input type="checkbox" name="fb-hardware" value="failover-sim" data-price="250" data-sim-price="199" data-sim="true" style="margin-top:0.2rem;accent-color:var(--blue);" onchange="handleFbHwChange(this)">
+              <div><strong style="font-size:0.85rem;color:var(--blue);display:block;">Fibre Failover SIM — R199/pm 20GB FUP</strong><span style="font-size:0.75rem;color:var(--muted);">Monthly recurring · R250 once-off shipping · Auto-switches to LTE when fibre goes down</span></div>
+            </label>
+
+            <label style="display:flex;align-items:flex-start;gap:0.75rem;border:2px solid var(--line);border-radius:10px;padding:0.85rem 1rem;cursor:pointer;transition:border-color 0.18s,background 0.18s;">
+              <input type="checkbox" name="fb-hardware" value="basic-router" data-price="250" data-sim-price="0" data-router="true" style="margin-top:0.2rem;accent-color:var(--blue);" onchange="handleFbHwChange(this)">
               <div><strong style="font-size:0.85rem;color:var(--blue);display:block;">Free-to-use basic Fibre WiFi router — R250 shipping</strong><span style="font-size:0.75rem;color:var(--muted);">Once-off shipping fee · Plug &amp; play · Returned if you cancel</span></div>
             </label>
 
             <label style="display:flex;align-items:flex-start;gap:0.75rem;border:2px solid var(--line);border-radius:10px;padding:0.85rem 1rem;cursor:pointer;transition:border-color 0.18s,background 0.18s;">
-              <input type="radio" name="fb-hardware" value="lte-failover" data-price="2250" style="margin-top:0.2rem;accent-color:var(--blue);" onchange="updateFibreTotal()">
+              <input type="checkbox" name="fb-hardware" value="lte-failover" data-price="2250" data-sim-price="0" data-router="true" style="margin-top:0.2rem;accent-color:var(--blue);" onchange="handleFbHwChange(this)">
               <div><strong style="font-size:0.85rem;color:var(--blue);display:block;">Fibre LTE Failover router — R2,000 + R250 shipping</strong><span style="font-size:0.75rem;color:var(--muted);">Once-off purchase · Automatic failover to LTE when fibre goes down</span></div>
             </label>
 
             <label style="display:flex;align-items:flex-start;gap:0.75rem;border:2px solid var(--line);border-radius:10px;padding:0.85rem 1rem;cursor:pointer;transition:border-color 0.18s,background 0.18s;">
-              <input type="radio" name="fb-hardware" value="5g-failover" data-price="3249" style="margin-top:0.2rem;accent-color:var(--blue);" onchange="updateFibreTotal()">
+              <input type="checkbox" name="fb-hardware" value="5g-failover" data-price="3249" data-sim-price="0" data-router="true" style="margin-top:0.2rem;accent-color:var(--blue);" onchange="handleFbHwChange(this)">
               <div><strong style="font-size:0.85rem;color:var(--blue);display:block;">Fibre 5G Failover router — R2,999 + R250 shipping</strong><span style="font-size:0.75rem;color:var(--muted);">Once-off purchase · Super-fast 5G backup · Future-proof failover</span></div>
             </label>
 
@@ -1362,22 +1367,57 @@ function selectFibrePkg(fno,speed,price){
   document.getElementById("fibre-sum-fno").textContent=fno;
   document.getElementById("fibre-sum-speed").textContent=speed+" Mbps";
   document.getElementById("fibre-sum-price").textContent=price+"/pm";
-  document.querySelectorAll("input[name='fb-hardware']").forEach(function(r){r.checked=false;});
+  document.querySelectorAll("input[name='fb-hardware']").forEach(function(r){
+    r.checked=false;
+    var lbl=r.closest("label");
+    if(lbl){lbl.style.borderColor="";lbl.style.background="";}
+  });
   document.getElementById("fibre-sum-hardware-row").style.display="none";
+  document.getElementById("fibre-sum-sim-row").style.display="none";
   document.getElementById("fibre-sum-vat-row").style.display="none";
   document.getElementById("fibre-sum-total-row").style.display="none";
   document.getElementById("fibre-checkout").scrollIntoView({behavior:"smooth",block:"start"});
 }
 
+function handleFbHwChange(changed){
+  var isRouter=changed.getAttribute("data-router")==="true";
+  if(isRouter&&changed.checked){
+    // Only one router allowed — uncheck all other routers
+    document.querySelectorAll("input[name='fb-hardware'][data-router='true']").forEach(function(cb){
+      if(cb.value!==changed.value){
+        cb.checked=false;
+        var lbl=cb.closest("label");
+        if(lbl){lbl.style.borderColor="";lbl.style.background="";}
+      }
+    });
+  }
+  var lbl=changed.closest("label");
+  if(lbl){
+    lbl.style.borderColor=changed.checked?"var(--blue)":"";
+    lbl.style.background=changed.checked?"var(--blue-pale)":"";
+  }
+  updateFibreTotal();
+}
+
 function updateFibreTotal(){
-  var sel=document.querySelector("input[name='fb-hardware']:checked");
-  if(!sel)return;
-  var hwPrice=parseInt(sel.getAttribute("data-price"))||0;
-  var subTotal=fibreSelectedPrice+hwPrice;
+  var checked=Array.from(document.querySelectorAll("input[name='fb-hardware']:checked"));
+  if(!checked.length)return;
+  var hwPrice=checked.reduce(function(sum,cb){return sum+(parseInt(cb.getAttribute("data-price"))||0);},0);
+  var simPrice=checked.reduce(function(sum,cb){return sum+(parseInt(cb.getAttribute("data-sim-price"))||0);},0);
+  var subTotal=fibreSelectedPrice+hwPrice+simPrice;
+
+  // Hardware (once-off)
   if(hwPrice>0){
     document.getElementById("fibre-sum-hardware").textContent="R"+hwPrice.toLocaleString();
     document.getElementById("fibre-sum-hardware-row").style.display="flex";
   }else{document.getElementById("fibre-sum-hardware-row").style.display="none";}
+
+  // Failover SIM monthly
+  if(simPrice>0){
+    document.getElementById("fibre-sum-sim").textContent="R"+simPrice.toLocaleString()+"/pm";
+    document.getElementById("fibre-sum-sim-row").style.display="flex";
+  }else{document.getElementById("fibre-sum-sim-row").style.display="none";}
+
   if(fbBizOpen&&fibreSelectedPrice>0){
     var vat=Math.round(subTotal*0.15);
     document.getElementById("fibre-sum-vat").textContent="R"+vat.toLocaleString();
@@ -1386,36 +1426,18 @@ function updateFibreTotal(){
     document.getElementById("fibre-sum-vat-row").style.display="flex";
   }else{
     document.getElementById("fibre-sum-total").textContent="R"+subTotal.toLocaleString();
-    document.getElementById("fibre-sum-total-label").textContent="Due Today (1st month + hardware)";
+    document.getElementById("fibre-sum-total-label").textContent=simPrice>0?"Due Today (1st month fibre + SIM + shipping)":"Due Today (1st month + hardware)";
     document.getElementById("fibre-sum-vat-row").style.display="none";
   }
   document.getElementById("fibre-sum-total-row").style.display="flex";
-  document.querySelectorAll("#fb-hw-options label").forEach(function(l){l.style.borderColor="";l.style.background="";});
-  var pl=sel.closest("label");if(pl){pl.style.borderColor="var(--blue)";pl.style.background="var(--blue-pale)";}
 }
-
 function toggleFbBiz(){
   fbBizOpen=!fbBizOpen;
   document.getElementById("fbBizCheckbox").classList.toggle("checked",fbBizOpen);
   document.getElementById("fbBizFields").classList.toggle("open",fbBizOpen);
   if(fibreSelectedPrice>0){
-    var sel=document.querySelector("input[name='fb-hardware']:checked");
-    if(sel){updateFibreTotal();}
-    else{
-      if(fbBizOpen){
-        var vat=Math.round(fibreSelectedPrice*0.15);
-        document.getElementById("fibre-sum-vat").textContent="R"+vat.toLocaleString();
-        document.getElementById("fibre-sum-total").textContent="R"+(fibreSelectedPrice+vat).toLocaleString();
-        document.getElementById("fibre-sum-total-label").textContent="Total inc VAT (Due Today)";
-        document.getElementById("fibre-sum-vat-row").style.display="flex";
-        document.getElementById("fibre-sum-total-row").style.display="flex";
-      }else{
-        document.getElementById("fibre-sum-vat-row").style.display="none";
-        document.getElementById("fibre-sum-total").textContent="R"+fibreSelectedPrice.toLocaleString();
-        document.getElementById("fibre-sum-total-label").textContent="Due Today (1st month + hardware)";
-        document.getElementById("fibre-sum-total-row").style.display="flex";
-      }
-    }
+    var anyChecked=document.querySelectorAll("input[name='fb-hardware']:checked").length>0;
+    if(anyChecked){updateFibreTotal();}
   }
 }
 
@@ -1448,7 +1470,7 @@ function generateSignupPdf(d){
   if(d.bizName){y+=4;doc.setFont("helvetica","bold");doc.setTextColor(0,43,127);doc.setFontSize(11);doc.text("Business Details",14,y);y+=8;doc.setFont("helvetica","normal");doc.setTextColor(60,60,60);doc.setFontSize(10);[["Business Name",d.bizName],["Address",d.bizAddress],["VAT",d.bizVat]].forEach(function(r){if(r[1]){doc.setFont("helvetica","bold");doc.text(r[0]+":",14,y);doc.setFont("helvetica","normal");doc.text(r[1],65,y);y+=7;}});}
   doc.setFillColor(0,43,127);doc.rect(0,280,210,17,"F");
   doc.setTextColor(255,255,255);doc.setFontSize(8);
-  doc.text("153 Mobile (Pty) Ltd  |  153mobile.co.za  |  support@153mobile.co.za  |  083 963 1238",14,291);
+  doc.text("153 Mobile (Pty) Ltd  |  153mobile.co.za  |  support@153.co.za  |  083 963 1238",14,291);
   return doc.output("arraybuffer");
 }
 
@@ -1505,14 +1527,18 @@ async function initiateFibrePayment(){
   var email=document.getElementById("fb-email").value.trim();
   var address=document.getElementById("fb-address").value.trim();
   var idFile=document.getElementById("fb-id-upload").files[0];
-  var hwSelected=document.querySelector("input[name='fb-hardware']:checked");
+  var hwChecked=Array.from(document.querySelectorAll("input[name='fb-hardware']:checked"));
   var terms=document.getElementById("fb-terms-check").checked;
   if(!fname||!lname||!phone||!email||!address){alert("Please fill in all personal details.");return;}
   if(!idFile){alert("Please upload your ID document for RICA verification.");return;}
-  if(!hwSelected){alert("Please select a router / hardware option.");return;}
+  if(hwChecked.length===0){alert("Please select a router / hardware option.");return;}
   if(!terms){alert("Please accept the Terms & Conditions to continue.");return;}
-  var hwPrice=parseInt(hwSelected.getAttribute("data-price"))||0;
-  var hwLabel=hwSelected.closest("label").querySelector("strong").textContent;
+  var hwPrice=hwChecked.reduce(function(sum,cb){return sum+(parseInt(cb.getAttribute("data-price"))||0);},0);
+  var hwLabel=hwChecked.map(function(cb){return cb.closest("label").querySelector("strong").textContent;}).join(" + ");
+  var simPrice=hwChecked.reduce(function(sum,cb){return sum+(parseInt(cb.getAttribute("data-sim-price"))||0);},0);
+  var isSim=simPrice>0;
+  // monthlyTotal = fibre monthly + SIM monthly (both are recurring)
+  var monthlyTotal=fibreSelectedPrice+simPrice;
   var bizName=fbBizOpen?document.getElementById("fb-biz-name").value.trim():"";
   var bizAddress=fbBizOpen?document.getElementById("fb-biz-address").value.trim():"";
   var bizVat=fbBizOpen?document.getElementById("fb-biz-vat").value.trim():"";
@@ -1522,7 +1548,8 @@ async function initiateFibrePayment(){
   try{ipAddress=(await(await fetch("https://api.ipify.org?format=json")).json()).ip||"Unknown";}catch(e){}
   var planCode=null;
   try{
-    var planRes=await fetch("https://fibre-plans.153-1c7.workers.dev/plan",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({amount:fibreSelectedPrice,fno:fibreSelectedFno,speed:fibreSelectedSpeed,isBusiness:!!(bizName)})});
+    // Plan is based on total monthly recurring (fibre + SIM if applicable)
+    var planRes=await fetch("https://fibre-plans.153-1c7.workers.dev/plan",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({amount:monthlyTotal,fno:fibreSelectedFno,speed:fibreSelectedSpeed,isBusiness:!!(bizName)})});
     planCode=(await planRes.json()).planCode||null;
   }catch(e){console.error("Plan error:",e);}
   if(!planCode){
@@ -1538,7 +1565,7 @@ async function initiateFibrePayment(){
   var handler=PaystackPop.setup({
     key:"pk_test_c7832f8b06f6db75127e8fcbaf999f56797f66ad",
     email:email,
-    amount:Math.round((fibreSelectedPrice+hwPrice)*(bizName?1.15:1))*100,
+    amount:Math.round((fibreSelectedPrice+hwPrice+simPrice)*(bizName?1.15:1))*100,
     currency:"ZAR",
     ref:"FB-"+Date.now(),
     label:fname+" "+lname,
@@ -1565,9 +1592,11 @@ async function initiateFibrePayment(){
       document.getElementById("fibreCheckoutSuccess").style.display="block";
       var clientData={
         fname:fname,lname:lname,email:email,phone:phone,address:address,
-        fno:fibreSelectedFno,speed:fibreSelectedSpeed,monthlyPrice:fibreSelectedPrice,
+        fno:fibreSelectedFno,speed:fibreSelectedSpeed,
+        monthlyPrice:monthlyTotal,
         hardware:hwLabel,hwPrice:hwPrice,
-        totalPaid:Math.round((fibreSelectedPrice+hwPrice)*(bizName?1.15:1)),
+        simPrice:simPrice,
+        totalPaid:Math.round((fibreSelectedPrice+hwPrice+simPrice)*(bizName?1.15:1)),
         paystackRef:response.reference,planCode:planCode,
         ipAddress:ipAddress,timestamp:new Date().toISOString(),
         bizName:bizName,bizAddress:bizAddress,bizVat:bizVat,
@@ -1588,8 +1617,7 @@ function toggleNav(){document.getElementById("mobileNav").classList.toggle("open
 
 var fibrePackages={
   "Openserve":[
-    {speed:"0/0",price:"R100",popular:false},
-	{speed:"30/30",price:"R699",popular:false},
+    {speed:"30/30",price:"R699",popular:false},
     {speed:"50/25",price:"R799",popular:false},
     {speed:"50/50",price:"R899",popular:false},
     {speed:"100/50",price:"R999",popular:false},
