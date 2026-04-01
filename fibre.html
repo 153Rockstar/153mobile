@@ -1448,7 +1448,7 @@ function generateSignupPdf(d){
   if(d.bizName){y+=4;doc.setFont("helvetica","bold");doc.setTextColor(0,43,127);doc.setFontSize(11);doc.text("Business Details",14,y);y+=8;doc.setFont("helvetica","normal");doc.setTextColor(60,60,60);doc.setFontSize(10);[["Business Name",d.bizName],["Address",d.bizAddress],["VAT",d.bizVat]].forEach(function(r){if(r[1]){doc.setFont("helvetica","bold");doc.text(r[0]+":",14,y);doc.setFont("helvetica","normal");doc.text(r[1],65,y);y+=7;}});}
   doc.setFillColor(0,43,127);doc.rect(0,280,210,17,"F");
   doc.setTextColor(255,255,255);doc.setFontSize(8);
-  doc.text("153 Mobile (Pty) Ltd  |  153mobile.co.za  |  support@153.co.za  |  083 963 1238",14,291);
+  doc.text("153 Mobile (Pty) Ltd  |  153mobile.co.za  |  support@153mobile.co.za  |  083 963 1238",14,291);
   return doc.output("arraybuffer");
 }
 
@@ -1463,7 +1463,29 @@ async function createPaystackSubscription(reference,planCode,fname,lname,phone){
 
 async function uploadSignupRecord(clientData,idFile){
   try{
+    // Step 1: Resolve CUS_xxx from worker BEFORE generating PDF
+    // This ensures the Client ID is correctly embedded in the PDF
+    try{
+      var resolveRes=await fetch("https://fibre-plans.153-1c7.workers.dev/resolve",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({paystackRef:clientData.paystackRef})
+      });
+      var resolveData=await resolveRes.json();
+      if(resolveData.cusCode){
+        clientData.paystackCustomerCode=resolveData.cusCode;
+        console.log("CUS_xxx resolved:",resolveData.cusCode);
+      }else{
+        console.error("Resolve returned no cusCode:",JSON.stringify(resolveData));
+      }
+    }catch(e){
+      console.error("Resolve call failed:",e);
+    }
+
+    // Step 2: Generate PDF — now includes CUS_xxx as Client ID
     var pdfBuffer=generateSignupPdf(clientData);
+
+    // Step 3: Send everything to worker /signup
     var formData=new FormData();
     formData.append("clientData",JSON.stringify(clientData));
     formData.append("pdf",new Blob([pdfBuffer],{type:"application/pdf"}),"153Mobile-Signup-Record.pdf");
