@@ -7,7 +7,7 @@
   <meta name="description" content="Global eSIMs for any network, any time. South African & international data packages. Instant activation. No roaming shock.">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <script data-cfasync="false" src="https://js.paystack.co/v1/inline.js"></script>
 <style>
 :root {
   --blue:#002B7F; --blue-deep:#001a5c; --blue-mid:#003399;
@@ -1098,64 +1098,59 @@ function generateSignupPdf(d) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   ESIM PAYMENT — MAIN FLOW
+   ESIM PAYMENT — mirrors fibre.html pattern exactly
 ═══════════════════════════════════════════════════════════════ */
 async function initiateEsimPayment() {
-  // Validate package selection
   if (!selectedPkg) {
     alert('Please select an eSIM package above first.');
     document.getElementById('packages').scrollIntoView({behavior:'smooth'});
     return;
   }
 
-  // Gather form values
-  var fname  = document.getElementById('co-fname').value.trim();
-  var lname  = document.getElementById('co-lname').value.trim();
-  var phone  = document.getElementById('co-phone').value.trim();
-  var email  = document.getElementById('co-email').value.trim();
-  var addr   = document.getElementById('co-address').value.trim();
-  var idFile = document.getElementById('id-upload').files[0];
-  var terms  = document.getElementById('terms-check').checked;
+  var fname      = document.getElementById('co-fname').value.trim();
+  var lname      = document.getElementById('co-lname').value.trim();
+  var phone      = document.getElementById('co-phone').value.trim();
+  var email      = document.getElementById('co-email').value.trim();
+  var addr       = document.getElementById('co-address').value.trim();
+  var idFile     = document.getElementById('id-upload').files[0];
+  var terms      = document.getElementById('terms-check').checked;
   var bizName    = bizOpen ? document.getElementById('biz-name').value.trim()    : '';
   var bizAddress = bizOpen ? document.getElementById('biz-address').value.trim() : '';
   var bizVat     = bizOpen ? document.getElementById('biz-vat').value.trim()     : '';
 
-  // Validate
-  if (!fname || !lname || !phone || !email || !addr) { alert('Please complete all personal information fields.'); return; }
-  if (!idFile) { alert('Please upload your ID document for RICA verification.'); return; }
-  if (!terms)  { alert('Please accept the Terms & Conditions to continue.'); return; }
-  if (idFile && idFile.size > 5 * 1024 * 1024) { alert('ID file too large. Max 5MB.'); return; }
+  if (!fname||!lname||!phone||!email||!addr) { alert('Please complete all personal information fields.'); return; }
+  if (!idFile)  { alert('Please upload your ID document for RICA verification.'); return; }
+  if (!terms)   { alert('Please accept the Terms & Conditions to continue.'); return; }
+  if (idFile.size > 5*1024*1024) { alert('ID file too large. Max 5MB.'); return; }
 
-  // Calculate total
-  var base     = selectedPkg.priceNum;
-  var vatAmt   = bizOpen ? Math.round(base * 0.15) : 0;
-  var total    = base + vatAmt;
+  var base   = selectedPkg.priceNum;
+  var vatAmt = bizOpen ? Math.round(base * 0.15) : 0;
+  var total  = base + vatAmt;
 
   var payBtn = document.getElementById('esimPayBtn');
   payBtn.disabled = true;
   payBtn.textContent = 'Setting up payment...';
 
-  // Get IP
   var ipAddress = 'Unknown';
-  try { ipAddress = (await (await fetch('https://api.ipify.org?format=json')).json()).ip || 'Unknown'; } catch(e) {}
+  try {
+    var ipCtrl = new AbortController();
+    var ipT = setTimeout(function(){ ipCtrl.abort(); }, 2000);
+    ipAddress = (await (await fetch('https://api.ipify.org?format=json', {signal:ipCtrl.signal})).json()).ip || 'Unknown';
+    clearTimeout(ipT);
+  } catch(e) {}
 
-  // For recurring plans: get/create Paystack plan
   var planCode = null;
   if (planType === 'recurring') {
     try {
-      payBtn.textContent = 'Creating payment plan...';
+      payBtn.textContent = 'Creating plan...';
       var planRes = await fetch(WORKER_URL + '/esim-plan', {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
+        method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({amount: base, isBusiness: !!bizName})
       });
-      var planData = await planRes.json();
-      planCode = planData.planCode || null;
-    } catch(e) {
-      console.error('Plan fetch failed:', e);
-    }
+      planCode = (await planRes.json()).planCode || null;
+    } catch(e) { console.error('Plan error:', e); }
+
     if (!planCode) {
-      // Fallback to WhatsApp
       payBtn.disabled = false;
       payBtn.innerHTML = '<svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:white;"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg> Pay Securely with Paystack';
       window.open('https://wa.me/27839631238?text=' + encodeURIComponent(
@@ -1169,7 +1164,6 @@ async function initiateEsimPayment() {
   }
 
   payBtn.textContent = 'Opening payment...';
-
   var handler = PaystackPop.setup({
     key:      PAYSTACK_KEY,
     email:    email,
@@ -1185,78 +1179,40 @@ async function initiateEsimPayment() {
       {display_name:'Network/Region', variable_name:'network',        value:selectedPkg.network},
       {display_name:'Package',        variable_name:'package',        value:selectedPkg.packageSize},
       {display_name:'Plan Type',      variable_name:'plan_type',      value:planType},
-      {display_name:'Validity',       variable_name:'validity',       value:selectedPkg.validity || '30 days'},
+      {display_name:'Validity',       variable_name:'validity',       value:selectedPkg.validity||'30 days'},
       {display_name:'Total Paid',     variable_name:'total_paid',     value:'R'+total},
-      {display_name:'Plan Code',      variable_name:'plan_code',      value:planCode || 'once-off'}
+      {display_name:'Plan Code',      variable_name:'plan_code',      value:planCode||'once-off'}
     ]},
-    callback: async function(response) {
+    callback: function(response) {
       document.getElementById('checkoutFormWrap').style.display = 'none';
-      document.getElementById('checkoutSuccess').style.display = 'block';
+      document.getElementById('checkoutSuccess').style.display  = 'block';
+
+      var successMsg = planType === 'recurring'
+        ? 'Your monthly eSIM subscription is confirmed. Your QR code will be delivered to <strong style="color:white;">' + email + '</strong> within 24 hours.<br><br>Once received, activate within <strong style="color:white;">48 hours</strong>. Monthly renewals bill on the 1st of each month.'
+        : 'Your eSIM order is confirmed. Your QR code will be delivered to <strong style="color:white;">' + email + '</strong> within 24 hours.<br><br>Once received, please activate within <strong style="color:white;">48 hours</strong> — the QR code expires after this window.';
+      document.getElementById('successTitle').textContent = planType === 'recurring' ? 'Subscription Active!' : 'Payment Successful!';
+      document.getElementById('successBody').innerHTML = successMsg + '<br><br>Questions? <a href="https://wa.me/27839631238" style="color:#25D366;font-weight:700;">WhatsApp Brits</a> any time.';
 
       var clientData = {
-        productType:   'esim',
-        fname, lname, email, phone, address: addr,
-        network:       selectedPkg.network,
-        packageSize:   selectedPkg.packageSize,
-        validity:      selectedPkg.validity || '30 days',
-        planType:      planType,
-        monthlyPrice:  base,
-        totalPaid:     total,
-        vatAmount:     vatAmt,
+        productType:'esim', fname:fname, lname:lname, email:email, phone:phone, address:addr,
+        network:      selectedPkg.network,
+        packageSize:  selectedPkg.packageSize,
+        validity:     selectedPkg.validity||'30 days',
+        planType:     planType,
+        monthlyPrice: base,
+        totalPaid:    total,
+        vatAmount:    vatAmt,
         airaloPackageId: selectedPkg.airaloPackageId,
-        paystackRef:   response.reference,
-        planCode:      planCode,
-        ipAddress,
-        timestamp:     new Date().toISOString(),
-        bizName, bizAddress, bizVat,
-        tcAccepted:    true,
-        tcUrl:         'https://153mobile.co.za/legal'
+        paystackRef:  response.reference,
+        planCode:     planCode,
+        ipAddress:    ipAddress,
+        timestamp:    new Date().toISOString(),
+        bizName:bizName, bizAddress:bizAddress, bizVat:bizVat,
+        tcAccepted:true, tcUrl:'https://153mobile.co.za/legal'
       };
-
-      // Generate PDF
-      var pdfBuffer = generateSignupPdf(clientData);
-
-      // Send to worker
-      try {
-        var formData = new FormData();
-        formData.append('clientData', JSON.stringify(clientData));
-        formData.append('pdf', new Blob([pdfBuffer], {type:'application/pdf'}), '153Mobile-eSIM-Signup.pdf');
-        if (idFile) formData.append('idFile', idFile, idFile.name);
-        formData.append('idFilename', idFile ? idFile.name : 'id-document.pdf');
-
-        var res = await fetch(WORKER_URL + '/esim-signup', {method:'POST', body:formData});
-        var data = await res.json();
-        console.log('eSIM signup result:', JSON.stringify(data));
-      } catch(e) {
-        console.error('Signup failed:', e);
-      }
-
-      // If recurring: create Paystack subscription
+      uploadEsimSignupRecord(clientData, idFile);
       if (planType === 'recurring' && planCode) {
-        try {
-          await fetch(WORKER_URL + '/esim-subscribe', {
-            method: 'POST',
-            headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({
-              reference: response.reference,
-              planCode,
-              fname, lname, phone
-            })
-          });
-          console.log('Subscription created');
-        } catch(e) {
-          console.error('Subscription failed (non-fatal):', e);
-        }
-      }
-
-      // Update success message
-      if (planType === 'recurring') {
-        document.getElementById('successTitle').textContent = 'Subscription Active! 🎉';
-        document.getElementById('successBody').innerHTML =
-          'Your monthly eSIM subscription is confirmed. Your first payment has been processed.<br><br>' +
-          'Your QR code will be delivered to <strong style="color:white;">' + email + '</strong> within 24 hours.<br><br>' +
-          'Once received, please activate within <strong style="color:white;">48 hours</strong>. Monthly renewals bill on the 1st of each month.<br><br>' +
-          'Questions? <a href="https://wa.me/27839631238" style="color:#25D366;font-weight:700;">WhatsApp Brits</a> any time.';
+        createEsimSubscription(response.reference, planCode, fname, lname, phone);
       }
     },
     onClose: function() {
@@ -1265,6 +1221,35 @@ async function initiateEsimPayment() {
     }
   });
   handler.openIframe();
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   POST-PAYMENT: UPLOAD RECORD + SUBSCRIPTION
+═══════════════════════════════════════════════════════════════ */
+async function uploadEsimSignupRecord(clientData, idFile) {
+  try {
+    var pdfBuffer = generateSignupPdf(clientData);
+    var formData  = new FormData();
+    formData.append('clientData', JSON.stringify(clientData));
+    formData.append('pdf', new Blob([pdfBuffer], {type:'application/pdf'}), '153Mobile-eSIM-Signup.pdf');
+    if (idFile) formData.append('idFile', idFile, idFile.name);
+    formData.append('idFilename', idFile ? idFile.name : 'id-document.pdf');
+    var res  = await fetch(WORKER_URL + '/esim-signup', {method:'POST', body:formData});
+    var data = await res.json();
+    console.log('eSIM signup result:', JSON.stringify(data));
+  } catch(e) { console.error('eSIM signup upload failed:', e); }
+}
+
+async function createEsimSubscription(reference, planCode, fname, lname, phone) {
+  try {
+    var res  = await fetch(WORKER_URL + '/esim-subscribe', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({reference:reference, planCode:planCode, fname:fname, lname:lname, phone:phone})
+    });
+    var data = await res.json();
+    if (data.success) console.log('eSIM subscription created:', data.subscriptionCode);
+    else console.error('eSIM subscription failed:', data.error);
+  } catch(e) { console.error('eSIM subscription error:', e); }
 }
 
 /* ═══════════════════════════════════════════════════════════════
