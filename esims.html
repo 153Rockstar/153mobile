@@ -87,13 +87,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--blue);box-
 .main-tab{flex:1;padding:0.75rem 1rem;border:none;border-radius:10px;font-family:'Poppins',sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all 0.22s;background:transparent;color:var(--muted)}
 .main-tab.active{background:var(--blue);color:white;box-shadow:0 4px 14px rgba(0,43,127,0.22)}
 .network-selector{display:flex;gap:1.2rem;justify-content:center;margin-bottom:2.5rem;flex-wrap:wrap}
-.net-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1rem 1.8rem;border:2.5px solid var(--line);border-radius:16px;background:white;cursor:pointer;transition:all 0.22s;min-width:140px;min-height:100px;box-shadow:0 2px 10px rgba(0,43,127,0.06)}
-.net-btn:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 6px 20px var(--shadow)}
-.net-btn.active{border-color:var(--blue);background:var(--blue-pale);box-shadow:0 6px 22px var(--shadow)}
-.net-btn-dual{display:flex;flex-direction:column;align-items:center;gap:5px}
-.net-btn-dual img{height:28px;width:auto;object-fit:contain;max-width:90px}
-.logo-divider{width:32px;height:1.5px;background:var(--line);margin:1px 0}
-.net-btn-single img{height:36px;width:auto;object-fit:contain;max-width:90px}
+.net-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.2rem 2rem;border:2.5px solid var(--line);border-radius:18px;background:white;cursor:pointer;transition:all 0.22s;min-width:160px;min-height:110px;box-shadow:0 3px 14px rgba(0,43,127,0.08);position:relative}
+.net-btn:hover{border-color:var(--blue);transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,43,127,0.15)}
+.net-btn.active{border-color:var(--blue);background:linear-gradient(135deg,#f0f4ff 0%,var(--blue-pale) 100%);box-shadow:0 8px 28px rgba(0,43,127,0.18)}
+.net-btn.active::after{content:'✓ Selected';position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);background:var(--blue);color:white;font-size:0.58rem;font-weight:700;font-family:'Poppins',sans-serif;padding:0.15rem 0.6rem;border-radius:20px;white-space:nowrap}
+.net-btn-dual{display:flex;flex-direction:column;align-items:center;gap:6px}
+.net-btn-dual img{height:32px;width:auto;object-fit:contain;max-width:100px}
+.logo-divider{width:36px;height:1.5px;background:var(--line);margin:1px 0}
+.net-btn-single img{height:40px;width:auto;object-fit:contain;max-width:100px}
 .net-panel{display:none}
 .net-panel.active{display:block}
 .activation-badges{display:flex;gap:0.6rem;margin:1.4rem 0 1rem;flex-wrap:wrap}
@@ -154,27 +155,27 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--blue);box-
 .region-tab:hover{border-color:var(--blue);color:var(--blue)}
 .region-tab.active{background:var(--blue);border-color:var(--blue);color:white}
 
-/* COUNTRY GRID — flags prominent */
-.country-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:0.65rem;margin-bottom:1.8rem}
-.country-btn{background:var(--off-white);border:1.5px solid var(--line);border-radius:12px;padding:0.8rem 0.5rem 0.6rem;text-align:center;cursor:pointer;transition:all 0.18s;display:flex;flex-direction:column;align-items:center;gap:0.2rem}
-.country-btn:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 5px 15px var(--shadow);background:white}
-.country-btn.active{border-color:var(--blue);background:var(--blue-pale);box-shadow:0 4px 12px var(--shadow)}
-.country-flag{font-size:1.9rem;display:block;line-height:1}
-.country-name{font-size:0.68rem;font-weight:700;color:var(--blue);font-family:'Poppins',sans-serif;line-height:1.2;text-align:center}
+/* COUNTRY GRID — flag images */
+.country-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:0.65rem;margin-bottom:1.8rem}
+.country-btn{background:white;border:2px solid var(--line);border-radius:14px;padding:0.85rem 0.4rem 0.65rem;text-align:center;cursor:pointer;transition:all 0.2s;display:flex;flex-direction:column;align-items:center;gap:0.35rem;box-shadow:0 2px 8px rgba(0,43,127,0.05)}
+.country-btn:hover{border-color:var(--blue);transform:translateY(-3px);box-shadow:0 8px 20px var(--shadow);background:var(--blue-pale)}
+.country-btn.active{border-color:var(--blue);background:var(--blue-pale);box-shadow:0 6px 18px var(--shadow)}
+.country-flag-img{width:36px;height:27px;border-radius:4px;object-fit:cover;box-shadow:0 1px 4px rgba(0,0,0,0.18);display:block}
+.country-name{font-size:0.66rem;font-weight:700;color:var(--blue);font-family:'Poppins',sans-serif;line-height:1.2;text-align:center;margin-top:0.1rem}
 
-/* GLOBAL PACKAGE CARDS — now show country flags row */
-.global-pkg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:1rem;margin:1rem 0}
-.global-pkg-card{background:var(--off-white);border:1.5px solid var(--line);border-radius:14px;padding:1.2rem 0.8rem 1rem;text-align:center;transition:all 0.2s;cursor:pointer;position:relative}
-.global-pkg-card:hover{border-color:var(--blue);transform:translateY(-3px);box-shadow:0 8px 28px var(--shadow);background:white}
-.global-pkg-card.selected{border-color:var(--blue);background:white;box-shadow:0 8px 28px var(--shadow)}
-.global-pkg-card.popular{border-color:var(--red);background:white}
-.gpkg-flags{display:flex;justify-content:center;gap:2px;flex-wrap:wrap;margin-bottom:0.55rem;min-height:28px;align-items:center}
-.gpkg-flag{font-size:1.15rem;line-height:1}
-.gpkg-flag-more{font-size:0.62rem;color:var(--muted);font-weight:700;font-family:'Poppins',sans-serif;background:var(--blue-pale);border-radius:10px;padding:0.1rem 0.35rem;align-self:center}
-.gpkg-data{font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:800;color:var(--blue);line-height:1}
-.gpkg-validity{font-size:0.68rem;color:var(--muted);background:var(--off-white);border-radius:6px;padding:0.18rem 0.5rem;display:inline-block;margin:0.3rem 0 0.4rem}
-.gpkg-price-usd{font-family:'Poppins',sans-serif;font-size:1.15rem;font-weight:800;color:var(--red)}
-.gpkg-price-zar{font-size:0.72rem;color:var(--muted);margin-bottom:0.65rem}
+/* GLOBAL PACKAGE CARDS — flashy with real flag images */
+.global-pkg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:1.1rem;margin:1rem 0}
+.global-pkg-card{background:white;border:2px solid var(--line);border-radius:16px;padding:1.3rem 0.9rem 1.1rem;text-align:center;transition:all 0.22s;cursor:pointer;position:relative;box-shadow:0 3px 12px rgba(0,43,127,0.07)}
+.global-pkg-card:hover{border-color:var(--blue);transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,43,127,0.15)}
+.global-pkg-card.selected{border-color:var(--blue);background:linear-gradient(135deg,var(--blue-pale) 0%,#f0f4ff 100%);box-shadow:0 10px 30px rgba(0,43,127,0.18)}
+.global-pkg-card.popular{border-color:var(--red);background:linear-gradient(135deg,#fff5f5 0%,#fff0f0 100%)}
+.gpkg-flags{display:flex;justify-content:center;gap:3px;flex-wrap:wrap;margin-bottom:0.65rem;min-height:28px;align-items:center}
+.gpkg-flag-img{width:24px;height:18px;border-radius:3px;object-fit:cover;box-shadow:0 1px 3px rgba(0,0,0,0.2)}
+.gpkg-flag-more{font-size:0.6rem;color:var(--muted);font-weight:700;font-family:'Poppins',sans-serif;background:var(--blue-pale);border-radius:8px;padding:0.12rem 0.4rem;align-self:center;margin-left:2px}
+.gpkg-data{font-family:'Poppins',sans-serif;font-size:1.65rem;font-weight:800;color:var(--blue);line-height:1}
+.gpkg-validity{font-size:0.67rem;color:var(--muted);background:var(--off-white);border-radius:6px;padding:0.18rem 0.55rem;display:inline-block;margin:0.3rem 0 0.45rem;font-family:'Poppins',sans-serif;font-weight:600}
+.gpkg-price-usd{font-family:'Poppins',sans-serif;font-size:1.25rem;font-weight:800;color:var(--red)}
+.gpkg-price-zar{font-size:0.72rem;color:var(--muted);margin-bottom:0.7rem;font-weight:600}
 
 /* CHECKOUT */
 .checkout-section{background:var(--blue);padding:80px 0;position:relative;overflow:hidden;scroll-margin-top:80px}
@@ -508,7 +509,7 @@ footer{background:var(--blue-deep);border-top:3px solid var(--red);padding:4rem 
         </div>
         <div class="contact-detail">
           <span class="cd-icon">📧</span>
-          <div class="cd-info"><small>Email</small><a href="mailto:support@153mobile.co.za">support@153mobile.co.za</a></div>
+          <div class="cd-info"><small>Email</small><a href="/cdn-cgi/l/email-protection#d8abada8a8b7aaac98e9edebb5b7bab1b4bdf6bbb7f6a2b9"><span class="__cf_email__" data-cfemail="b3c0c6c3c3dcc1c7f3828680dedcd1dadfd69dd0dc9dc9d2">[email&#160;protected]</span></a></div>
         </div>
       </div>
 
@@ -589,7 +590,7 @@ footer{background:var(--blue-deep);border-top:3px solid var(--red);padding:4rem 
         <p>Fast, reliable, premium internet for homes and businesses across South Africa. Real support from real people — since 1997.</p>
         <div class="footer-brits">
           <p>💬 <strong style="color:white;">WhatsApp &amp; Support:</strong> <a href="https://wa.me/27839631238" target="_blank">083 963 1238</a><br>Meet Brits — our dedicated support superhero who answers 24/7, 365 days a year.</p>
-          <p>Prefer email? <a href="mailto:support@153mobile.co.za" class="email-link">support@153mobile.co.za</a></p>
+          <p>Prefer email? <a href="/cdn-cgi/l/email-protection#70030500001f0204304145431d1f12191c155e131f5e0a11" class="email-link"><span class="__cf_email__" data-cfemail="1b686e6b6b74696f5b2a2e2876747972777e35787435617a">[email&#160;protected]</span></a></p>
         </div>
       </div>
       <div class="footer-col">
@@ -618,7 +619,7 @@ footer{background:var(--blue-deep);border-top:3px solid var(--red);padding:4rem 
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ═══════════════════════════════════════════════════════════════
    CONSTANTS
 ═══════════════════════════════════════════════════════════════ */
@@ -650,11 +651,19 @@ var SA_TOPUPS = [
    usdNum = raw USD amount for FX conversion
    flags  = up to 6 flags shown inside each package card
 ═══════════════════════════════════════════════════════════════ */
+// Helper: render a flag img tag using flagcdn.com ISO 2-letter codes
+function flagImg(iso, size) {
+  size = size || 24;
+  var h = size === 24 ? 18 : 27;
+  var cls = size === 24 ? 'gpkg-flag-img' : 'country-flag-img';
+  return '<img class="' + cls + '" src="https://flagcdn.com/w40/' + iso.toLowerCase() + '.png" alt="' + iso + '" width="' + size + '" height="' + h + '" loading="lazy">';
+}
+
 var GLOBAL_REGIONS = {
   global: {
     label:'Global (200+ Countries)',
     countries:null,
-    flags:['🇿🇦','🇺🇸','🇬🇧','🇩🇪','🇯🇵','🇦🇺'],
+    isoCodes:['za','us','gb','de','jp','au'],
     packages:[
       {data:'1GB',  usdNum:10, usd:'$10', validity:'7 days',  popular:false},
       {data:'3GB',  usdNum:23, usd:'$23', validity:'15 days', popular:false},
@@ -666,18 +675,18 @@ var GLOBAL_REGIONS = {
   europe: {
     label:'Europe & UK',
     countries:[
-      {flag:'🇩🇪',name:'Germany'},   {flag:'🇫🇷',name:'France'},
-      {flag:'🇮🇹',name:'Italy'},     {flag:'🇪🇸',name:'Spain'},
-      {flag:'🇬🇧',name:'UK'},        {flag:'🇳🇱',name:'Netherlands'},
-      {flag:'🇨🇭',name:'Switzerland'},{flag:'🇦🇹',name:'Austria'},
-      {flag:'🇵🇹',name:'Portugal'},  {flag:'🇧🇪',name:'Belgium'},
-      {flag:'🇩🇰',name:'Denmark'},   {flag:'🇸🇪',name:'Sweden'},
-      {flag:'🇳🇴',name:'Norway'},    {flag:'🇫🇮',name:'Finland'},
-      {flag:'🇵🇱',name:'Poland'},    {flag:'🇨🇿',name:'Czech Rep.'},
-      {flag:'🇭🇺',name:'Hungary'},   {flag:'🇷🇴',name:'Romania'},
-      {flag:'🇬🇷',name:'Greece'},    {flag:'🇭🇷',name:'Croatia'}
+      {iso:'de',name:'Germany'},    {iso:'fr',name:'France'},
+      {iso:'it',name:'Italy'},      {iso:'es',name:'Spain'},
+      {iso:'gb',name:'UK'},         {iso:'nl',name:'Netherlands'},
+      {iso:'ch',name:'Switzerland'},{iso:'at',name:'Austria'},
+      {iso:'pt',name:'Portugal'},   {iso:'be',name:'Belgium'},
+      {iso:'dk',name:'Denmark'},    {iso:'se',name:'Sweden'},
+      {iso:'no',name:'Norway'},     {iso:'fi',name:'Finland'},
+      {iso:'pl',name:'Poland'},     {iso:'cz',name:'Czech Rep.'},
+      {iso:'hu',name:'Hungary'},    {iso:'ro',name:'Romania'},
+      {iso:'gr',name:'Greece'},     {iso:'hr',name:'Croatia'}
     ],
-    flags:['🇩🇪','🇫🇷','🇬🇧','🇮🇹','🇪🇸','🇳🇱'],
+    isoCodes:['de','fr','gb','it','es','nl'],
     packages:[
       {data:'1GB',  usdNum:4,  usd:'$4',  validity:'7 days',  popular:false},
       {data:'3GB',  usdNum:8,  usd:'$8',  validity:'15 days', popular:false},
@@ -689,11 +698,11 @@ var GLOBAL_REGIONS = {
   namerica: {
     label:'North America',
     countries:[
-      {flag:'🇺🇸',name:'USA'},
-      {flag:'🇨🇦',name:'Canada'},
-      {flag:'🇲🇽',name:'Mexico'}
+      {iso:'us',name:'USA'},
+      {iso:'ca',name:'Canada'},
+      {iso:'mx',name:'Mexico'}
     ],
-    flags:['🇺🇸','🇨🇦','🇲🇽'],
+    isoCodes:['us','ca','mx'],
     packages:[
       {data:'1GB',  usdNum:5,  usd:'$5',  validity:'7 days',  popular:false},
       {data:'3GB',  usdNum:10, usd:'$10', validity:'15 days', popular:false},
@@ -705,12 +714,12 @@ var GLOBAL_REGIONS = {
   samerica: {
     label:'South America',
     countries:[
-      {flag:'🇧🇷',name:'Brazil'},   {flag:'🇦🇷',name:'Argentina'},
-      {flag:'🇨🇱',name:'Chile'},    {flag:'🇨🇴',name:'Colombia'},
-      {flag:'🇵🇪',name:'Peru'},     {flag:'🇺🇾',name:'Uruguay'},
-      {flag:'🇧🇴',name:'Bolivia'},  {flag:'🇪🇨',name:'Ecuador'}
+      {iso:'br',name:'Brazil'},    {iso:'ar',name:'Argentina'},
+      {iso:'cl',name:'Chile'},     {iso:'co',name:'Colombia'},
+      {iso:'pe',name:'Peru'},      {iso:'uy',name:'Uruguay'},
+      {iso:'bo',name:'Bolivia'},   {iso:'ec',name:'Ecuador'}
     ],
-    flags:['🇧🇷','🇦🇷','🇨🇱','🇨🇴','🇵🇪','🇺🇾'],
+    isoCodes:['br','ar','cl','co','pe','uy'],
     packages:[
       {data:'1GB',  usdNum:4,  usd:'$4',  validity:'7 days',  popular:false},
       {data:'3GB',  usdNum:9,  usd:'$9',  validity:'15 days', popular:false},
@@ -722,17 +731,17 @@ var GLOBAL_REGIONS = {
   asia: {
     label:'Asia & Middle East',
     countries:[
-      {flag:'🇯🇵',name:'Japan'},      {flag:'🇸🇬',name:'Singapore'},
-      {flag:'🇹🇭',name:'Thailand'},   {flag:'🇦🇪',name:'Dubai/UAE'},
-      {flag:'🇮🇳',name:'India'},      {flag:'🇭🇰',name:'Hong Kong'},
-      {flag:'🇮🇩',name:'Indonesia'},  {flag:'🇻🇳',name:'Vietnam'},
-      {flag:'🇰🇷',name:'South Korea'},{flag:'🇲🇾',name:'Malaysia'},
-      {flag:'🇵🇭',name:'Philippines'},{flag:'🇹🇼',name:'Taiwan'},
-      {flag:'🇶🇦',name:'Qatar'},      {flag:'🇸🇦',name:'Saudi Arabia'},
-      {flag:'🇮🇱',name:'Israel'},     {flag:'🇯🇴',name:'Jordan'},
-      {flag:'🇰🇼',name:'Kuwait'},     {flag:'🇧🇩',name:'Bangladesh'}
+      {iso:'jp',name:'Japan'},      {iso:'sg',name:'Singapore'},
+      {iso:'th',name:'Thailand'},   {iso:'ae',name:'Dubai/UAE'},
+      {iso:'in',name:'India'},      {iso:'hk',name:'Hong Kong'},
+      {iso:'id',name:'Indonesia'},  {iso:'vn',name:'Vietnam'},
+      {iso:'kr',name:'South Korea'},{iso:'my',name:'Malaysia'},
+      {iso:'ph',name:'Philippines'},{iso:'tw',name:'Taiwan'},
+      {iso:'qa',name:'Qatar'},      {iso:'sa',name:'Saudi Arabia'},
+      {iso:'il',name:'Israel'},     {iso:'jo',name:'Jordan'},
+      {iso:'kw',name:'Kuwait'},     {iso:'bd',name:'Bangladesh'}
     ],
-    flags:['🇯🇵','🇸🇬','🇦🇪','🇮🇳','🇹🇭','🇰🇷'],
+    isoCodes:['jp','sg','ae','in','th','kr'],
     packages:[
       {data:'1GB',  usdNum:4,  usd:'$4',  validity:'7 days',  popular:false},
       {data:'3GB',  usdNum:9,  usd:'$9',  validity:'15 days', popular:false},
@@ -744,15 +753,15 @@ var GLOBAL_REGIONS = {
   africa: {
     label:'Africa',
     countries:[
-      {flag:'🇿🇦',name:'South Africa'},{flag:'🇰🇪',name:'Kenya'},
-      {flag:'🇹🇿',name:'Tanzania'},   {flag:'🇳🇬',name:'Nigeria'},
-      {flag:'🇬🇭',name:'Ghana'},      {flag:'🇪🇬',name:'Egypt'},
-      {flag:'🇲🇦',name:'Morocco'},    {flag:'🇲🇺',name:'Mauritius'},
-      {flag:'🇿🇲',name:'Zambia'},     {flag:'🇲🇿',name:'Mozambique'},
-      {flag:'🇳🇦',name:'Namibia'},    {flag:'🇿🇼',name:'Zimbabwe'},
-      {flag:'🇧🇼',name:'Botswana'},   {flag:'🇺🇬',name:'Uganda'}
+      {iso:'za',name:'South Africa'},{iso:'ke',name:'Kenya'},
+      {iso:'tz',name:'Tanzania'},   {iso:'ng',name:'Nigeria'},
+      {iso:'gh',name:'Ghana'},      {iso:'eg',name:'Egypt'},
+      {iso:'ma',name:'Morocco'},    {iso:'mu',name:'Mauritius'},
+      {iso:'zm',name:'Zambia'},     {iso:'mz',name:'Mozambique'},
+      {iso:'na',name:'Namibia'},    {iso:'zw',name:'Zimbabwe'},
+      {iso:'bw',name:'Botswana'},   {iso:'ug',name:'Uganda'}
     ],
-    flags:['🇿🇦','🇰🇪','🇳🇬','🇬🇭','🇪🇬','🇲🇦'],
+    isoCodes:['za','ke','ng','gh','eg','ma'],
     packages:[
       {data:'1GB',  usdNum:4,  usd:'$4',  validity:'7 days',  popular:false},
       {data:'3GB',  usdNum:8,  usd:'$8',  validity:'15 days', popular:false},
@@ -764,10 +773,10 @@ var GLOBAL_REGIONS = {
   oceania: {
     label:'Oceania',
     countries:[
-      {flag:'🇦🇺',name:'Australia'}, {flag:'🇳🇿',name:'New Zealand'},
-      {flag:'🇫🇯',name:'Fiji'},      {flag:'🇵🇬',name:'Papua NG'}
+      {iso:'au',name:'Australia'}, {iso:'nz',name:'New Zealand'},
+      {iso:'fj',name:'Fiji'},      {iso:'pg',name:'Papua NG'}
     ],
-    flags:['🇦🇺','🇳🇿','🇫🇯','🇵🇬'],
+    isoCodes:['au','nz','fj','pg'],
     packages:[
       {data:'1GB',  usdNum:5,  usd:'$5',  validity:'7 days',  popular:false},
       {data:'3GB',  usdNum:10, usd:'$10', validity:'15 days', popular:false},
@@ -961,7 +970,7 @@ function switchRegion(region, btn) {
     var ch = '';
     rd.countries.forEach(function(c){
       ch += '<div class="country-btn" onclick="selectCountry(this,\'' + c.name.replace(/'/g,"\\'") + '\')">';
-      ch += '<span class="country-flag">' + c.flag + '</span>';
+      ch += flagImg(c.iso, 36);
       ch += '<span class="country-name">' + c.name + '</span></div>';
     });
     cg.innerHTML = ch;
@@ -982,17 +991,17 @@ function selectCountry(el, name) {
    RENDER GLOBAL PACKAGES — with flags in each card
 ═══════════════════════════════════════════════════════════════ */
 function renderGlobalPkgs(label, regionData) {
-  var pkgs  = regionData.packages;
-  var flags = regionData.flags || [];
-  var grid  = document.getElementById('globalPkgGrid');
-  var html  = '';
+  var pkgs     = regionData.packages;
+  var isoCodes = regionData.isoCodes || [];
+  var grid     = document.getElementById('globalPkgGrid');
+  var html     = '';
 
-  // Build flag row HTML (max 6 flags + "+more" if needed)
+  // Build flag row HTML using real flag images (max 6 + "+more")
   var maxFlags = 6;
+  var showCodes = isoCodes.slice(0, maxFlags);
   var flagHtml = '<div class="gpkg-flags">';
-  var showFlags = flags.slice(0, maxFlags);
-  showFlags.forEach(function(f){ flagHtml += '<span class="gpkg-flag">' + f + '</span>'; });
-  if (flags.length > maxFlags) flagHtml += '<span class="gpkg-flag-more">+' + (flags.length - maxFlags) + '</span>';
+  showCodes.forEach(function(iso){ flagHtml += flagImg(iso, 24); });
+  if (isoCodes.length > maxFlags) flagHtml += '<span class="gpkg-flag-more">+' + (isoCodes.length - maxFlags) + '</span>';
   flagHtml += '</div>';
 
   for (var i = 0; i < pkgs.length; i++) {
@@ -1271,14 +1280,4 @@ function toggleNav() {
   document.getElementById('mobileNav').classList.toggle('open');
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   INIT
-═══════════════════════════════════════════════════════════════ */
-window.onload = function() {
-  renderSAPackages();
-  switchRegion('global', document.querySelector('#panel-global .region-tab'));
-  loadFxRate();
-};
-</script>
-</body>
-</html>
+/* ═════════════════════════════════════════════════════════�
