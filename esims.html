@@ -7,342 +7,296 @@
   <meta name="description" content="Global eSIMs for any network, any time. South African & international data packages. Instant activation. No roaming shock.">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://js.paystack.co/v1/inline.js"></script>
 <style>
-/* ═══════════════════════════════════════
-   DESIGN TOKENS — identical to fibre.html
-═══════════════════════════════════════ */
 :root {
-  --blue:       #002B7F;
-  --blue-deep:  #001a5c;
-  --blue-mid:   #003399;
-  --blue-pale:  #e6ecf8;
-  --red:        #EF1A2D;
-  --red-dark:   #c5101e;
-  --white:      #ffffff;
-  --off-white:  #f4f6fb;
-  --muted:      #5a6e9a;
-  --line:       #dde5f5;
-  --green:      #00c853;
-  --shadow:     rgba(0,43,127,0.12);
+  --blue:#002B7F; --blue-deep:#001a5c; --blue-mid:#003399;
+  --blue-pale:#e6ecf8; --red:#EF1A2D; --red-dark:#c5101e;
+  --white:#ffffff; --off-white:#f4f6fb; --muted:#5a6e9a;
+  --line:#dde5f5; --green:#00c853; --shadow:rgba(0,43,127,0.12);
 }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Mulish',system-ui,-apple-system,sans-serif;font-weight:400;background:var(--white);color:var(--blue);overflow-x:hidden;line-height:1.6}
+h1,h2,h3,h4,h5,h6{font-family:'Poppins',sans-serif;font-weight:700;line-height:1.15;letter-spacing:-0.3px}
+button,.btn,a.btn,.nav-cta{font-family:'Poppins',sans-serif;font-weight:600}
+.container{max-width:1200px;margin:0 auto;padding:0 2rem;width:100%}
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body { font-family: 'Mulish', system-ui, -apple-system, sans-serif; font-weight: 400; background: var(--white); color: var(--blue); overflow-x: hidden; line-height: 1.6; }
-h1,h2,h3,h4,h5,h6 { font-family: 'Poppins', sans-serif; font-weight: 700; line-height: 1.15; letter-spacing: -0.3px; }
-button, .btn, a.btn, .nav-cta { font-family: 'Poppins', sans-serif; font-weight: 600; }
-.container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; width: 100%; }
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--blue);box-shadow:0 2px 24px rgba(0,0,0,0.22)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:66px;padding:0 2.5rem;max-width:1400px;margin:0 auto}
+.nav-logo img{height:38px;width:auto;display:block}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:rgba(255,255,255,0.65);text-decoration:none;font-size:0.88rem;font-weight:600;font-family:'Poppins',sans-serif;transition:color 0.2s}
+.nav-links a:hover,.nav-links a.active{color:white}
+.nav-right{display:flex;align-items:center;gap:1.2rem}
+.nav-wa{display:flex;align-items:center;gap:0.4rem;color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.8rem;font-weight:600;transition:color 0.2s}
+.nav-wa:hover{color:white}
+.nav-wa svg{width:15px;height:15px;fill:#25D366;flex-shrink:0}
+.nav-cta{background:var(--red);color:white;padding:0.5rem 1.4rem;border-radius:5px;font-weight:700;font-size:0.85rem;text-decoration:none;transition:background 0.2s,transform 0.15s;white-space:nowrap}
+.nav-cta:hover{background:var(--red-dark);transform:translateY(-1px)}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:24px;height:2px;background:white;border-radius:2px;transition:all 0.3s}
+.mobile-nav{display:none;background:var(--blue-deep);padding:1.5rem 2rem;border-top:1px solid rgba(255,255,255,0.08)}
+.mobile-nav.open{display:block}
+.mobile-nav a{display:block;color:rgba(255,255,255,0.75);text-decoration:none;font-family:'Poppins',sans-serif;font-weight:600;font-size:0.95rem;padding:0.75rem 0;border-bottom:1px solid rgba(255,255,255,0.07)}
+.mobile-nav a:last-child{border-bottom:none}
+.mobile-nav a:hover{color:white}
 
-/* ═══════════════════════════════════════
-   NAV — copied exactly from fibre.html
-═══════════════════════════════════════ */
-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: var(--blue); box-shadow: 0 2px 24px rgba(0,0,0,0.22); }
-.nav-inner { display: flex; align-items: center; justify-content: space-between; height: 66px; padding: 0 2.5rem; max-width: 1400px; margin: 0 auto; }
-.nav-logo img { height: 38px; width: auto; display: block; }
-.nav-links { display: flex; gap: 2rem; list-style: none; }
-.nav-links a { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 0.88rem; font-weight: 600; font-family: 'Poppins', sans-serif; transition: color 0.2s; }
-.nav-links a:hover, .nav-links a.active { color: white; }
-.nav-right { display: flex; align-items: center; gap: 1.2rem; }
-.nav-wa { display: flex; align-items: center; gap: 0.4rem; color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.8rem; font-weight: 600; transition: color 0.2s; }
-.nav-wa:hover { color: white; }
-.nav-wa svg { width: 15px; height: 15px; fill: #25D366; flex-shrink: 0; }
-.nav-cta { background: var(--red); color: white; padding: 0.5rem 1.4rem; border-radius: 5px; font-weight: 700; font-size: 0.85rem; text-decoration: none; transition: background 0.2s, transform 0.15s; white-space: nowrap; }
-.nav-cta:hover { background: var(--red-dark); transform: translateY(-1px); }
-.hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
-.hamburger span { display: block; width: 24px; height: 2px; background: white; border-radius: 2px; transition: all 0.3s; }
-.mobile-nav { display: none; background: var(--blue-deep); padding: 1.5rem 2rem; border-top: 1px solid rgba(255,255,255,0.08); }
-.mobile-nav.open { display: block; }
-.mobile-nav a { display: block; color: rgba(255,255,255,0.75); text-decoration: none; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.95rem; padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
-.mobile-nav a:last-child { border-bottom: none; }
-.mobile-nav a:hover { color: white; }
+/* HERO */
+.esim-hero{background:linear-gradient(135deg,var(--blue-deep) 0%,var(--blue) 55%,#1a3d8f 100%);padding:140px 0 80px;text-align:center;position:relative;overflow:hidden}
+.esim-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 110%,rgba(239,26,45,0.10) 0%,transparent 70%);pointer-events:none}
+.section-tag{font-family:'Poppins',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:0.6rem}
+.esim-hero h1{font-family:'Poppins',sans-serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:800;color:white;margin:0 0 1rem;line-height:1.15}
+.esim-hero h1 span{color:var(--red)}
+.esim-hero>.container>p{font-size:1.1rem;color:rgba(255,255,255,0.78);max-width:580px;margin:0 auto 2.2rem;line-height:1.65}
+.hero-badges{display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;margin-bottom:2.2rem}
+.hero-badge{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:30px;padding:0.45rem 1.1rem;color:white;font-size:0.82rem;font-weight:700;font-family:'Poppins',sans-serif;letter-spacing:0.03em}
+.hero-badge.red{background:rgba(239,26,45,0.2);border-color:rgba(239,26,45,0.4)}
+.btn-red{background:var(--red);color:white;padding:0.9rem 2rem;border-radius:6px;font-weight:700;font-size:0.92rem;text-decoration:none;transition:background 0.2s,transform 0.15s;display:inline-block;min-height:44px;border:none;cursor:pointer;font-family:'Poppins',sans-serif}
+.btn-red:hover{background:var(--red-dark);transform:translateY(-2px)}
+.btn-outline-white{background:transparent;color:rgba(255,255,255,0.8);border:2px solid rgba(255,255,255,0.4);padding:0.9rem 2rem;border-radius:6px;font-weight:600;font-size:0.92rem;text-decoration:none;transition:border-color 0.2s,color 0.2s;display:inline-flex;align-items:center;gap:0.4rem;min-height:44px}
+.btn-outline-white:hover{border-color:white;color:white}
 
-/* ═══════════════════════════════════════
-   HERO — matches fibre-hero exactly
-═══════════════════════════════════════ */
-.esim-hero {
-  background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue) 55%, #1a3d8f 100%);
-  padding: 140px 0 80px;
-  text-align: center;
-  position: relative; overflow: hidden;
+/* WHY STRIP */
+.why-strip{background:white;border-bottom:1px solid var(--line);padding:2.2rem 0}
+.why-strip-inner{max-width:1200px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem}
+.why-item{text-align:center}
+.why-icon{font-size:1.8rem;margin-bottom:0.5rem}
+.why-item strong{display:block;font-size:0.9rem;font-weight:700;color:var(--blue);margin-bottom:0.2rem;font-family:'Poppins',sans-serif}
+.why-item span{font-size:0.78rem;color:var(--muted);line-height:1.4}
+
+/* HOW IT WORKS */
+.how-section{background:var(--off-white);padding:70px 0;border-bottom:1px solid var(--line)}
+.section-title{font-family:'Poppins',sans-serif;font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:800;color:var(--blue);margin:0 0 0.6rem;line-height:1.2}
+.section-sub{font-size:1rem;color:var(--muted);max-width:560px;line-height:1.6;margin-bottom:2.5rem}
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:2.8rem;position:relative}
+.how-grid::before{content:'';position:absolute;top:1.8rem;left:calc(12.5% + 0.75rem);right:calc(12.5% + 0.75rem);height:2px;background:repeating-linear-gradient(90deg,var(--red) 0,var(--red) 8px,transparent 8px,transparent 16px);z-index:0}
+.how-card{background:white;border-radius:14px;border:1.5px solid var(--line);padding:1.8rem 1.3rem;text-align:center;position:relative;z-index:1;transition:transform 0.2s,box-shadow 0.2s}
+.how-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px var(--shadow)}
+.how-num{width:38px;height:38px;background:var(--blue);color:white;border-radius:50%;font-size:0.95rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 0.9rem;font-family:'Poppins',sans-serif}
+.how-card.hl .how-num{background:var(--red)}
+.how-card h4{font-size:0.9rem;color:var(--blue);margin-bottom:0.4rem}
+.how-card p{font-size:0.79rem;color:var(--muted);line-height:1.6}
+.how-time{display:inline-block;margin-top:0.7rem;background:var(--blue-pale);color:var(--blue);border-radius:50px;padding:0.2rem 0.75rem;font-size:0.68rem;font-weight:700;font-family:'Poppins',sans-serif}
+.how-card.hl .how-time{background:rgba(239,26,45,0.1);color:var(--red)}
+
+/* PACKAGES */
+.packages-section{background:white;padding:80px 0}
+.main-toggle{display:flex;gap:0.5rem;background:var(--off-white);border:1.5px solid var(--line);border-radius:14px;padding:0.4rem;max-width:340px;margin:0 auto 3rem}
+.main-tab{flex:1;padding:0.75rem 1rem;border:none;border-radius:10px;font-family:'Poppins',sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all 0.22s;background:transparent;color:var(--muted)}
+.main-tab.active{background:var(--blue);color:white;box-shadow:0 4px 14px rgba(0,43,127,0.22)}
+.network-selector{display:flex;gap:1.2rem;justify-content:center;margin-bottom:2.5rem;flex-wrap:wrap}
+.net-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1rem 1.8rem;border:2.5px solid var(--line);border-radius:16px;background:white;cursor:pointer;transition:all 0.22s;min-width:140px;min-height:100px;box-shadow:0 2px 10px rgba(0,43,127,0.06)}
+.net-btn:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 6px 20px var(--shadow)}
+.net-btn.active{border-color:var(--blue);background:var(--blue-pale);box-shadow:0 6px 22px var(--shadow)}
+.net-btn-dual{display:flex;flex-direction:column;align-items:center;gap:5px}
+.net-btn-dual img{height:28px;width:auto;object-fit:contain;max-width:90px}
+.logo-divider{width:32px;height:1.5px;background:var(--line);margin:1px 0}
+.net-btn-single img{height:36px;width:auto;object-fit:contain;max-width:90px}
+.net-panel{display:none}
+.net-panel.active{display:block}
+.activation-badges{display:flex;gap:0.6rem;margin:1.4rem 0 1rem;flex-wrap:wrap}
+.act-badge{display:inline-flex;align-items:center;gap:0.35rem;border-radius:50px;padding:0.3rem 0.8rem;font-size:0.72rem;font-weight:700;font-family:'Poppins',sans-serif;border:1.5px solid}
+.act-badge.fast{background:#f0faf4;color:#007a30;border-color:#b2e0c0}
+.act-badge.fast::before{content:'✓'}
+.act-badge.info{background:var(--blue-pale);color:var(--blue);border-color:#c0d0ee}
+
+/* SA PACKAGE CARDS */
+.pkg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:1rem;margin-bottom:2rem}
+.pkg-card{background:var(--off-white);border:1.5px solid var(--line);border-radius:14px;padding:1.4rem 0.8rem 1.1rem;text-align:center;transition:all 0.2s;cursor:pointer;position:relative}
+.pkg-card:hover{border-color:var(--blue);transform:translateY(-3px);box-shadow:0 8px 28px var(--shadow)}
+.pkg-card.selected{border-color:var(--blue);background:white;box-shadow:0 8px 28px var(--shadow)}
+.pkg-card.popular{border-color:var(--red);background:white}
+.popular-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--red);color:white;font-family:'Poppins',sans-serif;font-size:0.62rem;font-weight:700;padding:0.2rem 0.7rem;border-radius:20px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
+.pkg-gb{font-family:'Poppins',sans-serif;font-size:1.6rem;font-weight:800;color:var(--blue);line-height:1}
+.pkg-label{font-size:0.68rem;color:var(--muted);margin-top:0.15rem;margin-bottom:0.6rem}
+.pkg-price{font-family:'Poppins',sans-serif;font-size:1.15rem;font-weight:800;color:var(--red)}
+.pkg-pm{font-size:0.68rem;color:var(--muted);margin-bottom:0.7rem}
+.pkg-select-btn{display:block;width:100%;padding:0.5rem;background:var(--blue);color:white;border:none;border-radius:8px;font-family:'Poppins',sans-serif;font-size:0.78rem;font-weight:700;cursor:pointer;transition:background 0.18s}
+.pkg-select-btn:hover,.pkg-card.selected .pkg-select-btn{background:var(--red)}
+
+/* TOP-UP BAR */
+.topup-bar{background:var(--off-white);border:1.5px solid var(--line);border-radius:14px;padding:1.4rem 1.6rem;margin-top:0.5rem}
+.topup-bar h4{font-size:0.88rem;color:var(--blue);margin-bottom:1rem;font-family:'Poppins',sans-serif}
+.topup-grid{display:flex;gap:0.75rem;flex-wrap:wrap}
+.topup-chip{display:flex;align-items:center;gap:0.6rem;background:white;border:2px solid var(--line);border-radius:10px;padding:0.6rem 1.1rem;cursor:pointer;transition:all 0.18s}
+.topup-chip:hover{border-color:var(--blue);box-shadow:0 3px 10px var(--shadow)}
+.topup-chip.selected{border-color:var(--blue);background:var(--blue-pale)}
+.topup-gb{font-family:'Poppins',sans-serif;font-weight:800;font-size:0.92rem;color:var(--blue)}
+.topup-price{font-family:'Poppins',sans-serif;font-weight:700;font-size:0.92rem;color:var(--red)}
+.topup-tag{font-size:0.68rem;color:var(--muted)}
+
+/* VODACOM NOTICE */
+.vodacom-notice{background:linear-gradient(135deg,#fff8e1 0%,#fff3cd 100%);border:2px solid #f0c040;border-radius:16px;padding:2rem 2.2rem;max-width:720px;margin:0 auto;text-align:center}
+.vodacom-notice .notice-icon{font-size:2.8rem;margin-bottom:0.8rem}
+.vodacom-notice h3{font-size:1.15rem;color:#7a5200;margin-bottom:0.6rem}
+.vodacom-notice p{font-size:0.88rem;color:#8a6200;line-height:1.7;margin-bottom:0.4rem}
+.vodacom-notice .highlight{font-weight:700;color:#c17f00}
+.timing-row{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin:1.2rem 0}
+.timing-chip{display:flex;align-items:center;gap:0.4rem;background:white;border-radius:50px;padding:0.4rem 1rem;font-size:0.78rem;font-weight:700;font-family:'Poppins',sans-serif;border:1.5px solid #e5c060}
+.timing-chip.fast{color:#007a30;border-color:#b2e0c0;background:#f0faf4}
+.timing-chip.slow{color:#c17f00;border-color:#f0c040}
+.voda-form{background:white;border-radius:12px;border:1.5px solid #e5c060;padding:1.6rem;text-align:left;margin-top:1.4rem}
+.voda-form h4{font-size:0.92rem;color:var(--blue);margin-bottom:1rem}
+.voda-form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-bottom:0.6rem}
+.voda-form-group{display:flex;flex-direction:column;gap:0.3rem;margin-bottom:0.6rem}
+.voda-form-group label{font-size:0.7rem;font-weight:700;color:var(--blue);font-family:'Poppins',sans-serif;text-transform:uppercase;letter-spacing:0.5px}
+.voda-form-group input,.voda-form-group select{padding:0.72rem 0.9rem;border:2px solid var(--line);border-radius:8px;font-family:'Mulish',sans-serif;font-size:0.86rem;color:var(--blue);background:var(--off-white);outline:none;transition:border-color 0.2s;width:100%}
+.voda-form-group input:focus,.voda-form-group select:focus{border-color:var(--blue);background:white}
+.voda-submit{width:100%;padding:0.85rem;background:var(--blue);color:white;border:none;border-radius:8px;font-family:'Poppins',sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;transition:background 0.2s;margin-top:0.4rem}
+.voda-submit:hover{background:var(--red)}
+.voda-success{display:none;text-align:center;padding:1.5rem}
+
+/* GLOBAL REGIONS */
+.region-nav{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;justify-content:center}
+.region-tab{padding:0.5rem 1.2rem;border:2px solid var(--line);border-radius:30px;background:white;color:var(--muted);font-family:'Poppins',sans-serif;font-weight:600;font-size:0.82rem;cursor:pointer;transition:all 0.18s}
+.region-tab:hover{border-color:var(--blue);color:var(--blue)}
+.region-tab.active{background:var(--blue);border-color:var(--blue);color:white}
+
+/* COUNTRY GRID — flags prominent */
+.country-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:0.65rem;margin-bottom:1.8rem}
+.country-btn{background:var(--off-white);border:1.5px solid var(--line);border-radius:12px;padding:0.8rem 0.5rem 0.6rem;text-align:center;cursor:pointer;transition:all 0.18s;display:flex;flex-direction:column;align-items:center;gap:0.2rem}
+.country-btn:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 5px 15px var(--shadow);background:white}
+.country-btn.active{border-color:var(--blue);background:var(--blue-pale);box-shadow:0 4px 12px var(--shadow)}
+.country-flag{font-size:1.9rem;display:block;line-height:1}
+.country-name{font-size:0.68rem;font-weight:700;color:var(--blue);font-family:'Poppins',sans-serif;line-height:1.2;text-align:center}
+
+/* GLOBAL PACKAGE CARDS — now show country flags row */
+.global-pkg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:1rem;margin:1rem 0}
+.global-pkg-card{background:var(--off-white);border:1.5px solid var(--line);border-radius:14px;padding:1.2rem 0.8rem 1rem;text-align:center;transition:all 0.2s;cursor:pointer;position:relative}
+.global-pkg-card:hover{border-color:var(--blue);transform:translateY(-3px);box-shadow:0 8px 28px var(--shadow);background:white}
+.global-pkg-card.selected{border-color:var(--blue);background:white;box-shadow:0 8px 28px var(--shadow)}
+.global-pkg-card.popular{border-color:var(--red);background:white}
+.gpkg-flags{display:flex;justify-content:center;gap:2px;flex-wrap:wrap;margin-bottom:0.55rem;min-height:28px;align-items:center}
+.gpkg-flag{font-size:1.15rem;line-height:1}
+.gpkg-flag-more{font-size:0.62rem;color:var(--muted);font-weight:700;font-family:'Poppins',sans-serif;background:var(--blue-pale);border-radius:10px;padding:0.1rem 0.35rem;align-self:center}
+.gpkg-data{font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:800;color:var(--blue);line-height:1}
+.gpkg-validity{font-size:0.68rem;color:var(--muted);background:var(--off-white);border-radius:6px;padding:0.18rem 0.5rem;display:inline-block;margin:0.3rem 0 0.4rem}
+.gpkg-price-usd{font-family:'Poppins',sans-serif;font-size:1.15rem;font-weight:800;color:var(--red)}
+.gpkg-price-zar{font-size:0.72rem;color:var(--muted);margin-bottom:0.65rem}
+
+/* CHECKOUT */
+.checkout-section{background:var(--blue);padding:80px 0;position:relative;overflow:hidden;scroll-margin-top:80px}
+.checkout-section::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 55% 80% at 100% 50%,rgba(239,26,45,0.1) 0%,transparent 60%)}
+.checkout-section::after{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--red)}
+.checkout-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:4rem;align-items:start;position:relative;z-index:2}
+.checkout-left h2{color:white;font-size:clamp(1.5rem,3vw,2rem);margin-bottom:0.8rem}
+.checkout-left p{color:rgba(200,215,255,0.65);font-size:0.92rem;line-height:1.75;margin-bottom:1.6rem}
+.order-summary{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:1.3rem 1.5rem;margin-bottom:1.4rem}
+.order-summary h4{color:white;font-size:0.82rem;margin-bottom:0.8rem;font-family:'Poppins',sans-serif;letter-spacing:1px;text-transform:uppercase}
+.order-line{display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.08);font-size:0.84rem;color:rgba(200,215,255,0.65)}
+.order-line:last-child{border-bottom:none}
+.order-line strong{color:white}
+.order-line.hidden{display:none}
+.order-total{display:flex;justify-content:space-between;padding-top:0.8rem;margin-top:0.4rem;border-top:2px solid rgba(255,255,255,0.15)}
+.order-total span{color:rgba(200,215,255,0.75);font-size:0.86rem;font-weight:700;font-family:'Poppins',sans-serif}
+.order-total strong{color:#25D366;font-size:1.2rem;font-family:'Poppins',sans-serif}
+.contact-detail{display:flex;align-items:center;gap:1rem;padding:0.85rem 1rem;margin-bottom:0.6rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px}
+.cd-icon{font-size:1rem;flex-shrink:0}
+.cd-info small{display:block;font-size:0.67rem;color:rgba(200,215,255,0.45);font-weight:700;letter-spacing:0.5px;text-transform:uppercase;font-family:'Poppins',sans-serif}
+.cd-info a{font-size:0.88rem;font-weight:700;color:white;text-decoration:none}
+
+/* PLAN TYPE TOGGLE */
+.plan-type-toggle{display:flex;gap:0;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;overflow:hidden;margin-bottom:1rem}
+.plan-type-btn{flex:1;padding:0.65rem 0.5rem;border:none;background:transparent;color:rgba(200,215,255,0.65);font-family:'Poppins',sans-serif;font-weight:700;font-size:0.8rem;cursor:pointer;transition:all 0.2s;text-align:center}
+.plan-type-btn.active{background:rgba(255,255,255,0.15);color:white}
+
+/* CHECKOUT FORM */
+.checkout-form-wrap{background:white;border-radius:18px;padding:2.4rem;box-shadow:0 24px 64px rgba(0,0,0,0.28)}
+.checkout-form-wrap h3{font-size:1.1rem;color:var(--blue);margin-bottom:0.3rem}
+.checkout-form-wrap>p{font-size:0.8rem;color:var(--muted);margin-bottom:1.8rem}
+.form-section-title{font-size:0.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-family:'Poppins',sans-serif;margin:1.4rem 0 0.8rem;padding-bottom:0.5rem;border-bottom:1px solid var(--line)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem}
+.form-group{display:flex;flex-direction:column;gap:0.3rem;margin-bottom:0.65rem}
+.form-group label{font-size:0.7rem;font-weight:700;color:var(--blue);font-family:'Poppins',sans-serif}
+.form-input{width:100%;padding:0.78rem 1rem;border:2px solid var(--line);border-radius:8px;font-family:'Mulish',sans-serif;font-size:0.88rem;color:var(--blue);outline:none;background:var(--off-white);transition:border-color 0.2s,box-shadow 0.2s;min-height:44px}
+.form-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,43,127,0.09);background:white}
+.form-input::placeholder{color:#aab}
+.file-upload-box{border:2px dashed var(--line);border-radius:10px;padding:1.2rem;text-align:center;cursor:pointer;transition:border-color 0.2s,background 0.2s;background:var(--off-white);position:relative}
+.file-upload-box:hover{border-color:var(--blue);background:#eef2fc}
+.file-upload-box input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.file-upload-box .upload-icon{font-size:1.5rem;margin-bottom:0.3rem}
+.file-upload-box p{font-size:0.78rem;color:var(--muted);margin:0}
+.file-upload-box strong{color:var(--blue);font-size:0.82rem}
+.file-name-display{font-size:0.75rem;color:var(--green);font-weight:700;margin-top:0.3rem;display:none}
+.biz-toggle-row{display:flex;align-items:center;gap:0.75rem;background:var(--off-white);border:1.5px solid var(--line);border-radius:10px;padding:0.85rem 1rem;cursor:pointer;margin-bottom:0.6rem;transition:border-color 0.2s;user-select:none}
+.biz-toggle-row:hover{border-color:var(--blue)}
+.biz-toggle-row.checked{border-color:var(--blue);background:var(--blue-pale)}
+.biz-checkbox-custom{width:20px;height:20px;min-width:20px;border:2px solid #c0cce8;border-radius:5px;display:flex;align-items:center;justify-content:center;background:white;font-size:0.75rem;font-weight:700;color:transparent;transition:all 0.18s}
+.biz-toggle-row.checked .biz-checkbox-custom{background:var(--blue);border-color:var(--blue);color:white}
+.biz-toggle-label{font-size:0.84rem;color:var(--blue);font-weight:600;font-family:'Poppins',sans-serif}
+.biz-toggle-sub{font-size:0.72rem;color:var(--muted)}
+.biz-fields{display:none;background:var(--off-white);border:1.5px solid var(--line);border-radius:10px;padding:1.2rem;margin-bottom:0.8rem}
+.biz-fields.show{display:block}
+.terms-row{display:flex;align-items:flex-start;gap:0.65rem;margin:0.5rem 0 1.2rem}
+.terms-row input{margin-top:0.2rem;accent-color:var(--blue)}
+.terms-row label{font-size:0.78rem;color:var(--muted);line-height:1.5}
+.terms-row a{color:var(--blue);font-weight:700}
+.pay-btn{width:100%;background:var(--red);color:white;border:none;border-radius:10px;padding:1.05rem;font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;transition:background 0.2s,transform 0.15s;display:flex;align-items:center;justify-content:center;gap:0.6rem;min-height:52px}
+.pay-btn:hover{background:var(--red-dark);transform:translateY(-2px)}
+.pay-btn:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+.form-note{font-size:0.72rem;color:var(--muted);text-align:center;margin-top:0.7rem;line-height:1.5}
+.form-note a{color:var(--blue);font-weight:700}
+.checkout-success{display:none;text-align:center;padding:3rem 1rem}
+.checkout-success .s-icon{font-size:3.5rem;margin-bottom:1rem}
+.activation-notice{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:1rem 1.2rem;margin-bottom:1rem;font-size:0.82rem;color:rgba(200,215,255,0.8);line-height:1.6}
+.activation-notice strong{color:white}
+
+/* FOOTER */
+footer{background:var(--blue-deep);border-top:3px solid var(--red);padding:4rem 0 0;color:rgba(255,255,255,0.6)}
+.footer-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+.footer-brand .footer-logo{margin-bottom:1.2rem}
+.footer-logo img{height:40px;width:auto;filter:brightness(0) invert(1) opacity(0.75)}
+.footer-brand p{font-size:0.83rem;line-height:1.75;margin-bottom:1.2rem}
+.footer-brits{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:1.1rem;margin-bottom:1rem}
+.footer-brits p{font-size:0.78rem;line-height:1.65;margin-bottom:0.6rem;color:rgba(255,255,255,0.55)}
+.footer-brits a{color:#25D366;font-weight:700;text-decoration:none}
+.footer-brits a:hover{text-decoration:underline}
+.footer-brits .email-link{color:rgba(200,215,255,0.7)}
+.footer-col h4{font-family:'Poppins',sans-serif;font-size:0.78rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:white;margin-bottom:1.2rem}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:0.7rem}
+.footer-col ul li a{color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.84rem;font-weight:500;transition:color 0.2s;display:flex;align-items:center;gap:0.4rem}
+.footer-col ul li a:hover{color:white}
+.footer-col ul li a::before{content:'›';color:var(--red);font-weight:700}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding:1.5rem 0;display:flex;align-items:center;justify-content:space-between;font-size:0.78rem;color:rgba(255,255,255,0.28);flex-wrap:wrap;gap:1rem}
+.footer-bottom a{color:rgba(255,255,255,0.35);text-decoration:none}
+.footer-bottom a:hover{color:white}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .nav-links,.nav-right{display:none}
+  .hamburger{display:flex}
+  .checkout-grid{grid-template-columns:1fr;gap:2.5rem}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .footer-brand{grid-column:1 / -1}
+  .how-grid{grid-template-columns:1fr 1fr}
+  .how-grid::before{display:none}
+  .why-strip-inner{grid-template-columns:1fr 1fr}
 }
-.esim-hero::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(ellipse 80% 60% at 50% 110%, rgba(239,26,45,0.10) 0%, transparent 70%);
-  pointer-events: none;
+@media(max-width:700px){
+  .esim-hero{padding:110px 0 60px}
+  .esim-hero h1{font-size:1.9rem}
+  .pkg-grid,.global-pkg-grid{grid-template-columns:repeat(2,1fr)}
+  .form-row,.voda-form-row{grid-template-columns:1fr}
+  .checkout-form-wrap{padding:1.6rem}
+  .net-btn{min-width:110px;padding:0.8rem 1rem}
+  .country-grid{grid-template-columns:repeat(auto-fill,minmax(82px,1fr))}
 }
-.section-tag {
-  font-family: 'Poppins', sans-serif; font-size: 0.72rem; font-weight: 700;
-  letter-spacing: 2px; text-transform: uppercase; color: var(--red); margin-bottom: 0.6rem;
-}
-.esim-hero h1 {
-  font-family: 'Poppins', sans-serif; font-size: clamp(2rem,5vw,3.2rem);
-  font-weight: 800; color: white; margin: 0 0 1rem; line-height: 1.15;
-}
-.esim-hero h1 span { color: var(--red); }
-.esim-hero > .container > p {
-  font-size: 1.1rem; color: rgba(255,255,255,0.78);
-  max-width: 580px; margin: 0 auto 2.2rem; line-height: 1.65;
-}
-.hero-badges { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.2rem; }
-.hero-badge {
-  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 30px; padding: 0.45rem 1.1rem; color: white;
-  font-size: 0.82rem; font-weight: 700; font-family: 'Poppins', sans-serif; letter-spacing: 0.03em;
-}
-.hero-badge.red { background: rgba(239,26,45,0.2); border-color: rgba(239,26,45,0.4); }
-.btn-red { background: var(--red); color: white; padding: 0.9rem 2rem; border-radius: 6px; font-weight: 700; font-size: 0.92rem; text-decoration: none; transition: background 0.2s, transform 0.15s; display: inline-block; min-height: 44px; border: none; cursor: pointer; font-family: 'Poppins', sans-serif; }
-.btn-red:hover { background: var(--red-dark); transform: translateY(-2px); }
-.btn-outline-white { background: transparent; color: rgba(255,255,255,0.8); border: 2px solid rgba(255,255,255,0.4); padding: 0.9rem 2rem; border-radius: 6px; font-weight: 600; font-size: 0.92rem; text-decoration: none; transition: border-color 0.2s, color 0.2s; display: inline-flex; align-items: center; gap: 0.4rem; min-height: 44px; }
-.btn-outline-white:hover { border-color: white; color: white; }
-
-/* ═══════════════════════════════════════
-   SECTION SCAFFOLDING
-═══════════════════════════════════════ */
-.section-title { font-family: 'Poppins', sans-serif; font-size: clamp(1.6rem,3.5vw,2.2rem); font-weight: 800; color: var(--blue); margin: 0 0 0.6rem; line-height: 1.2; }
-.section-sub { font-size: 1rem; color: var(--muted); max-width: 560px; line-height: 1.6; margin-bottom: 2.5rem; }
-
-/* ═══════════════════════════════════════
-   WHY STRIP
-═══════════════════════════════════════ */
-.why-strip { background: white; border-bottom: 1px solid var(--line); padding: 2.2rem 0; }
-.why-strip-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(4,1fr); gap: 2rem; }
-.why-item { text-align: center; }
-.why-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
-.why-item strong { display: block; font-size: 0.9rem; font-weight: 700; color: var(--blue); margin-bottom: 0.2rem; font-family: 'Poppins', sans-serif; }
-.why-item span { font-size: 0.78rem; color: var(--muted); line-height: 1.4; }
-
-/* ═══════════════════════════════════════
-   HOW IT WORKS
-═══════════════════════════════════════ */
-.how-section { background: var(--off-white); padding: 70px 0; border-bottom: 1px solid var(--line); }
-.how-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; margin-top: 2.8rem; position: relative; }
-.how-grid::before { content: ''; position: absolute; top: 1.8rem; left: calc(12.5% + 0.75rem); right: calc(12.5% + 0.75rem); height: 2px; background: repeating-linear-gradient(90deg, var(--red) 0, var(--red) 8px, transparent 8px, transparent 16px); z-index: 0; }
-.how-card { background: white; border-radius: 14px; border: 1.5px solid var(--line); padding: 1.8rem 1.3rem; text-align: center; position: relative; z-index: 1; transition: transform 0.2s, box-shadow 0.2s; }
-.how-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px var(--shadow); }
-.how-num { width: 38px; height: 38px; background: var(--blue); color: white; border-radius: 50%; font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.9rem; font-family: 'Poppins', sans-serif; }
-.how-card.hl .how-num { background: var(--red); }
-.how-card h4 { font-size: 0.9rem; color: var(--blue); margin-bottom: 0.4rem; }
-.how-card p { font-size: 0.79rem; color: var(--muted); line-height: 1.6; }
-.how-time { display: inline-block; margin-top: 0.7rem; background: var(--blue-pale); color: var(--blue); border-radius: 50px; padding: 0.2rem 0.75rem; font-size: 0.68rem; font-weight: 700; font-family: 'Poppins', sans-serif; }
-.how-card.hl .how-time { background: rgba(239,26,45,0.1); color: var(--red); }
-
-/* ═══════════════════════════════════════
-   PACKAGES SECTION
-═══════════════════════════════════════ */
-.packages-section { background: white; padding: 80px 0; }
-.main-toggle { display: flex; gap: 0.5rem; background: var(--off-white); border: 1.5px solid var(--line); border-radius: 14px; padding: 0.4rem; max-width: 340px; margin: 0 auto 3rem; }
-.main-tab { flex: 1; padding: 0.75rem 1rem; border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.22s; background: transparent; color: var(--muted); }
-.main-tab.active { background: var(--blue); color: white; box-shadow: 0 4px 14px rgba(0,43,127,0.22); }
-
-/* Network buttons */
-.network-selector { display: flex; gap: 1.2rem; justify-content: center; margin-bottom: 2.5rem; flex-wrap: wrap; }
-.net-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1rem 1.8rem; border: 2.5px solid var(--line); border-radius: 16px; background: white; cursor: pointer; transition: all 0.22s; min-width: 140px; min-height: 100px; box-shadow: 0 2px 10px rgba(0,43,127,0.06); }
-.net-btn:hover { border-color: var(--blue); transform: translateY(-2px); box-shadow: 0 6px 20px var(--shadow); }
-.net-btn.active { border-color: var(--blue); background: var(--blue-pale); box-shadow: 0 6px 22px var(--shadow); }
-.net-btn-dual { display: flex; flex-direction: column; align-items: center; gap: 5px; }
-.net-btn-dual img { height: 28px; width: auto; object-fit: contain; max-width: 90px; }
-.logo-divider { width: 32px; height: 1.5px; background: var(--line); margin: 1px 0; }
-.net-btn-single img { height: 36px; width: auto; object-fit: contain; max-width: 90px; }
-.net-panel { display: none; }
-.net-panel.active { display: block; }
-
-/* Activation badges */
-.activation-badges { display: flex; gap: 0.6rem; margin: 1.4rem 0 1rem; flex-wrap: wrap; }
-.act-badge { display: inline-flex; align-items: center; gap: 0.35rem; border-radius: 50px; padding: 0.3rem 0.8rem; font-size: 0.72rem; font-weight: 700; font-family: 'Poppins', sans-serif; border: 1.5px solid; }
-.act-badge.fast { background: #f0faf4; color: #007a30; border-color: #b2e0c0; }
-.act-badge.fast::before { content: '✓'; }
-.act-badge.info { background: var(--blue-pale); color: var(--blue); border-color: #c0d0ee; }
-
-/* SA package grid */
-.pkg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px,1fr)); gap: 1rem; margin-bottom: 2rem; }
-.pkg-card { background: var(--off-white); border: 1.5px solid var(--line); border-radius: 14px; padding: 1.4rem 0.8rem 1.1rem; text-align: center; transition: all 0.2s; cursor: pointer; position: relative; }
-.pkg-card:hover { border-color: var(--blue); transform: translateY(-3px); box-shadow: 0 8px 28px var(--shadow); }
-.pkg-card.selected { border-color: var(--blue); background: white; box-shadow: 0 8px 28px var(--shadow); }
-.pkg-card.popular { border-color: var(--red); background: white; }
-.popular-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--red); color: white; font-family: 'Poppins', sans-serif; font-size: 0.62rem; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
-.pkg-gb { font-family: 'Poppins', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--blue); line-height: 1; }
-.pkg-label { font-size: 0.68rem; color: var(--muted); margin-top: 0.15rem; margin-bottom: 0.6rem; }
-.pkg-price { font-family: 'Poppins', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--red); }
-.pkg-pm { font-size: 0.68rem; color: var(--muted); margin-bottom: 0.7rem; }
-.pkg-select-btn { display: block; width: 100%; padding: 0.5rem; background: var(--blue); color: white; border: none; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: background 0.18s; }
-.pkg-select-btn:hover, .pkg-card.selected .pkg-select-btn { background: var(--red); }
-
-/* Top-up bar */
-.topup-bar { background: var(--off-white); border: 1.5px solid var(--line); border-radius: 14px; padding: 1.4rem 1.6rem; margin-top: 0.5rem; }
-.topup-bar h4 { font-size: 0.88rem; color: var(--blue); margin-bottom: 1rem; font-family: 'Poppins', sans-serif; }
-.topup-grid { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-.topup-chip { display: flex; align-items: center; gap: 0.6rem; background: white; border: 2px solid var(--line); border-radius: 10px; padding: 0.6rem 1.1rem; cursor: pointer; transition: all 0.18s; }
-.topup-chip:hover { border-color: var(--blue); box-shadow: 0 3px 10px var(--shadow); }
-.topup-chip.selected { border-color: var(--blue); background: var(--blue-pale); }
-.topup-gb { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 0.92rem; color: var(--blue); }
-.topup-price { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.92rem; color: var(--red); }
-.topup-tag { font-size: 0.68rem; color: var(--muted); }
-
-/* Vodacom special request */
-.vodacom-notice { background: linear-gradient(135deg,#fff8e1 0%,#fff3cd 100%); border: 2px solid #f0c040; border-radius: 16px; padding: 2rem 2.2rem; max-width: 720px; margin: 0 auto; text-align: center; }
-.vodacom-notice .notice-icon { font-size: 2.8rem; margin-bottom: 0.8rem; }
-.vodacom-notice h3 { font-size: 1.15rem; color: #7a5200; margin-bottom: 0.6rem; }
-.vodacom-notice p { font-size: 0.88rem; color: #8a6200; line-height: 1.7; margin-bottom: 0.4rem; }
-.vodacom-notice .highlight { font-weight: 700; color: #c17f00; }
-.timing-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin: 1.2rem 0; }
-.timing-chip { display: flex; align-items: center; gap: 0.4rem; background: white; border-radius: 50px; padding: 0.4rem 1rem; font-size: 0.78rem; font-weight: 700; font-family: 'Poppins', sans-serif; border: 1.5px solid #e5c060; }
-.timing-chip.fast { color: #007a30; border-color: #b2e0c0; background: #f0faf4; }
-.timing-chip.slow { color: #c17f00; border-color: #f0c040; }
-.voda-form { background: white; border-radius: 12px; border: 1.5px solid #e5c060; padding: 1.6rem; text-align: left; margin-top: 1.4rem; }
-.voda-form h4 { font-size: 0.92rem; color: var(--blue); margin-bottom: 1rem; }
-.voda-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 0.6rem; }
-.voda-form-group { display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 0.6rem; }
-.voda-form-group label { font-size: 0.7rem; font-weight: 700; color: var(--blue); font-family: 'Poppins', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; }
-.voda-form-group input, .voda-form-group select { padding: 0.72rem 0.9rem; border: 2px solid var(--line); border-radius: 8px; font-family: 'Mulish', sans-serif; font-size: 0.86rem; color: var(--blue); background: var(--off-white); outline: none; transition: border-color 0.2s; width: 100%; }
-.voda-form-group input:focus, .voda-form-group select:focus { border-color: var(--blue); background: white; }
-.voda-submit { width: 100%; padding: 0.85rem; background: var(--blue); color: white; border: none; border-radius: 8px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: background 0.2s; margin-top: 0.4rem; }
-.voda-submit:hover { background: var(--red); }
-.voda-success { display: none; text-align: center; padding: 1.5rem; }
-
-/* Global region tabs */
-.region-nav { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem; justify-content: center; }
-.region-tab { padding: 0.5rem 1.2rem; border: 2px solid var(--line); border-radius: 30px; background: white; color: var(--muted); font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.82rem; cursor: pointer; transition: all 0.18s; }
-.region-tab:hover { border-color: var(--blue); color: var(--blue); }
-.region-tab.active { background: var(--blue); border-color: var(--blue); color: white; }
-
-/* Country grid */
-.country-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(105px,1fr)); gap: 0.75rem; margin-bottom: 1.5rem; }
-.country-btn { background: var(--off-white); border: 1.5px solid var(--line); border-radius: 12px; padding: 0.75rem 0.5rem; text-align: center; cursor: pointer; transition: all 0.18s; }
-.country-btn:hover { border-color: var(--blue); transform: translateY(-2px); box-shadow: 0 5px 15px var(--shadow); background: white; }
-.country-btn.active { border-color: var(--blue); background: var(--blue-pale); }
-.country-flag { font-size: 1.6rem; display: block; margin-bottom: 0.3rem; }
-.country-name { font-size: 0.71rem; font-weight: 700; color: var(--blue); font-family: 'Poppins', sans-serif; }
-
-/* Global package cards */
-.global-pkg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px,1fr)); gap: 1rem; margin: 1.5rem 0; }
-.global-pkg-card { background: var(--off-white); border: 1.5px solid var(--line); border-radius: 14px; padding: 1.4rem 0.8rem 1.1rem; text-align: center; transition: all 0.2s; cursor: pointer; position: relative; }
-.global-pkg-card:hover { border-color: var(--blue); transform: translateY(-3px); box-shadow: 0 8px 28px var(--shadow); background: white; }
-.global-pkg-card.selected { border-color: var(--blue); background: white; box-shadow: 0 8px 28px var(--shadow); }
-.global-pkg-card.popular { border-color: var(--red); background: white; }
-.gpkg-data { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--blue); line-height: 1; }
-.gpkg-validity { font-size: 0.68rem; color: var(--muted); background: var(--off-white); border-radius: 6px; padding: 0.18rem 0.5rem; display: inline-block; margin: 0.35rem 0 0.5rem; }
-.gpkg-price-usd { font-family: 'Poppins', sans-serif; font-size: 1.2rem; font-weight: 800; color: var(--red); }
-.gpkg-price-zar { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.75rem; }
-
-/* ═══════════════════════════════════════
-   CHECKOUT SECTION
-═══════════════════════════════════════ */
-.checkout-section { background: var(--blue); padding: 80px 0; position: relative; overflow: hidden; scroll-margin-top: 80px; }
-.checkout-section::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 55% 80% at 100% 50%, rgba(239,26,45,0.1) 0%, transparent 60%); }
-.checkout-section::after { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--red); }
-.checkout-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 4rem; align-items: start; position: relative; z-index: 2; }
-.checkout-left h2 { color: white; font-size: clamp(1.5rem,3vw,2rem); margin-bottom: 0.8rem; }
-.checkout-left p { color: rgba(200,215,255,0.65); font-size: 0.92rem; line-height: 1.75; margin-bottom: 1.6rem; }
-.order-summary { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 1.3rem 1.5rem; margin-bottom: 1.4rem; }
-.order-summary h4 { color: white; font-size: 0.82rem; margin-bottom: 0.8rem; font-family: 'Poppins', sans-serif; letter-spacing: 1px; text-transform: uppercase; }
-.order-line { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.84rem; color: rgba(200,215,255,0.65); }
-.order-line:last-child { border-bottom: none; }
-.order-line strong { color: white; }
-.order-total { display: flex; justify-content: space-between; padding-top: 0.8rem; margin-top: 0.4rem; border-top: 2px solid rgba(255,255,255,0.15); }
-.order-total span { color: rgba(200,215,255,0.75); font-size: 0.86rem; font-weight: 700; font-family: 'Poppins', sans-serif; }
-.order-total strong { color: white; font-size: 1.2rem; font-family: 'Poppins', sans-serif; }
-.contact-detail { display: flex; align-items: center; gap: 1rem; padding: 0.85rem 1rem; margin-bottom: 0.6rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; }
-.cd-icon { font-size: 1rem; flex-shrink: 0; }
-.cd-info small { display: block; font-size: 0.67rem; color: rgba(200,215,255,0.45); font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; font-family: 'Poppins', sans-serif; }
-.cd-info a { font-size: 0.88rem; font-weight: 700; color: white; text-decoration: none; }
-
-/* Checkout form */
-.checkout-form-wrap { background: white; border-radius: 18px; padding: 2.4rem; box-shadow: 0 24px 64px rgba(0,0,0,0.28); }
-.checkout-form-wrap h3 { font-size: 1.1rem; color: var(--blue); margin-bottom: 0.3rem; }
-.checkout-form-wrap > p { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.8rem; }
-.form-section-title { font-size: 0.68rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); font-family: 'Poppins', sans-serif; margin: 1.4rem 0 0.8rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--line); }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
-.form-group { display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 0.65rem; }
-.form-group label { font-size: 0.7rem; font-weight: 700; color: var(--blue); font-family: 'Poppins', sans-serif; }
-.form-input { width: 100%; padding: 0.78rem 1rem; border: 2px solid var(--line); border-radius: 8px; font-family: 'Mulish', sans-serif; font-size: 0.88rem; color: var(--blue); outline: none; background: var(--off-white); transition: border-color 0.2s, box-shadow 0.2s; min-height: 44px; }
-.form-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,43,127,0.09); background: white; }
-.form-input::placeholder { color: #aab; }
-.file-upload-box { border: 2px dashed var(--line); border-radius: 10px; padding: 1.2rem; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s; background: var(--off-white); position: relative; }
-.file-upload-box:hover { border-color: var(--blue); background: #eef2fc; }
-.file-upload-box input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-.file-upload-box .upload-icon { font-size: 1.5rem; margin-bottom: 0.3rem; }
-.file-upload-box p { font-size: 0.78rem; color: var(--muted); margin: 0; }
-.file-upload-box strong { color: var(--blue); font-size: 0.82rem; }
-.file-name-display { font-size: 0.75rem; color: var(--green); font-weight: 700; margin-top: 0.3rem; display: none; }
-.biz-toggle-row { display: flex; align-items: center; gap: 0.75rem; background: var(--off-white); border: 1.5px solid var(--line); border-radius: 10px; padding: 0.85rem 1rem; cursor: pointer; margin-bottom: 0.6rem; transition: border-color 0.2s; user-select: none; }
-.biz-toggle-row:hover { border-color: var(--blue); }
-.biz-toggle-row.checked { border-color: var(--blue); background: var(--blue-pale); }
-.biz-checkbox-custom { width: 20px; height: 20px; min-width: 20px; border: 2px solid #c0cce8; border-radius: 5px; display: flex; align-items: center; justify-content: center; background: white; font-size: 0.75rem; font-weight: 700; color: transparent; transition: all 0.18s; }
-.biz-toggle-row.checked .biz-checkbox-custom { background: var(--blue); border-color: var(--blue); color: white; }
-.biz-toggle-label { font-size: 0.84rem; color: var(--blue); font-weight: 600; font-family: 'Poppins', sans-serif; }
-.biz-toggle-sub { font-size: 0.72rem; color: var(--muted); }
-.biz-fields { display: none; background: var(--off-white); border: 1.5px solid var(--line); border-radius: 10px; padding: 1.2rem; margin-bottom: 0.8rem; }
-.biz-fields.show { display: block; }
-.terms-row { display: flex; align-items: flex-start; gap: 0.65rem; margin: 0.5rem 0 1.2rem; }
-.terms-row input { margin-top: 0.2rem; accent-color: var(--blue); }
-.terms-row label { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
-.terms-row a { color: var(--blue); font-weight: 700; }
-.pay-btn { width: 100%; background: var(--red); color: white; border: none; border-radius: 10px; padding: 1.05rem; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1rem; cursor: pointer; transition: background 0.2s, transform 0.15s; display: flex; align-items: center; justify-content: center; gap: 0.6rem; min-height: 52px; }
-.pay-btn:hover { background: var(--red-dark); transform: translateY(-2px); }
-.form-note { font-size: 0.72rem; color: var(--muted); text-align: center; margin-top: 0.7rem; line-height: 1.5; }
-.form-note a { color: var(--blue); font-weight: 700; }
-.checkout-success { display: none; text-align: center; padding: 3rem 1rem; }
-.checkout-success .s-icon { font-size: 3.5rem; margin-bottom: 1rem; }
-
-/* ═══════════════════════════════════════
-   FOOTER — matches fibre.html
-═══════════════════════════════════════ */
-footer { background: var(--blue-deep); border-top: 3px solid var(--red); padding: 4rem 0 0; color: rgba(255,255,255,0.6); }
-.footer-grid { display: grid; grid-template-columns: 1.8fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
-.footer-brand .footer-logo { margin-bottom: 1.2rem; }
-.footer-logo img { height: 40px; width: auto; filter: brightness(0) invert(1) opacity(0.75); }
-.footer-brand p { font-size: 0.83rem; line-height: 1.75; margin-bottom: 1.2rem; }
-.footer-brits { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.1rem; margin-bottom: 1rem; }
-.footer-brits p { font-size: 0.78rem; line-height: 1.65; margin-bottom: 0.6rem; color: rgba(255,255,255,0.55); }
-.footer-brits a { color: #25D366; font-weight: 700; text-decoration: none; }
-.footer-brits a:hover { text-decoration: underline; }
-.footer-brits .email-link { color: rgba(200,215,255,0.7); }
-.footer-col h4 { font-family: 'Poppins', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: white; margin-bottom: 1.2rem; }
-.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
-.footer-col ul li a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.84rem; font-weight: 500; transition: color 0.2s; display: flex; align-items: center; gap: 0.4rem; }
-.footer-col ul li a:hover { color: white; }
-.footer-col ul li a::before { content: '›'; color: var(--red); font-weight: 700; }
-.footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding: 1.5rem 0; display: flex; align-items: center; justify-content: space-between; font-size: 0.78rem; color: rgba(255,255,255,0.28); flex-wrap: wrap; gap: 1rem; }
-.footer-bottom a { color: rgba(255,255,255,0.35); text-decoration: none; }
-.footer-bottom a:hover { color: white; }
-
-/* ═══════════════════════════════════════
-   RESPONSIVE
-═══════════════════════════════════════ */
-@media (max-width: 900px) {
-  .nav-links, .nav-right { display: none; }
-  .hamburger { display: flex; }
-  .checkout-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-  .footer-grid { grid-template-columns: 1fr 1fr; }
-  .footer-brand { grid-column: 1 / -1; }
-  .how-grid { grid-template-columns: 1fr 1fr; }
-  .how-grid::before { display: none; }
-  .why-strip-inner { grid-template-columns: 1fr 1fr; }
-}
-@media (max-width: 700px) {
-  .esim-hero { padding: 110px 0 60px; }
-  .esim-hero h1 { font-size: 1.9rem; }
-  .pkg-grid, .global-pkg-grid { grid-template-columns: repeat(2, 1fr); }
-  .form-row, .voda-form-row { grid-template-columns: 1fr; }
-  .checkout-form-wrap { padding: 1.6rem; }
-  .net-btn { min-width: 110px; padding: 0.8rem 1rem; }
-  .country-grid { grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); }
-}
-@media (max-width: 480px) {
-  .how-grid { grid-template-columns: 1fr; }
-  .why-strip-inner { grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .main-toggle { max-width: 100%; }
+@media(max-width:480px){
+  .how-grid{grid-template-columns:1fr}
+  .why-strip-inner{grid-template-columns:1fr 1fr;gap:1rem}
+  .main-toggle{max-width:100%}
+  .country-grid{grid-template-columns:repeat(auto-fill,minmax(72px,1fr))}
 }
 </style>
 </head>
 <body>
 
-<!-- ═══ NAV — exact copy of fibre.html nav ═══ -->
+<!-- NAV -->
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">
-      <img src="153 logo.jpg" alt="153 Mobile">
-    </a>
+    <a href="index.html" class="nav-logo"><img src="153 logo.jpg" alt="153 Mobile"></a>
     <ul class="nav-links">
       <li><a href="fibre.html">Fibre</a></li>
       <li><a href="lte.html">5G LTE</a></li>
@@ -355,9 +309,7 @@ footer { background: var(--blue-deep); border-top: 3px solid var(--red); padding
       </a>
       <a href="#checkout" class="nav-cta">Get My eSIM</a>
     </div>
-    <button class="hamburger" onclick="toggleNav()" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="hamburger" onclick="toggleNav()" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
   <div class="mobile-nav" id="mobileNav">
     <a href="fibre.html">Fibre</a>
@@ -368,7 +320,7 @@ footer { background: var(--blue-deep); border-top: 3px solid var(--red); padding
   </div>
 </nav>
 
-<!-- ═══ HERO — matches fibre-hero style ═══ -->
+<!-- HERO -->
 <section class="esim-hero">
   <div class="container">
     <p class="section-tag" style="color:rgba(255,255,255,0.6);margin-bottom:0.8rem;">✦ eSIM Data</p>
@@ -385,7 +337,6 @@ footer { background: var(--blue-deep); border-top: 3px solid var(--red); padding
       <svg style="width:14px;height:14px;fill:#25D366" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
       Ask Brits
     </a>
-    <p style="margin-top:1rem;font-size:0.85rem;color:rgba(200,215,255,0.5);">Questions? <a href="https://wa.me/27839631238" target="_blank" style="color:#25D366;font-weight:700;">WhatsApp Brits</a> — he's human, 24/7, and actually helpful.</p>
   </div>
 </section>
 
@@ -405,42 +356,18 @@ footer { background: var(--blue-deep); border-top: 3px solid var(--red); padding
     <div style="text-align:center;margin-bottom:0.5rem;">
       <div class="section-tag" style="color:var(--red);">Simple Process</div>
       <h2 class="section-title">Up &amp; Running in 4 Steps</h2>
-      <p style="color:var(--muted);font-size:0.95rem;max-width:500px;margin:0 auto 0;">Choose your plan, pay, get your QR code, scan and connect.</p>
+      <p style="color:var(--muted);font-size:0.95rem;max-width:500px;margin:0 auto;">Choose your plan, pay, get your QR code, scan and connect.</p>
     </div>
     <div class="how-grid">
-      <div class="how-card">
-        <div class="how-num">1</div>
-        <div style="font-size:1.4rem;margin-bottom:0.6rem;">📦</div>
-        <h4>Choose Your Plan</h4>
-        <p>Pick South Africa or a global destination and select the data size that suits you.</p>
-        <span class="how-time">2 minutes</span>
-      </div>
-      <div class="how-card">
-        <div class="how-num">2</div>
-        <div style="font-size:1.4rem;margin-bottom:0.6rem;">📋</div>
-        <h4>Complete Your Order</h4>
-        <p>Fill in your details, upload your ID, and pay securely via Peach Payments.</p>
-        <span class="how-time">3 minutes</span>
-      </div>
-      <div class="how-card hl">
-        <div class="how-num">3</div>
-        <div style="font-size:1.4rem;margin-bottom:0.6rem;">📩</div>
-        <h4>Receive Your QR Code</h4>
-        <p>MTN &amp; Telkom activated within 24 hours. QR code sent straight to your email.</p>
-        <span class="how-time">Within 24 hrs</span>
-      </div>
-      <div class="how-card">
-        <div class="how-num">4</div>
-        <div style="font-size:1.4rem;margin-bottom:0.6rem;">📲</div>
-        <h4>Scan &amp; Connect</h4>
-        <p>Settings → Mobile Data → Add eSIM → Scan the QR code. You're live.</p>
-        <span class="how-time">30 seconds</span>
-      </div>
+      <div class="how-card"><div class="how-num">1</div><div style="font-size:1.4rem;margin-bottom:0.6rem;">📦</div><h4>Choose Your Plan</h4><p>Pick South Africa or a global destination and select the data size that suits you.</p><span class="how-time">2 minutes</span></div>
+      <div class="how-card"><div class="how-num">2</div><div style="font-size:1.4rem;margin-bottom:0.6rem;">📋</div><h4>Complete Your Order</h4><p>Fill in your details, upload your ID, and pay securely via Paystack.</p><span class="how-time">3 minutes</span></div>
+      <div class="how-card hl"><div class="how-num">3</div><div style="font-size:1.4rem;margin-bottom:0.6rem;">📩</div><h4>Receive Your QR Code</h4><p>MTN &amp; Telkom activated within 24 hours. QR code sent straight to your email.</p><span class="how-time">Within 24 hrs</span></div>
+      <div class="how-card"><div class="how-num">4</div><div style="font-size:1.4rem;margin-bottom:0.6rem;">📲</div><h4>Scan &amp; Connect</h4><p>Settings → Mobile Data → Add eSIM → Scan the QR code. You're live.</p><span class="how-time">30 seconds</span></div>
     </div>
   </div>
 </section>
 
-<!-- ═══ PACKAGES ═══ -->
+<!-- PACKAGES -->
 <section class="packages-section" id="packages">
   <div class="container">
     <div style="text-align:center;margin-bottom:2rem;">
@@ -455,38 +382,36 @@ footer { background: var(--blue-deep); border-top: 3px solid var(--red); padding
       <button class="main-tab" id="tab-global" onclick="switchMain('global')">🌍 Global</button>
     </div>
 
-    <!-- ══ SOUTH AFRICA PANEL ══ -->
+    <!-- SOUTH AFRICA PANEL -->
     <div id="panel-sa">
       <div class="network-selector">
         <button class="net-btn active" id="netbtn-mtntelkom" onclick="switchNetwork('mtntelkom')">
           <div class="net-btn-dual">
-            <img src="MTN-logo.png" alt="MTN">
+            <img src="MTNlogo.png" alt="MTN">
             <div class="logo-divider"></div>
-            <img src="Telkom-logo.png" alt="Telkom">
+            <img src="Telkomlogo.png" alt="Telkom">
           </div>
         </button>
         <button class="net-btn" id="netbtn-vodacom" onclick="switchNetwork('vodacom')">
-          <div class="net-btn-single">
-            <img src="Vodacom-logo.png" alt="Vodacom">
-          </div>
+          <div class="net-btn-single"><img src="Vodacomlogo.png" alt="Vodacom"></div>
         </button>
       </div>
 
-      <!-- MTN + Telkom -->
+      <!-- MTN + Telkom panel -->
       <div class="net-panel active" id="panel-mtntelkom">
         <div class="activation-badges">
           <span class="act-badge fast">MTN &amp; Telkom · Activation within 24 hours</span>
-          <span class="act-badge info">No contract · Month-to-month</span>
+          <span class="act-badge info">No contract · Month-to-month or Once-Off</span>
         </div>
         <div class="pkg-grid" id="sa-pkg-grid"></div>
         <div class="topup-bar">
           <h4>🔄 Top-Up Data — once you reach your cap</h4>
           <div class="topup-grid" id="sa-topup-grid"></div>
         </div>
-        <p style="margin-top:1rem;font-size:0.79rem;color:var(--muted);line-height:1.6;">* Monthly packages are recurring — cancel anytime. Top-ups are once-off additions to your active plan.</p>
+        <p style="margin-top:1rem;font-size:0.79rem;color:var(--muted);line-height:1.6;">* Monthly packages are recurring — cancel anytime. Top-ups are once-off additions to your active plan. All prices incl. VAT for retail customers.</p>
       </div>
 
-      <!-- Vodacom -->
+      <!-- Vodacom panel -->
       <div class="net-panel" id="panel-vodacom">
         <div class="vodacom-notice">
           <div class="notice-icon">📋</div>
@@ -508,14 +433,10 @@ footer { background: var(--blue-deep); border-top: 3px solid var(--red); padding
               <label>Data Package Needed</label>
               <select id="voda-pkg">
                 <option value="">— Select package —</option>
-                <option>5GB – R100/pm</option>
-                <option>10GB – R150/pm</option>
-                <option>15GB – R220/pm</option>
-                <option>20GB – R250/pm</option>
-                <option>30GB – R350/pm</option>
-                <option>40GB – R450/pm</option>
-                <option>100GB – R475/pm</option>
-                <option>200GB – R875/pm</option>
+                <option>5GB – R100/pm</option><option>10GB – R150/pm</option>
+                <option>15GB – R220/pm</option><option>20GB – R250/pm</option>
+                <option>30GB – R350/pm</option><option>40GB – R450/pm</option>
+                <option>100GB – R475/pm</option><option>200GB – R875/pm</option>
                 <option>Not sure — please advise me</option>
               </select>
             </div>
@@ -530,7 +451,7 @@ footer { background: var(--blue-deep); border-top: 3px solid var(--red); padding
       </div>
     </div><!-- /panel-sa -->
 
-    <!-- ══ GLOBAL PANEL ══ -->
+    <!-- GLOBAL PANEL -->
     <div id="panel-global" style="display:none;">
       <div class="region-nav">
         <button class="region-tab active" onclick="switchRegion('global',this)">🌐 Global</button>
@@ -543,28 +464,44 @@ footer { background: var(--blue-deep); border-top: 3px solid var(--red); padding
       </div>
       <div id="countryGrid" class="country-grid" style="display:none;"></div>
       <div id="globalPkgGrid" class="global-pkg-grid"></div>
-      <p style="font-size:0.79rem;color:var(--muted);margin-top:0.5rem;text-align:center;">* Indicative Airalo pricing. USD shown — ZAR indicative based on current exchange rate. Final price confirmed at checkout. <a href="https://wa.me/27839631238" style="color:var(--blue);font-weight:700;">WhatsApp Brits</a> for custom plans.</p>
+      <p style="font-size:0.79rem;color:var(--muted);margin-top:0.5rem;text-align:center;">* Airalo pricing. ZAR calculated from live USD rate + bank spread. Final price shown at checkout. <a href="https://wa.me/27839631238" style="color:var(--blue);font-weight:700;">WhatsApp Brits</a> for custom plans.</p>
     </div>
   </div>
 </section>
 
-<!-- ═══ CHECKOUT ═══ -->
+<!-- CHECKOUT -->
 <section class="checkout-section" id="checkout">
   <div class="container">
     <div class="checkout-grid">
 
-      <!-- Left info col -->
+      <!-- Left: summary + contacts -->
       <div class="checkout-left">
         <span class="section-tag" style="color:rgba(255,80,80,0.8);">Secure Order</span>
         <h2>Complete Your eSIM Order</h2>
-        <p>Your selected package is shown below. Fill in your details, upload your ID, and pay securely. We'll have your QR code to you fast.</p>
+        <p>Your selected package is shown below. Choose once-off or monthly, fill in your details, upload your ID, and pay securely.</p>
+
+        <!-- Plan type toggle -->
+        <div class="plan-type-toggle">
+          <button class="plan-type-btn active" id="planTypeOnce" onclick="setPlanType('once-off')">⚡ Once-Off</button>
+          <button class="plan-type-btn" id="planTypeMonthly" onclick="setPlanType('recurring')">🔄 Monthly</button>
+        </div>
+
+        <!-- Activation notice — updates based on plan type -->
+        <div class="activation-notice" id="activationNotice">
+          <strong>⚡ Once-Off:</strong> Please allow <strong>24 hours</strong> for QR code delivery. Once received, activate within <strong>48 hours</strong> — the QR code expires after this window.
+        </div>
+
+        <!-- Order summary box -->
         <div class="order-summary">
           <h4>Your Selected Package</h4>
           <div class="order-line"><span>Network / Region</span><strong id="sum-network">— select a package above —</strong></div>
           <div class="order-line"><span>Package</span><strong id="sum-package">—</strong></div>
           <div class="order-line"><span>Validity</span><strong id="sum-validity">—</strong></div>
-          <div class="order-total"><span>Total</span><strong id="sum-price">—</strong></div>
+          <div class="order-line"><span>Plan Type</span><strong id="sum-plantype">Once-Off</strong></div>
+          <div class="order-line hidden" id="sum-vat-row"><span>VAT (15%)</span><strong id="sum-vat">—</strong></div>
+          <div class="order-total"><span id="sum-total-label">Total Due Today</span><strong id="sum-price">—</strong></div>
         </div>
+
         <div class="contact-detail">
           <span class="cd-icon">💬</span>
           <div class="cd-info"><small>WhatsApp Support</small><a href="https://wa.me/27839631238" target="_blank">083 963 1238 · Brits</a></div>
@@ -575,7 +512,7 @@ footer { background: var(--blue-deep); border-top: 3px solid var(--red); padding
         </div>
       </div>
 
-      <!-- Right form col -->
+      <!-- Right: checkout form -->
       <div>
         <div class="checkout-form-wrap" id="checkoutFormWrap">
           <h3>Your Details</h3>
@@ -608,8 +545,9 @@ footer { background: var(--blue-deep); border-top: 3px solid var(--red); padding
           <div class="biz-toggle-row" id="bizToggleRow" onclick="toggleBiz()">
             <div class="biz-checkbox-custom" id="bizCheckbox"></div>
             <div>
-              <div class="biz-toggle-label">Claim as a business expense</div>
+              <div class="biz-toggle-label">Need a Business Invoice</div>
               <div class="biz-toggle-sub">I need a VAT invoice — tap to expand &amp; fill in business details</div>
+              <div style="font-size:0.72rem;color:var(--muted);margin-top:3px;">All fees quoted exclusive of VAT. 15% VAT added to business invoices.</div>
             </div>
           </div>
           <div class="biz-fields" id="bizFields">
@@ -622,18 +560,20 @@ footer { background: var(--blue-deep); border-top: 3px solid var(--red); padding
 
           <div class="terms-row">
             <input type="checkbox" id="terms-check">
-            <label for="terms-check">I agree to the <a href="legal/index.html" target="_blank">Terms &amp; Conditions</a> and <a href="legal/privacy.html" target="_blank">Privacy Policy</a>. I confirm the information above is accurate.</label>
+            <label for="terms-check">I agree to the <a href="legal/index.html" target="_blank">Terms &amp; Conditions</a> and <a href="legal/privacy.html" target="_blank">Privacy Policy</a>. I confirm the information above is accurate. I understand QR codes must be activated within 48 hours of receipt.</label>
           </div>
-          <button class="pay-btn" onclick="initiatePayment()">
+
+          <button class="pay-btn" id="esimPayBtn" onclick="initiateEsimPayment()">
             <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:white;"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
-            Pay Securely with Peach Payments
+            Pay Securely with Paystack
           </button>
-          <p class="form-note">🔒 Secured by <strong>Peach Payments</strong> · 256-bit SSL · PCI DSS Compliant<br>Questions? <a href="https://wa.me/27839631238">WhatsApp Brits</a> before you pay.</p>
+          <p class="form-note">🔒 Secured by <strong>Paystack</strong> · 256-bit SSL · PCI DSS Compliant<br>Questions? <a href="https://wa.me/27839631238">WhatsApp Brits</a> before you pay.</p>
         </div>
+
         <div class="checkout-success" id="checkoutSuccess">
           <div class="s-icon">🎉</div>
-          <h3 style="color:white;font-size:1.3rem;margin-bottom:0.5rem;">Order Received!</h3>
-          <p style="color:rgba(200,215,255,0.75);font-size:0.88rem;line-height:1.7;">Thank you — your eSIM order is in. We'll send your QR code to your email shortly.<br><br>MTN &amp; Telkom: within 24 hours · Vodacom: 7–10 business days.<br><br>Questions? <a href="https://wa.me/27839631238" style="color:#25D366;font-weight:700;">WhatsApp Brits</a> any time.</p>
+          <h3 style="color:white;font-size:1.3rem;margin-bottom:0.5rem;" id="successTitle">Payment Successful!</h3>
+          <p style="color:rgba(200,215,255,0.75);font-size:0.88rem;line-height:1.7;" id="successBody">Your eSIM order is confirmed. Your QR code will be delivered to your email within 24 hours.<br><br>Once received, please activate within <strong style="color:white;">48 hours</strong>.<br><br>Questions? <a href="https://wa.me/27839631238" style="color:#25D366;font-weight:700;">WhatsApp Brits</a> any time.</p>
         </div>
       </div>
     </div>
@@ -648,8 +588,8 @@ footer { background: var(--blue-deep); border-top: 3px solid var(--red); padding
         <div class="footer-logo"><img src="153 logo.jpg" alt="153 Mobile"></div>
         <p>Fast, reliable, premium internet for homes and businesses across South Africa. Real support from real people — since 1997.</p>
         <div class="footer-brits">
-          <p>💬 <strong style="color:white;">WhatsApp &amp; Support:</strong> <a href="https://wa.me/27839631238" target="_blank">083 963 1238</a><br>Meet Brits — our dedicated support superhero who answers 24/7, 365 days a year. Some swear he's secretly AI. Nope, 100% human and always ready to help.</p>
-          <p>Prefer email? <a href="mailto:support@153mobile.co.za" class="email-link">support@153mobile.co.za</a> &nbsp;|&nbsp; <a href="mailto:info@153mobile.co.za" class="email-link">info@153mobile.co.za</a></p>
+          <p>💬 <strong style="color:white;">WhatsApp &amp; Support:</strong> <a href="https://wa.me/27839631238" target="_blank">083 963 1238</a><br>Meet Brits — our dedicated support superhero who answers 24/7, 365 days a year.</p>
+          <p>Prefer email? <a href="mailto:support@153mobile.co.za" class="email-link">support@153mobile.co.za</a></p>
         </div>
       </div>
       <div class="footer-col">
@@ -657,7 +597,6 @@ footer { background: var(--blue-deep); border-top: 3px solid var(--red); padding
         <ul>
           <li><a href="index.html#about">About Us</a></li>
           <li><a href="index.html#why153">Why 153</a></li>
-          <li><a href="index.html#how-it-works">How It Works</a></li>
           <li><a href="index.html#services">Our Services</a></li>
           <li><a href="index.html#contact">Contact Us</a></li>
           <li><a href="legal/index.html">Legal</a></li>
@@ -681,142 +620,160 @@ footer { background: var(--blue-deep); border-top: 3px solid var(--red); padding
 
 <script>
 /* ═══════════════════════════════════════════════════════════════
-   DATA
+   CONSTANTS
+═══════════════════════════════════════════════════════════════ */
+var WORKER_URL = 'https://esim-worker.153-1c7.workers.dev';
+var PAYSTACK_KEY = 'pk_test_c7832f8b06f6db75127e8fcbaf999f56797f66ad';
+
+/* ═══════════════════════════════════════════════════════════════
+   SA PACKAGE DATA
 ═══════════════════════════════════════════════════════════════ */
 var SA_PACKAGES = [
-  {gb:'5GB',   price:'R100', popular:false},
-  {gb:'10GB',  price:'R199', popular:true},
-  {gb:'15GB',  price:'R250', popular:false},
-  {gb:'20GB',  price:'R299', popular:false},
-  {gb:'30GB',  price:'R399', popular:false},
-  {gb:'40GB',  price:'R499', popular:false},
-  {gb:'100GB', price:'R899', popular:false},
-  {gb:'200GB', price:'R999', popular:false}
+  {gb:'5GB',   priceNum:100,  price:'R100', popular:false},
+  {gb:'10GB',  priceNum:199,  price:'R199', popular:true},
+  {gb:'15GB',  priceNum:250,  price:'R250', popular:false},
+  {gb:'20GB',  priceNum:299,  price:'R299', popular:false},
+  {gb:'30GB',  priceNum:399,  price:'R399', popular:false},
+  {gb:'40GB',  priceNum:499,  price:'R499', popular:false},
+  {gb:'100GB', priceNum:899,  price:'R899', popular:false},
+  {gb:'200GB', priceNum:999,  price:'R999', popular:false}
 ];
 
 var SA_TOPUPS = [
-  {gb:'5GB',  price:'R250'},
-  {gb:'10GB', price:'R350'},
-  {gb:'20GB', price:'R450'}
+  {gb:'5GB',  priceNum:250, price:'R250'},
+  {gb:'10GB', priceNum:350, price:'R350'},
+  {gb:'20GB', priceNum:450, price:'R450'}
 ];
 
+/* ═══════════════════════════════════════════════════════════════
+   GLOBAL REGIONS DATA
+   usdNum = raw USD amount for FX conversion
+   flags  = up to 6 flags shown inside each package card
+═══════════════════════════════════════════════════════════════ */
 var GLOBAL_REGIONS = {
   global: {
-    label: 'Global (200+ Countries)',
-    countries: null,
-    packages: [
-      {data:'1GB',  validity:'7 days',  usd:'$10', zar:'≈ R185',   popular:false},
-      {data:'3GB',  validity:'15 days', usd:'$23', zar:'≈ R425',   popular:false},
-      {data:'5GB',  validity:'30 days', usd:'$38', zar:'≈ R703',   popular:true},
-      {data:'10GB', validity:'30 days', usd:'$59', zar:'≈ R1,092', popular:false},
-      {data:'20GB', validity:'30 days', usd:'$97', zar:'≈ R1,795', popular:false}
+    label:'Global (200+ Countries)',
+    countries:null,
+    flags:['🇿🇦','🇺🇸','🇬🇧','🇩🇪','🇯🇵','🇦🇺'],
+    packages:[
+      {data:'1GB',  usdNum:10, usd:'$10', validity:'7 days',  popular:false},
+      {data:'3GB',  usdNum:23, usd:'$23', validity:'15 days', popular:false},
+      {data:'5GB',  usdNum:38, usd:'$38', validity:'30 days', popular:true},
+      {data:'10GB', usdNum:59, usd:'$59', validity:'30 days', popular:false},
+      {data:'20GB', usdNum:97, usd:'$97', validity:'30 days', popular:false}
     ]
   },
   europe: {
-    label: 'Europe & UK',
-    countries: [
-      {flag:'🇩🇪',name:'Germany'},     {flag:'🇫🇷',name:'France'},
-      {flag:'🇮🇹',name:'Italy'},       {flag:'🇪🇸',name:'Spain'},
-      {flag:'🇬🇧',name:'UK'},          {flag:'🇳🇱',name:'Netherlands'},
-      {flag:'🇨🇭',name:'Switzerland'}, {flag:'🇦🇹',name:'Austria'},
-      {flag:'🇵🇹',name:'Portugal'},    {flag:'🇧🇪',name:'Belgium'},
-      {flag:'🇩🇰',name:'Denmark'},     {flag:'🇸🇪',name:'Sweden'},
-      {flag:'🇳🇴',name:'Norway'},      {flag:'🇫🇮',name:'Finland'},
-      {flag:'🇵🇱',name:'Poland'},      {flag:'🇨🇿',name:'Czech Rep.'},
-      {flag:'🇭🇺',name:'Hungary'},     {flag:'🇷🇴',name:'Romania'},
-      {flag:'🇬🇷',name:'Greece'},      {flag:'🇭🇷',name:'Croatia'}
+    label:'Europe & UK',
+    countries:[
+      {flag:'🇩🇪',name:'Germany'},   {flag:'🇫🇷',name:'France'},
+      {flag:'🇮🇹',name:'Italy'},     {flag:'🇪🇸',name:'Spain'},
+      {flag:'🇬🇧',name:'UK'},        {flag:'🇳🇱',name:'Netherlands'},
+      {flag:'🇨🇭',name:'Switzerland'},{flag:'🇦🇹',name:'Austria'},
+      {flag:'🇵🇹',name:'Portugal'},  {flag:'🇧🇪',name:'Belgium'},
+      {flag:'🇩🇰',name:'Denmark'},   {flag:'🇸🇪',name:'Sweden'},
+      {flag:'🇳🇴',name:'Norway'},    {flag:'🇫🇮',name:'Finland'},
+      {flag:'🇵🇱',name:'Poland'},    {flag:'🇨🇿',name:'Czech Rep.'},
+      {flag:'🇭🇺',name:'Hungary'},   {flag:'🇷🇴',name:'Romania'},
+      {flag:'🇬🇷',name:'Greece'},    {flag:'🇭🇷',name:'Croatia'}
     ],
-    packages: [
-      {data:'1GB',  validity:'7 days',  usd:'$4',  zar:'≈ R74',  popular:false},
-      {data:'3GB',  validity:'15 days', usd:'$8',  zar:'≈ R148', popular:false},
-      {data:'5GB',  validity:'30 days', usd:'$11', zar:'≈ R204', popular:true},
-      {data:'10GB', validity:'30 days', usd:'$16', zar:'≈ R296', popular:false},
-      {data:'20GB', validity:'30 days', usd:'$27', zar:'≈ R500', popular:false}
+    flags:['🇩🇪','🇫🇷','🇬🇧','🇮🇹','🇪🇸','🇳🇱'],
+    packages:[
+      {data:'1GB',  usdNum:4,  usd:'$4',  validity:'7 days',  popular:false},
+      {data:'3GB',  usdNum:8,  usd:'$8',  validity:'15 days', popular:false},
+      {data:'5GB',  usdNum:11, usd:'$11', validity:'30 days', popular:true},
+      {data:'10GB', usdNum:16, usd:'$16', validity:'30 days', popular:false},
+      {data:'20GB', usdNum:27, usd:'$27', validity:'30 days', popular:false}
     ]
   },
   namerica: {
-    label: 'North America',
-    countries: [
+    label:'North America',
+    countries:[
       {flag:'🇺🇸',name:'USA'},
       {flag:'🇨🇦',name:'Canada'},
       {flag:'🇲🇽',name:'Mexico'}
     ],
-    packages: [
-      {data:'1GB',  validity:'7 days',  usd:'$5',  zar:'≈ R93',  popular:false},
-      {data:'3GB',  validity:'15 days', usd:'$10', zar:'≈ R185', popular:false},
-      {data:'5GB',  validity:'30 days', usd:'$13', zar:'≈ R241', popular:true},
-      {data:'10GB', validity:'30 days', usd:'$22', zar:'≈ R407', popular:false},
-      {data:'20GB', validity:'30 days', usd:'$35', zar:'≈ R648', popular:false}
+    flags:['🇺🇸','🇨🇦','🇲🇽'],
+    packages:[
+      {data:'1GB',  usdNum:5,  usd:'$5',  validity:'7 days',  popular:false},
+      {data:'3GB',  usdNum:10, usd:'$10', validity:'15 days', popular:false},
+      {data:'5GB',  usdNum:13, usd:'$13', validity:'30 days', popular:true},
+      {data:'10GB', usdNum:22, usd:'$22', validity:'30 days', popular:false},
+      {data:'20GB', usdNum:35, usd:'$35', validity:'30 days', popular:false}
     ]
   },
   samerica: {
-    label: 'South America',
-    countries: [
-      {flag:'🇧🇷',name:'Brazil'},    {flag:'🇦🇷',name:'Argentina'},
-      {flag:'🇨🇱',name:'Chile'},     {flag:'🇨🇴',name:'Colombia'},
-      {flag:'🇵🇪',name:'Peru'},      {flag:'🇺🇾',name:'Uruguay'},
-      {flag:'🇧🇴',name:'Bolivia'},   {flag:'🇪🇨',name:'Ecuador'}
+    label:'South America',
+    countries:[
+      {flag:'🇧🇷',name:'Brazil'},   {flag:'🇦🇷',name:'Argentina'},
+      {flag:'🇨🇱',name:'Chile'},    {flag:'🇨🇴',name:'Colombia'},
+      {flag:'🇵🇪',name:'Peru'},     {flag:'🇺🇾',name:'Uruguay'},
+      {flag:'🇧🇴',name:'Bolivia'},  {flag:'🇪🇨',name:'Ecuador'}
     ],
-    packages: [
-      {data:'1GB',  validity:'7 days',  usd:'$4',  zar:'≈ R74',  popular:false},
-      {data:'3GB',  validity:'15 days', usd:'$9',  zar:'≈ R167', popular:false},
-      {data:'5GB',  validity:'30 days', usd:'$12', zar:'≈ R222', popular:true},
-      {data:'10GB', validity:'30 days', usd:'$20', zar:'≈ R370', popular:false},
-      {data:'20GB', validity:'30 days', usd:'$32', zar:'≈ R592', popular:false}
+    flags:['🇧🇷','🇦🇷','🇨🇱','🇨🇴','🇵🇪','🇺🇾'],
+    packages:[
+      {data:'1GB',  usdNum:4,  usd:'$4',  validity:'7 days',  popular:false},
+      {data:'3GB',  usdNum:9,  usd:'$9',  validity:'15 days', popular:false},
+      {data:'5GB',  usdNum:12, usd:'$12', validity:'30 days', popular:true},
+      {data:'10GB', usdNum:20, usd:'$20', validity:'30 days', popular:false},
+      {data:'20GB', usdNum:32, usd:'$32', validity:'30 days', popular:false}
     ]
   },
   asia: {
-    label: 'Asia & Middle East',
-    countries: [
-      {flag:'🇯🇵',name:'Japan'},        {flag:'🇸🇬',name:'Singapore'},
-      {flag:'🇹🇭',name:'Thailand'},     {flag:'🇦🇪',name:'Dubai/UAE'},
-      {flag:'🇮🇳',name:'India'},        {flag:'🇭🇰',name:'Hong Kong'},
-      {flag:'🇮🇩',name:'Indonesia'},    {flag:'🇻🇳',name:'Vietnam'},
-      {flag:'🇰🇷',name:'South Korea'},  {flag:'🇲🇾',name:'Malaysia'},
-      {flag:'🇵🇭',name:'Philippines'},  {flag:'🇹🇼',name:'Taiwan'},
-      {flag:'🇶🇦',name:'Qatar'},        {flag:'🇸🇦',name:'Saudi Arabia'},
-      {flag:'🇮🇱',name:'Israel'},       {flag:'🇯🇴',name:'Jordan'},
-      {flag:'🇰🇼',name:'Kuwait'},       {flag:'🇧🇩',name:'Bangladesh'}
+    label:'Asia & Middle East',
+    countries:[
+      {flag:'🇯🇵',name:'Japan'},      {flag:'🇸🇬',name:'Singapore'},
+      {flag:'🇹🇭',name:'Thailand'},   {flag:'🇦🇪',name:'Dubai/UAE'},
+      {flag:'🇮🇳',name:'India'},      {flag:'🇭🇰',name:'Hong Kong'},
+      {flag:'🇮🇩',name:'Indonesia'},  {flag:'🇻🇳',name:'Vietnam'},
+      {flag:'🇰🇷',name:'South Korea'},{flag:'🇲🇾',name:'Malaysia'},
+      {flag:'🇵🇭',name:'Philippines'},{flag:'🇹🇼',name:'Taiwan'},
+      {flag:'🇶🇦',name:'Qatar'},      {flag:'🇸🇦',name:'Saudi Arabia'},
+      {flag:'🇮🇱',name:'Israel'},     {flag:'🇯🇴',name:'Jordan'},
+      {flag:'🇰🇼',name:'Kuwait'},     {flag:'🇧🇩',name:'Bangladesh'}
     ],
-    packages: [
-      {data:'1GB',  validity:'7 days',  usd:'$4',  zar:'≈ R74',  popular:false},
-      {data:'3GB',  validity:'15 days', usd:'$9',  zar:'≈ R167', popular:false},
-      {data:'5GB',  validity:'30 days', usd:'$11', zar:'≈ R204', popular:true},
-      {data:'10GB', validity:'30 days', usd:'$18', zar:'≈ R333', popular:false},
-      {data:'20GB', validity:'30 days', usd:'$30', zar:'≈ R555', popular:false}
+    flags:['🇯🇵','🇸🇬','🇦🇪','🇮🇳','🇹🇭','🇰🇷'],
+    packages:[
+      {data:'1GB',  usdNum:4,  usd:'$4',  validity:'7 days',  popular:false},
+      {data:'3GB',  usdNum:9,  usd:'$9',  validity:'15 days', popular:false},
+      {data:'5GB',  usdNum:11, usd:'$11', validity:'30 days', popular:true},
+      {data:'10GB', usdNum:18, usd:'$18', validity:'30 days', popular:false},
+      {data:'20GB', usdNum:30, usd:'$30', validity:'30 days', popular:false}
     ]
   },
   africa: {
-    label: 'Africa',
-    countries: [
-      {flag:'🇿🇦',name:'South Africa'}, {flag:'🇰🇪',name:'Kenya'},
-      {flag:'🇹🇿',name:'Tanzania'},     {flag:'🇳🇬',name:'Nigeria'},
-      {flag:'🇬🇭',name:'Ghana'},        {flag:'🇪🇬',name:'Egypt'},
-      {flag:'🇲🇦',name:'Morocco'},      {flag:'🇲🇺',name:'Mauritius'},
-      {flag:'🇿🇲',name:'Zambia'},       {flag:'🇲🇿',name:'Mozambique'},
-      {flag:'🇳🇦',name:'Namibia'},      {flag:'🇿🇼',name:'Zimbabwe'},
-      {flag:'🇧🇼',name:'Botswana'},     {flag:'🇺🇬',name:'Uganda'}
+    label:'Africa',
+    countries:[
+      {flag:'🇿🇦',name:'South Africa'},{flag:'🇰🇪',name:'Kenya'},
+      {flag:'🇹🇿',name:'Tanzania'},   {flag:'🇳🇬',name:'Nigeria'},
+      {flag:'🇬🇭',name:'Ghana'},      {flag:'🇪🇬',name:'Egypt'},
+      {flag:'🇲🇦',name:'Morocco'},    {flag:'🇲🇺',name:'Mauritius'},
+      {flag:'🇿🇲',name:'Zambia'},     {flag:'🇲🇿',name:'Mozambique'},
+      {flag:'🇳🇦',name:'Namibia'},    {flag:'🇿🇼',name:'Zimbabwe'},
+      {flag:'🇧🇼',name:'Botswana'},   {flag:'🇺🇬',name:'Uganda'}
     ],
-    packages: [
-      {data:'1GB',  validity:'7 days',  usd:'$4',  zar:'≈ R74',  popular:false},
-      {data:'3GB',  validity:'15 days', usd:'$8',  zar:'≈ R148', popular:false},
-      {data:'5GB',  validity:'30 days', usd:'$11', zar:'≈ R204', popular:true},
-      {data:'10GB', validity:'30 days', usd:'$18', zar:'≈ R333', popular:false},
-      {data:'20GB', validity:'30 days', usd:'$30', zar:'≈ R555', popular:false}
+    flags:['🇿🇦','🇰🇪','🇳🇬','🇬🇭','🇪🇬','🇲🇦'],
+    packages:[
+      {data:'1GB',  usdNum:4,  usd:'$4',  validity:'7 days',  popular:false},
+      {data:'3GB',  usdNum:8,  usd:'$8',  validity:'15 days', popular:false},
+      {data:'5GB',  usdNum:11, usd:'$11', validity:'30 days', popular:true},
+      {data:'10GB', usdNum:18, usd:'$18', validity:'30 days', popular:false},
+      {data:'20GB', usdNum:30, usd:'$30', validity:'30 days', popular:false}
     ]
   },
   oceania: {
-    label: 'Oceania',
-    countries: [
+    label:'Oceania',
+    countries:[
       {flag:'🇦🇺',name:'Australia'}, {flag:'🇳🇿',name:'New Zealand'},
       {flag:'🇫🇯',name:'Fiji'},      {flag:'🇵🇬',name:'Papua NG'}
     ],
-    packages: [
-      {data:'1GB',  validity:'7 days',  usd:'$5',  zar:'≈ R93',  popular:false},
-      {data:'3GB',  validity:'15 days', usd:'$10', zar:'≈ R185', popular:false},
-      {data:'5GB',  validity:'30 days', usd:'$13', zar:'≈ R241', popular:true},
-      {data:'10GB', validity:'30 days', usd:'$22', zar:'≈ R407', popular:false},
-      {data:'20GB', validity:'30 days', usd:'$35', zar:'≈ R648', popular:false}
+    flags:['🇦🇺','🇳🇿','🇫🇯','🇵🇬'],
+    packages:[
+      {data:'1GB',  usdNum:5,  usd:'$5',  validity:'7 days',  popular:false},
+      {data:'3GB',  usdNum:10, usd:'$10', validity:'15 days', popular:false},
+      {data:'5GB',  usdNum:13, usd:'$13', validity:'30 days', popular:true},
+      {data:'10GB', usdNum:22, usd:'$22', validity:'30 days', popular:false},
+      {data:'20GB', usdNum:35, usd:'$35', validity:'30 days', popular:false}
     ]
   }
 };
@@ -826,16 +783,101 @@ var GLOBAL_REGIONS = {
 ═══════════════════════════════════════════════════════════════ */
 var currentRegion = 'global';
 var bizOpen = false;
+var planType = 'once-off';   // 'once-off' | 'recurring'
+var selectedPkg = null;      // { network, packageSize, validity, priceNum, isGlobal, airaloPackageId }
+var fxRate = 18;             // fallback; updated async on load
 
 /* ═══════════════════════════════════════════════════════════════
-   SET SELECTED PACKAGE — updates order summary, scrolls to checkout
+   FX RATE — fetch live from worker (cached 1h in KV)
 ═══════════════════════════════════════════════════════════════ */
-function selectPackage(network, pkg, validity, price) {
-  document.getElementById('sum-network').textContent  = network  || '—';
-  document.getElementById('sum-package').textContent  = pkg      || '—';
-  document.getElementById('sum-validity').textContent = validity || '—';
-  document.getElementById('sum-price').textContent    = price    || '—';
-  // Smooth scroll to checkout
+async function loadFxRate() {
+  try {
+    var res = await fetch('https://open.er-api.com/v6/latest/USD');
+    var data = await res.json();
+    if (data && data.rates && data.rates.ZAR) {
+      fxRate = data.rates.ZAR;
+      console.log('Live FX rate loaded:', fxRate);
+      // Re-render current global region with live prices
+      if (currentRegion && GLOBAL_REGIONS[currentRegion]) {
+        renderGlobalPkgs(GLOBAL_REGIONS[currentRegion].label, GLOBAL_REGIONS[currentRegion]);
+      }
+    }
+  } catch(e) {
+    console.warn('FX rate load failed, using fallback:', fxRate);
+  }
+}
+
+// Convert USD to ZAR: rate + 2% spread + R0.50 flat, round up to nearest R5
+function usdToZar(usdAmount) {
+  var raw = (usdAmount * fxRate) * 1.02 + 0.50;
+  return Math.ceil(raw / 5) * 5;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PLAN TYPE TOGGLE
+═══════════════════════════════════════════════════════════════ */
+function setPlanType(type) {
+  planType = type;
+  document.getElementById('planTypeOnce').classList.toggle('active', type === 'once-off');
+  document.getElementById('planTypeMonthly').classList.toggle('active', type === 'recurring');
+  document.getElementById('sum-plantype').textContent = type === 'once-off' ? '⚡ Once-Off' : '🔄 Monthly Recurring';
+
+  var notice = document.getElementById('activationNotice');
+  if (type === 'once-off') {
+    notice.innerHTML = '<strong>⚡ Once-Off:</strong> Please allow <strong>24 hours</strong> for QR code delivery. Once received, activate within <strong>48 hours</strong> — the QR code expires after this window.';
+  } else {
+    notice.innerHTML = '<strong>🔄 Monthly:</strong> Billed on the <strong>1st of each month</strong>. Your first month is charged today. Cancel anytime by contacting us.';
+  }
+  updateSummaryTotal();
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BUSINESS TOGGLE
+═══════════════════════════════════════════════════════════════ */
+function toggleBiz() {
+  bizOpen = !bizOpen;
+  document.getElementById('bizToggleRow').classList.toggle('checked', bizOpen);
+  document.getElementById('bizFields').classList.toggle('show', bizOpen);
+  document.getElementById('bizCheckbox').textContent = bizOpen ? '✓' : '';
+  updateSummaryTotal();
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ORDER SUMMARY UPDATE
+═══════════════════════════════════════════════════════════════ */
+function updateSummaryTotal() {
+  if (!selectedPkg) return;
+  var base = selectedPkg.priceNum;
+  var vat  = bizOpen ? Math.round(base * 0.15) : 0;
+  var total = base + vat;
+
+  if (bizOpen) {
+    document.getElementById('sum-vat-row').classList.remove('hidden');
+    document.getElementById('sum-vat').textContent = 'R' + vat.toLocaleString();
+    document.getElementById('sum-total-label').textContent = 'Total inc VAT';
+  } else {
+    document.getElementById('sum-vat-row').classList.add('hidden');
+    document.getElementById('sum-total-label').textContent = 'Total Due Today';
+  }
+  document.getElementById('sum-price').textContent = 'R' + total.toLocaleString();
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SELECT PACKAGE — called from both SA and Global card clicks
+═══════════════════════════════════════════════════════════════ */
+function selectPackage(network, packageSize, validity, priceNum, isGlobal, airaloPackageId) {
+  selectedPkg = {
+    network:         network,
+    packageSize:     packageSize,
+    validity:        validity,
+    priceNum:        priceNum,
+    isGlobal:        !!isGlobal,
+    airaloPackageId: airaloPackageId || null
+  };
+  document.getElementById('sum-network').textContent  = network;
+  document.getElementById('sum-package').textContent  = packageSize;
+  document.getElementById('sum-validity').textContent = validity;
+  updateSummaryTotal();
   document.getElementById('checkout').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
@@ -847,14 +889,13 @@ function renderSAPackages() {
   var html = '';
   for (var i = 0; i < SA_PACKAGES.length; i++) {
     var p = SA_PACKAGES[i];
-    html += '<div class="pkg-card' + (p.popular ? ' popular' : '') + '" onclick="onSAPkgClick(this,\'' + p.gb + '\',\'' + p.price + '/pm\',\'Monthly\')">';
+    html += '<div class="pkg-card' + (p.popular?' popular':'') + '" onclick="onSAPkgClick(this,' + p.priceNum + ',\'' + p.gb + '\',\'' + p.price + '\')">';
     if (p.popular) html += '<div class="popular-badge">Most Popular</div>';
     html += '<div class="pkg-gb">' + p.gb + '</div>';
     html += '<div class="pkg-label">data per month</div>';
     html += '<div class="pkg-price">' + p.price + '</div>';
     html += '<div class="pkg-pm">per month</div>';
-    html += '<button class="pkg-select-btn">Select Plan →</button>';
-    html += '</div>';
+    html += '<button class="pkg-select-btn">Select Plan →</button></div>';
   }
   grid.innerHTML = html;
 
@@ -862,51 +903,45 @@ function renderSAPackages() {
   var thtml = '';
   for (var j = 0; j < SA_TOPUPS.length; j++) {
     var t = SA_TOPUPS[j];
-    thtml += '<div class="topup-chip" onclick="onTopupClick(this,\'' + t.gb + ' Top-Up\',\'' + t.price + '\',\'Once-off\')">';
+    thtml += '<div class="topup-chip" onclick="onTopupClick(this,' + t.priceNum + ',\'' + t.gb + '\',\'' + t.price + '\')">';
     thtml += '<div class="topup-gb">' + t.gb + '</div>';
     thtml += '<div class="topup-price">' + t.price + '</div>';
-    thtml += '<div class="topup-tag">once-off</div>';
-    thtml += '</div>';
+    thtml += '<div class="topup-tag">once-off</div></div>';
   }
   tgrid.innerHTML = thtml;
 }
 
-function onSAPkgClick(el, gb, price, validity) {
-  var cards = document.querySelectorAll('#panel-mtntelkom .pkg-card');
-  for (var i = 0; i < cards.length; i++) cards[i].classList.remove('selected');
+function onSAPkgClick(el, priceNum, gb, price) {
+  document.querySelectorAll('#panel-mtntelkom .pkg-card').forEach(function(c){c.classList.remove('selected')});
   el.classList.add('selected');
-  selectPackage('MTN / Telkom eSIM', gb, validity, price);
+  selectPackage('MTN / Telkom', gb, 'Monthly', priceNum, false, null);
 }
 
-function onTopupClick(el, pkg, price, validity) {
-  var chips = document.querySelectorAll('#sa-topup-grid .topup-chip');
-  for (var i = 0; i < chips.length; i++) chips[i].classList.remove('selected');
+function onTopupClick(el, priceNum, gb, price) {
+  document.querySelectorAll('#sa-topup-grid .topup-chip').forEach(function(c){c.classList.remove('selected')});
   el.classList.add('selected');
-  selectPackage('MTN / Telkom eSIM', pkg, validity, price);
+  selectPackage('MTN / Telkom', gb + ' Top-Up', 'Once-Off', priceNum, false, null);
 }
 
 /* ═══════════════════════════════════════════════════════════════
    MAIN SA / GLOBAL TOGGLE
 ═══════════════════════════════════════════════════════════════ */
 function switchMain(tab) {
-  document.getElementById('panel-sa').style.display     = (tab === 'sa') ? 'block' : 'none';
-  document.getElementById('panel-global').style.display = (tab === 'global') ? 'block' : 'none';
-  document.getElementById('tab-sa').classList.toggle('active', tab === 'sa');
-  document.getElementById('tab-global').classList.toggle('active', tab === 'global');
-  if (tab === 'global') {
-    switchRegion('global', document.querySelector('#panel-global .region-tab'));
-  }
+  document.getElementById('panel-sa').style.display     = (tab==='sa') ? 'block' : 'none';
+  document.getElementById('panel-global').style.display = (tab==='global') ? 'block' : 'none';
+  document.getElementById('tab-sa').classList.toggle('active', tab==='sa');
+  document.getElementById('tab-global').classList.toggle('active', tab==='global');
+  if (tab === 'global') switchRegion('global', document.querySelector('#panel-global .region-tab'));
 }
 
 /* ═══════════════════════════════════════════════════════════════
    SA NETWORK SWITCH
 ═══════════════════════════════════════════════════════════════ */
 function switchNetwork(net) {
-  var nets = ['mtntelkom', 'vodacom'];
-  for (var i = 0; i < nets.length; i++) {
-    document.getElementById('panel-' + nets[i]).classList.toggle('active', nets[i] === net);
-    document.getElementById('netbtn-' + nets[i]).classList.toggle('active', nets[i] === net);
-  }
+  ['mtntelkom','vodacom'].forEach(function(n){
+    document.getElementById('panel-'+n).classList.toggle('active', n===net);
+    document.getElementById('netbtn-'+n).classList.toggle('active', n===net);
+  });
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -914,8 +949,7 @@ function switchNetwork(net) {
 ═══════════════════════════════════════════════════════════════ */
 function switchRegion(region, btn) {
   currentRegion = region;
-  var tabs = document.querySelectorAll('.region-tab');
-  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+  document.querySelectorAll('.region-tab').forEach(function(t){t.classList.remove('active')});
   if (btn) btn.classList.add('active');
 
   var rd = GLOBAL_REGIONS[region];
@@ -925,51 +959,293 @@ function switchRegion(region, btn) {
   if (rd.countries && rd.countries.length) {
     cg.style.display = 'grid';
     var ch = '';
-    for (var j = 0; j < rd.countries.length; j++) {
-      var c = rd.countries[j];
+    rd.countries.forEach(function(c){
       ch += '<div class="country-btn" onclick="selectCountry(this,\'' + c.name.replace(/'/g,"\\'") + '\')">';
       ch += '<span class="country-flag">' + c.flag + '</span>';
-      ch += '<span class="country-name">' + c.name + '</span>';
-      ch += '</div>';
-    }
+      ch += '<span class="country-name">' + c.name + '</span></div>';
+    });
     cg.innerHTML = ch;
   } else {
     cg.style.display = 'none';
     cg.innerHTML = '';
   }
-  renderGlobalPkgs(rd.label, rd.packages);
+  renderGlobalPkgs(rd.label, rd);
 }
 
 function selectCountry(el, name) {
-  var btns = document.querySelectorAll('.country-btn');
-  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+  document.querySelectorAll('.country-btn').forEach(function(b){b.classList.remove('active')});
   el.classList.add('active');
-  renderGlobalPkgs(name, GLOBAL_REGIONS[currentRegion].packages);
+  renderGlobalPkgs(name, GLOBAL_REGIONS[currentRegion]);
 }
 
-function renderGlobalPkgs(label, pkgs) {
-  var grid = document.getElementById('globalPkgGrid');
-  var html = '';
+/* ═══════════════════════════════════════════════════════════════
+   RENDER GLOBAL PACKAGES — with flags in each card
+═══════════════════════════════════════════════════════════════ */
+function renderGlobalPkgs(label, regionData) {
+  var pkgs  = regionData.packages;
+  var flags = regionData.flags || [];
+  var grid  = document.getElementById('globalPkgGrid');
+  var html  = '';
+
+  // Build flag row HTML (max 6 flags + "+more" if needed)
+  var maxFlags = 6;
+  var flagHtml = '<div class="gpkg-flags">';
+  var showFlags = flags.slice(0, maxFlags);
+  showFlags.forEach(function(f){ flagHtml += '<span class="gpkg-flag">' + f + '</span>'; });
+  if (flags.length > maxFlags) flagHtml += '<span class="gpkg-flag-more">+' + (flags.length - maxFlags) + '</span>';
+  flagHtml += '</div>';
+
   for (var i = 0; i < pkgs.length; i++) {
     var p = pkgs[i];
-    var safeLabel = label.replace(/'/g, "\\'");
-    html += '<div class="global-pkg-card' + (p.popular ? ' popular' : '') + '" onclick="onGlobalPkgClick(this,\'' + safeLabel + '\',\'' + p.data + '\',\'' + p.validity + '\',\'' + p.usd + ' (' + p.zar + ')\')">';
+    var zarPrice = usdToZar(p.usdNum);
+    var safeLabel = label.replace(/'/g,"\\'");
+    var safeData  = p.data.replace(/'/g,"\\'");
+    html += '<div class="global-pkg-card' + (p.popular?' popular':'') + '" ';
+    html += 'onclick="onGlobalPkgClick(this,\'' + safeLabel + '\',\'' + safeData + '\',\'' + p.validity + '\',' + zarPrice + ')">';
     if (p.popular) html += '<div class="popular-badge">Popular</div>';
+    html += flagHtml;
     html += '<div class="gpkg-data">' + p.data + '</div>';
     html += '<div class="gpkg-validity">' + p.validity + '</div>';
     html += '<div class="gpkg-price-usd">' + p.usd + '</div>';
-    html += '<div class="gpkg-price-zar">' + p.zar + ' indicative</div>';
-    html += '<button class="pkg-select-btn" style="font-size:0.73rem;padding:0.45rem;">Select Plan →</button>';
-    html += '</div>';
+    html += '<div class="gpkg-price-zar">≈ R' + zarPrice.toLocaleString() + ' ZAR</div>';
+    html += '<button class="pkg-select-btn" style="font-size:0.73rem;padding:0.45rem;">Select Plan →</button></div>';
   }
   grid.innerHTML = html;
 }
 
-function onGlobalPkgClick(el, region, data, validity, price) {
-  var cards = document.querySelectorAll('.global-pkg-card');
-  for (var i = 0; i < cards.length; i++) cards[i].classList.remove('selected');
+function onGlobalPkgClick(el, region, data, validity, zarPrice) {
+  document.querySelectorAll('.global-pkg-card').forEach(function(c){c.classList.remove('selected')});
   el.classList.add('selected');
-  selectPackage(region, data, validity, price);
+  // For sandbox Airalo, no real packageId yet — pass null
+  selectPackage(region, data, validity, zarPrice, true, null);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FILE UPLOAD
+═══════════════════════════════════════════════════════════════ */
+function handleFileUpload() {
+  var input   = document.getElementById('id-upload');
+  var display = document.getElementById('id-file-name');
+  if (input.files && input.files[0]) {
+    var file = input.files[0];
+    if (file.size > 5 * 1024 * 1024) {
+      alert('File too large. Max 5MB.'); input.value = ''; return;
+    }
+    display.textContent = '✓ ' + file.name;
+    display.style.display = 'block';
+    display.style.color = 'var(--green)';
+    input.closest('.file-upload-box').style.borderColor = 'var(--green)';
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PDF GENERATION (inline jsPDF)
+═══════════════════════════════════════════════════════════════ */
+function generateSignupPdf(d) {
+  var lines = [
+    '153 Mobile — eSIM Signup Record',
+    '================================',
+    'Date: ' + new Date(d.timestamp).toLocaleString('en-ZA', {timeZone:'Africa/Johannesburg'}),
+    '',
+    'CLIENT DETAILS',
+    'Name:    ' + d.fname + ' ' + d.lname,
+    'Email:   ' + d.email,
+    'Phone:   ' + d.phone,
+    'Address: ' + d.address,
+    '',
+    'ESIM ORDER',
+    'Network:   ' + d.network,
+    'Package:   ' + d.packageSize,
+    'Validity:  ' + (d.validity || '30 days'),
+    'Plan Type: ' + (d.planType === 'recurring' ? 'Monthly Recurring' : 'Once-Off'),
+    'Price:     R' + d.monthlyPrice,
+    'VAT:       ' + (d.bizName ? 'R' + Math.round(d.monthlyPrice * 0.15) : 'N/A (retail)'),
+    'Total Paid:R' + d.totalPaid,
+    '',
+    'PAYMENT',
+    'Paystack Ref: ' + d.paystackRef,
+    'Client ID:    ' + (d.paystackCustomerCode || d.paystackRef),
+    '',
+    'BUSINESS DETAILS',
+    d.bizName    ? 'Business: '  + d.bizName    : 'N/A (retail)',
+    d.bizAddress ? 'Biz Addr: '  + d.bizAddress : '',
+    d.bizVat     ? 'VAT No:   '  + d.bizVat     : '',
+    '',
+    'T&C accepted: ' + new Date(d.timestamp).toLocaleString('en-ZA', {timeZone:'Africa/Johannesburg'}),
+    'IP: ' + (d.ipAddress || 'Unknown')
+  ];
+  var text = lines.filter(function(l){ return l !== undefined; }).join('\n');
+  return new TextEncoder().encode(text).buffer;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ESIM PAYMENT — MAIN FLOW
+═══════════════════════════════════════════════════════════════ */
+async function initiateEsimPayment() {
+  // Validate package selection
+  if (!selectedPkg) {
+    alert('Please select an eSIM package above first.');
+    document.getElementById('packages').scrollIntoView({behavior:'smooth'});
+    return;
+  }
+
+  // Gather form values
+  var fname  = document.getElementById('co-fname').value.trim();
+  var lname  = document.getElementById('co-lname').value.trim();
+  var phone  = document.getElementById('co-phone').value.trim();
+  var email  = document.getElementById('co-email').value.trim();
+  var addr   = document.getElementById('co-address').value.trim();
+  var idFile = document.getElementById('id-upload').files[0];
+  var terms  = document.getElementById('terms-check').checked;
+  var bizName    = bizOpen ? document.getElementById('biz-name').value.trim()    : '';
+  var bizAddress = bizOpen ? document.getElementById('biz-address').value.trim() : '';
+  var bizVat     = bizOpen ? document.getElementById('biz-vat').value.trim()     : '';
+
+  // Validate
+  if (!fname || !lname || !phone || !email || !addr) { alert('Please complete all personal information fields.'); return; }
+  if (!idFile) { alert('Please upload your ID document for RICA verification.'); return; }
+  if (!terms)  { alert('Please accept the Terms & Conditions to continue.'); return; }
+  if (file && idFile.size > 5 * 1024 * 1024) { alert('ID file too large. Max 5MB.'); return; }
+
+  // Calculate total
+  var base     = selectedPkg.priceNum;
+  var vatAmt   = bizOpen ? Math.round(base * 0.15) : 0;
+  var total    = base + vatAmt;
+
+  var payBtn = document.getElementById('esimPayBtn');
+  payBtn.disabled = true;
+  payBtn.textContent = 'Setting up payment...';
+
+  // Get IP
+  var ipAddress = 'Unknown';
+  try { ipAddress = (await (await fetch('https://api.ipify.org?format=json')).json()).ip || 'Unknown'; } catch(e) {}
+
+  // For recurring plans: get/create Paystack plan
+  var planCode = null;
+  if (planType === 'recurring') {
+    try {
+      payBtn.textContent = 'Creating payment plan...';
+      var planRes = await fetch(WORKER_URL + '/esim-plan', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({amount: base, isBusiness: !!bizName})
+      });
+      var planData = await planRes.json();
+      planCode = planData.planCode || null;
+    } catch(e) {
+      console.error('Plan fetch failed:', e);
+    }
+    if (!planCode) {
+      // Fallback to WhatsApp
+      payBtn.disabled = false;
+      payBtn.innerHTML = '<svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:white;"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg> Pay Securely with Paystack';
+      window.open('https://wa.me/27839631238?text=' + encodeURIComponent(
+        'Hi Brits! New eSIM Order:\nName: ' + fname + ' ' + lname +
+        '\nEmail: ' + email + '\nPhone: ' + phone +
+        '\nPackage: ' + selectedPkg.network + ' ' + selectedPkg.packageSize +
+        '\nPlan: ' + planType + '\nTotal: R' + total + '\n\nOnline payment unavailable.'
+      ), '_blank');
+      return;
+    }
+  }
+
+  payBtn.textContent = 'Opening payment...';
+
+  var handler = PaystackPop.setup({
+    key:      PAYSTACK_KEY,
+    email:    email,
+    amount:   total * 100,
+    currency: 'ZAR',
+    ref:      'ESIM-' + Date.now(),
+    label:    fname + ' ' + lname,
+    firstname: fname,
+    lastname:  lname,
+    metadata: {custom_fields:[
+      {display_name:'Customer Name',  variable_name:'customer_name',  value:fname+' '+lname},
+      {display_name:'Phone',          variable_name:'phone',          value:phone},
+      {display_name:'Network/Region', variable_name:'network',        value:selectedPkg.network},
+      {display_name:'Package',        variable_name:'package',        value:selectedPkg.packageSize},
+      {display_name:'Plan Type',      variable_name:'plan_type',      value:planType},
+      {display_name:'Validity',       variable_name:'validity',       value:selectedPkg.validity || '30 days'},
+      {display_name:'Total Paid',     variable_name:'total_paid',     value:'R'+total},
+      {display_name:'Plan Code',      variable_name:'plan_code',      value:planCode || 'once-off'}
+    ]},
+    callback: async function(response) {
+      document.getElementById('checkoutFormWrap').style.display = 'none';
+      document.getElementById('checkoutSuccess').style.display = 'block';
+
+      var clientData = {
+        productType:   'esim',
+        fname, lname, email, phone, address: addr,
+        network:       selectedPkg.network,
+        packageSize:   selectedPkg.packageSize,
+        validity:      selectedPkg.validity || '30 days',
+        planType:      planType,
+        monthlyPrice:  base,
+        totalPaid:     total,
+        vatAmount:     vatAmt,
+        airaloPackageId: selectedPkg.airaloPackageId,
+        paystackRef:   response.reference,
+        planCode:      planCode,
+        ipAddress,
+        timestamp:     new Date().toISOString(),
+        bizName, bizAddress, bizVat,
+        tcAccepted:    true,
+        tcUrl:         'https://153mobile.co.za/legal'
+      };
+
+      // Generate PDF
+      var pdfBuffer = generateSignupPdf(clientData);
+
+      // Send to worker
+      try {
+        var formData = new FormData();
+        formData.append('clientData', JSON.stringify(clientData));
+        formData.append('pdf', new Blob([pdfBuffer], {type:'application/pdf'}), '153Mobile-eSIM-Signup.pdf');
+        if (idFile) formData.append('idFile', idFile, idFile.name);
+        formData.append('idFilename', idFile ? idFile.name : 'id-document.pdf');
+
+        var res = await fetch(WORKER_URL + '/esim-signup', {method:'POST', body:formData});
+        var data = await res.json();
+        console.log('eSIM signup result:', JSON.stringify(data));
+      } catch(e) {
+        console.error('Signup failed:', e);
+      }
+
+      // If recurring: create Paystack subscription
+      if (planType === 'recurring' && planCode) {
+        try {
+          await fetch(WORKER_URL + '/esim-subscribe', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({
+              reference: response.reference,
+              planCode,
+              fname, lname, phone
+            })
+          });
+          console.log('Subscription created');
+        } catch(e) {
+          console.error('Subscription failed (non-fatal):', e);
+        }
+      }
+
+      // Update success message
+      if (planType === 'recurring') {
+        document.getElementById('successTitle').textContent = 'Subscription Active! 🎉';
+        document.getElementById('successBody').innerHTML =
+          'Your monthly eSIM subscription is confirmed. Your first payment has been processed.<br><br>' +
+          'Your QR code will be delivered to <strong style="color:white;">' + email + '</strong> within 24 hours.<br><br>' +
+          'Once received, please activate within <strong style="color:white;">48 hours</strong>. Monthly renewals bill on the 1st of each month.<br><br>' +
+          'Questions? <a href="https://wa.me/27839631238" style="color:#25D366;font-weight:700;">WhatsApp Brits</a> any time.';
+      }
+    },
+    onClose: function() {
+      payBtn.disabled = false;
+      payBtn.innerHTML = '<svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:white;"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg> Pay Securely with Paystack';
+    }
+  });
+  handler.openIframe();
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -980,38 +1256,12 @@ function submitVodaRequest() {
   var phone = document.getElementById('voda-phone').value.trim();
   var email = document.getElementById('voda-email').value.trim();
   var pkg   = document.getElementById('voda-pkg').value;
-  if (!name || !phone || !email || !pkg) { alert('Please fill in all fields.'); return; }
+  if (!name||!phone||!email||!pkg) { alert('Please fill in all fields.'); return; }
   var subject = encodeURIComponent('Vodacom eSIM Special Request');
-  var body = encodeURIComponent(
-    'Hi 153 Mobile Team,\n\nI would like to request a Vodacom eSIM.\n\n' +
-    'Full Name: ' + name + '\nContact Number: ' + phone + '\nEmail: ' + email +
-    '\nRequested Package: ' + pkg + '\n\nPlease contact me to confirm availability and pricing.\n\nThank you.'
-  );
-  window.location.href = 'mailto:Support@153mobile.co.za?subject=' + subject + '&body=' + body;
+  var body    = encodeURIComponent('Hi 153 Mobile Team,\n\nI would like to request a Vodacom eSIM.\n\nFull Name: '+name+'\nContact Number: '+phone+'\nEmail: '+email+'\nRequested Package: '+pkg+'\n\nPlease contact me to confirm availability and pricing.\n\nThank you.');
+  window.location.href = 'mailto:Support@153mobile.co.za?subject='+subject+'&body='+body;
   document.getElementById('vodaFormWrap').style.display = 'none';
   document.getElementById('vodaSuccess').style.display  = 'block';
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   FILE UPLOAD
-═══════════════════════════════════════════════════════════════ */
-function handleFileUpload() {
-  var input = document.getElementById('id-upload');
-  var display = document.getElementById('id-file-name');
-  if (input.files && input.files[0]) {
-    display.textContent = '✓ ' + input.files[0].name;
-    display.style.display = 'block';
-  }
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   BUSINESS TOGGLE
-═══════════════════════════════════════════════════════════════ */
-function toggleBiz() {
-  bizOpen = !bizOpen;
-  document.getElementById('bizToggleRow').classList.toggle('checked', bizOpen);
-  document.getElementById('bizFields').classList.toggle('show', bizOpen);
-  document.getElementById('bizCheckbox').textContent = bizOpen ? '✓' : '';
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1022,35 +1272,12 @@ function toggleNav() {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   PAYMENT PLACEHOLDER
-═══════════════════════════════════════════════════════════════ */
-function initiatePayment() {
-  if (!document.getElementById('terms-check').checked) {
-    alert('Please accept the Terms & Conditions to proceed.');
-    return;
-  }
-  var fname  = document.getElementById('co-fname').value.trim();
-  var lname  = document.getElementById('co-lname').value.trim();
-  var phone  = document.getElementById('co-phone').value.trim();
-  var email  = document.getElementById('co-email').value.trim();
-  var addr   = document.getElementById('co-address').value.trim();
-  var idFile = document.getElementById('id-upload').files[0];
-  if (!fname || !lname || !phone || !email || !addr) { alert('Please complete all personal information fields.'); return; }
-  if (!idFile) { alert('Please upload a copy of your ID or passport.'); return; }
-  /* ── PEACH PAYMENTS INTEGRATION POINT ─────────────────────────────
-     1. POST order details to your backend
-     2. Backend creates a Peach Payments checkout ID
-     3. Redirect: https://oppwa.com/v1/paymentWidgets.js?checkoutId=<ID>
-  ─────────────────────────────────────────────────────────────────── */
-  alert('Payment placeholder — wire your Peach Payments merchant ID here.\n\nOrder: ' + fname + ' ' + lname + ' · ' + email + '\nPackage: ' + document.getElementById('sum-package').textContent + ' · ' + document.getElementById('sum-price').textContent);
-}
-
-/* ═══════════════════════════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════════════════════════ */
 window.onload = function() {
   renderSAPackages();
-  switchRegion('global', null);
+  switchRegion('global', document.querySelector('#panel-global .region-tab'));
+  loadFxRate();
 };
 </script>
 </body>
