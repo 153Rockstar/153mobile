@@ -1124,7 +1124,7 @@ async function initiateEsimPayment() {
   if (!fname || !lname || !phone || !email || !addr) { alert('Please complete all personal information fields.'); return; }
   if (!idFile) { alert('Please upload your ID document for RICA verification.'); return; }
   if (!terms)  { alert('Please accept the Terms & Conditions to continue.'); return; }
-  if (file && idFile.size > 5 * 1024 * 1024) { alert('ID file too large. Max 5MB.'); return; }
+  if (idFile && idFile.size > 5 * 1024 * 1024) { alert('ID file too large. Max 5MB.'); return; }
 
   // Calculate total
   var base     = selectedPkg.priceNum;
