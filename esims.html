@@ -87,7 +87,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--blue);box-
 .main-tab{flex:1;padding:0.75rem 1rem;border:none;border-radius:10px;font-family:'Poppins',sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all 0.22s;background:transparent;color:var(--muted)}
 .main-tab.active{background:var(--blue);color:white;box-shadow:0 4px 14px rgba(0,43,127,0.22)}
 .network-selector{display:flex;gap:1.2rem;justify-content:center;margin-bottom:2.5rem;flex-wrap:wrap}
-.net-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.2rem 2rem;border:2.5px solid var(--line);border-radius:18px;background:white;cursor:pointer;transition:all 0.22s;min-width:160px;min-height:110px;box-shadow:0 3px 14px rgba(0,43,127,0.08);position:relative}
+.net-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.4rem 2rem;border:2.5px solid var(--line);border-radius:18px;background:white;cursor:pointer;transition:all 0.22s;min-width:180px;min-height:130px;box-shadow:0 3px 14px rgba(0,43,127,0.08);position:relative}
 .net-btn:hover{border-color:var(--blue);transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,43,127,0.15)}
 .net-btn.active{border-color:var(--blue);background:linear-gradient(135deg,#f0f4ff 0%,var(--blue-pale) 100%);box-shadow:0 8px 28px rgba(0,43,127,0.18)}
 .net-btn.active::after{content:'✓ Selected';position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);background:var(--blue);color:white;font-size:0.58rem;font-weight:700;font-family:'Poppins',sans-serif;padding:0.15rem 0.6rem;border-radius:20px;white-space:nowrap}
@@ -388,14 +388,14 @@ footer{background:var(--blue-deep);border-top:3px solid var(--red);padding:4rem 
       <div class="network-selector">
         <button class="net-btn active" id="netbtn-mtntelkom" onclick="switchNetwork('mtntelkom')">
           <div class="net-btn-dual">
-            <img src="mtnlogo.svg" alt="MTN" style="height:28px;width:auto;max-width:90px;">
+            <img src="mtnlogo.svg" alt="MTN" style="width:100px;height:auto;">
             <div class="logo-divider"></div>
-            <img src="telkomlogo.svg" alt="Telkom" style="height:22px;width:auto;max-width:90px;">
+            <img src="telkomlogo.svg" alt="Telkom" style="width:100px;height:auto;">
           </div>
         </button>
         <button class="net-btn" id="netbtn-vodacom" onclick="switchNetwork('vodacom')">
           <div class="net-btn-single">
-            <img src="vodacomlogo.svg" alt="Vodacom" style="height:28px;width:auto;max-width:110px;">
+            <img src="vodacomlogo.svg" alt="Vodacom" style="width:130px;height:auto;">
           </div>
         </button>
       </div>
