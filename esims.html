@@ -8,6 +8,7 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script data-cfasync="false" src="https://js.paystack.co/v1/inline.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 :root {
   --blue:#002B7F; --blue-deep:#001a5c; --blue-mid:#003399;
@@ -925,7 +926,7 @@ function renderSAPackages() {
 function onSAPkgClick(el, priceNum, gb, price) {
   document.querySelectorAll('#panel-mtntelkom .pkg-card').forEach(function(c){c.classList.remove('selected')});
   el.classList.add('selected');
-  selectPackage('MTN / Telkom', gb, 'Monthly', priceNum, false, null);
+  selectPackage('MTN / Telkom', gb, '30 days', priceNum, false, null);
 }
 
 function onTopupClick(el, priceNum, gb, price) {
@@ -1058,43 +1059,90 @@ function handleFileUpload() {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   PDF GENERATION (inline jsPDF)
+   PDF GENERATION — proper jsPDF matching fibre/LTE style
 ═══════════════════════════════════════════════════════════════ */
 function generateSignupPdf(d) {
-  var lines = [
-    '153 Mobile — eSIM Signup Record',
-    '================================',
-    'Date: ' + new Date(d.timestamp).toLocaleString('en-ZA', {timeZone:'Africa/Johannesburg'}),
-    '',
-    'CLIENT DETAILS',
-    'Name:    ' + d.fname + ' ' + d.lname,
-    'Email:   ' + d.email,
-    'Phone:   ' + d.phone,
-    'Address: ' + d.address,
-    '',
-    'ESIM ORDER',
-    'Network:   ' + d.network,
-    'Package:   ' + d.packageSize,
-    'Validity:  ' + (d.validity || '30 days'),
-    'Plan Type: ' + (d.planType === 'recurring' ? 'Monthly Recurring' : 'Once-Off'),
-    'Price:     R' + d.monthlyPrice,
-    'VAT:       ' + (d.bizName ? 'R' + Math.round(d.monthlyPrice * 0.15) : 'N/A (retail)'),
-    'Total Paid:R' + d.totalPaid,
-    '',
-    'PAYMENT',
-    'Paystack Ref: ' + d.paystackRef,
-    'Client ID:    ' + (d.paystackCustomerCode || d.paystackRef),
-    '',
-    'BUSINESS DETAILS',
-    d.bizName    ? 'Business: '  + d.bizName    : 'N/A (retail)',
-    d.bizAddress ? 'Biz Addr: '  + d.bizAddress : '',
-    d.bizVat     ? 'VAT No:   '  + d.bizVat     : '',
-    '',
-    'T&C accepted: ' + new Date(d.timestamp).toLocaleString('en-ZA', {timeZone:'Africa/Johannesburg'}),
-    'IP: ' + (d.ipAddress || 'Unknown')
-  ];
-  var text = lines.filter(function(l){ return l !== undefined; }).join('\n');
-  return new TextEncoder().encode(text).buffer;
+  var doc = new window.jspdf.jsPDF({ unit:'mm', format:'a4' });
+  var isBiz = !!(d.bizName);
+
+  // Header bar
+  doc.setFillColor(0, 43, 127);
+  doc.rect(0, 0, 210, 28, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(16);
+  doc.text('153 Mobile — eSIM Signup Record', 14, 12);
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+  doc.text('153mobile.co.za  |  support@153mobile.co.za  |  083 963 1238', 14, 20);
+  doc.text('Date: ' + new Date(d.timestamp).toLocaleString('en-ZA', {timeZone:'Africa/Johannesburg'}), 14, 25);
+
+  var y = 38;
+  function sectionHeader(title) {
+    doc.setFillColor(0, 43, 127);
+    doc.rect(14, y - 5, 182, 8, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.text(title, 16, y);
+    doc.setTextColor(60, 60, 60);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    y += 9;
+  }
+  function row(label, value) {
+    doc.setFont('helvetica', 'bold');
+    doc.text(label + ':', 14, y);
+    doc.setFont('helvetica', 'normal');
+    doc.text(String(value || '—'), 65, y);
+    y += 7;
+  }
+
+  // Client Details
+  sectionHeader('CLIENT DETAILS');
+  row('Full Name',  d.fname + ' ' + d.lname);
+  row('Email',      d.email);
+  row('Phone',      d.phone);
+  row('Address',    d.address);
+  row('Client Type', isBiz ? 'Business' : 'Retail');
+  y += 4;
+
+  // eSIM Order
+  sectionHeader('ESIM ORDER');
+  row('Network',    d.network);
+  row('Package',    d.packageSize);
+  row('Validity',   '30 days');
+  row('Plan Type',  d.planType === 'recurring' ? 'Monthly Recurring' : 'Once-Off');
+  row('Price',      'R' + (d.monthlyPrice || 0).toLocaleString());
+  if (isBiz) row('VAT (15%)', 'R' + Math.round((d.monthlyPrice || 0) * 0.15).toLocaleString());
+  row('Total Paid', 'R' + (d.totalPaid || 0).toLocaleString());
+  y += 4;
+
+  // Payment
+  sectionHeader('PAYMENT');
+  row('Paystack Ref', d.paystackRef);
+  row('Client ID',    d.paystackCustomerCode || d.paystackRef);
+  row('IP Address',   d.ipAddress || 'Unknown');
+  row('T&C Accepted', new Date(d.timestamp).toLocaleString('en-ZA', {timeZone:'Africa/Johannesburg'}));
+  y += 4;
+
+  // Business Details (if applicable)
+  if (isBiz) {
+    sectionHeader('BUSINESS DETAILS');
+    row('Business Name',    d.bizName);
+    row('Business Address', d.bizAddress || '—');
+    row('VAT Number',       d.bizVat || '—');
+    y += 4;
+  }
+
+  // Footer
+  doc.setFillColor(0, 43, 127);
+  doc.rect(0, 280, 210, 17, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(8);
+  doc.text('153 Mobile (Pty) Ltd  |  153mobile.co.za  |  support@153mobile.co.za  |  083 963 1238', 14, 291);
+
+  return doc.output('arraybuffer');
 }
 
 /* ═══════════════════════════════════════════════════════════════
