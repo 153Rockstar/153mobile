@@ -169,7 +169,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--blue);box-
 .global-pkg-card:hover{border-color:var(--blue);transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,43,127,0.15)}
 .global-pkg-card.selected{border-color:var(--blue);background:linear-gradient(135deg,var(--blue-pale) 0%,#f0f4ff 100%);box-shadow:0 10px 30px rgba(0,43,127,0.18)}
 .global-pkg-card.popular{border-color:var(--red);background:linear-gradient(135deg,#fff5f5 0%,#fff0f0 100%)}
-.gpkg-flags{display:flex;justify-content:center;gap:3px;flex-wrap:wrap;margin-bottom:0.65rem;min-height:28px;align-items:center}
+.gpkg-flags{display:flex;justify-content:center;align-items:center;gap:3px;flex-wrap:wrap;margin-bottom:0.65rem;min-height:30px}
 .gpkg-flag-img{width:24px;height:18px;border-radius:3px;object-fit:cover;box-shadow:0 1px 3px rgba(0,0,0,0.2)}
 .gpkg-flag-more{font-size:0.6rem;color:var(--muted);font-weight:700;font-family:'Poppins',sans-serif;background:var(--blue-pale);border-radius:8px;padding:0.12rem 0.4rem;align-self:center;margin-left:2px}
 .gpkg-data{font-family:'Poppins',sans-serif;font-size:1.65rem;font-weight:800;color:var(--blue);line-height:1}
@@ -379,7 +379,7 @@ footer{background:var(--blue-deep);border-top:3px solid var(--red);padding:4rem 
 
     <!-- SA / Global toggle -->
     <div class="main-toggle">
-      <button class="main-tab active" id="tab-sa" onclick="switchMain('sa')">🇿🇦 South Africa</button>
+      <button class="main-tab active" id="tab-sa" onclick="switchMain('sa')">South Africa</button>
       <button class="main-tab" id="tab-global" onclick="switchMain('global')">🌍 Global</button>
     </div>
 
@@ -388,13 +388,15 @@ footer{background:var(--blue-deep);border-top:3px solid var(--red);padding:4rem 
       <div class="network-selector">
         <button class="net-btn active" id="netbtn-mtntelkom" onclick="switchNetwork('mtntelkom')">
           <div class="net-btn-dual">
-            <img src="MTNlogo.png" alt="MTN">
+            <img src="mtnlogo.svg" alt="MTN" style="height:28px;width:auto;max-width:90px;">
             <div class="logo-divider"></div>
-            <img src="Telkomlogo.png" alt="Telkom">
+            <img src="telkomlogo.svg" alt="Telkom" style="height:22px;width:auto;max-width:90px;">
           </div>
         </button>
         <button class="net-btn" id="netbtn-vodacom" onclick="switchNetwork('vodacom')">
-          <div class="net-btn-single"><img src="Vodacomlogo.png" alt="Vodacom"></div>
+          <div class="net-btn-single">
+            <img src="vodacomlogo.svg" alt="Vodacom" style="height:28px;width:auto;max-width:110px;">
+          </div>
         </button>
       </div>
 
@@ -654,9 +656,9 @@ var SA_TOPUPS = [
 // Helper: render a flag img tag using flagcdn.com ISO 2-letter codes
 function flagImg(iso, size) {
   size = size || 24;
-  var h = size === 24 ? 18 : 27;
-  var cls = size === 24 ? 'gpkg-flag-img' : 'country-flag-img';
-  return '<img class="' + cls + '" src="https://flagcdn.com/w40/' + iso.toLowerCase() + '.png" alt="' + iso + '" width="' + size + '" height="' + h + '" loading="lazy">';
+  var h   = Math.round(size * 0.75);
+  var cls = (size >= 32) ? 'country-flag-img' : 'gpkg-flag-img';
+  return '<img class="' + cls + '" src="https://flagcdn.com/w40/' + iso.toLowerCase() + '.png" alt="' + iso + '" width="' + size + '" height="' + h + '" loading="lazy" style="border-radius:3px;box-shadow:0 1px 4px rgba(0,0,0,0.2);">';
 }
 
 var GLOBAL_REGIONS = {
@@ -969,7 +971,7 @@ function switchRegion(region, btn) {
     cg.style.display = 'grid';
     var ch = '';
     rd.countries.forEach(function(c){
-      ch += '<div class="country-btn" onclick="selectCountry(this,\'' + c.name.replace(/'/g,"\\'") + '\')">';
+      ch += '<div class="country-btn" onclick="selectCountry(this,\'' + c.name.replace(/'/g,"\\'") + '\',\'' + c.iso + '\')">';
       ch += flagImg(c.iso, 36);
       ch += '<span class="country-name">' + c.name + '</span></div>';
     });
@@ -978,31 +980,39 @@ function switchRegion(region, btn) {
     cg.style.display = 'none';
     cg.innerHTML = '';
   }
-  renderGlobalPkgs(rd.label, rd);
+  renderGlobalPkgs(rd.label, rd, null);
 }
 
-function selectCountry(el, name) {
+function selectCountry(el, name, iso) {
   document.querySelectorAll('.country-btn').forEach(function(b){b.classList.remove('active')});
   el.classList.add('active');
-  renderGlobalPkgs(name, GLOBAL_REGIONS[currentRegion]);
+  // Pass single country ISO so package cards show only that flag
+  var rd = GLOBAL_REGIONS[currentRegion];
+  renderGlobalPkgs(name, rd, iso);
 }
 
 /* ═══════════════════════════════════════════════════════════════
    RENDER GLOBAL PACKAGES — with flags in each card
 ═══════════════════════════════════════════════════════════════ */
-function renderGlobalPkgs(label, regionData) {
+function renderGlobalPkgs(label, regionData, selectedIso) {
   var pkgs     = regionData.packages;
   var isoCodes = regionData.isoCodes || [];
   var grid     = document.getElementById('globalPkgGrid');
   var html     = '';
 
-  // Build flag row HTML using real flag images (max 6 + "+more")
-  var maxFlags = 6;
-  var showCodes = isoCodes.slice(0, maxFlags);
-  var flagHtml = '<div class="gpkg-flags">';
-  showCodes.forEach(function(iso){ flagHtml += flagImg(iso, 24); });
-  if (isoCodes.length > maxFlags) flagHtml += '<span class="gpkg-flag-more">+' + (isoCodes.length - maxFlags) + '</span>';
-  flagHtml += '</div>';
+  // If a specific country is selected: show only that flag (large, centred)
+  // If no country selected (region default): show the 6-flag regional spread
+  var flagHtml;
+  if (selectedIso) {
+    flagHtml = '<div class="gpkg-flags">' + flagImg(selectedIso, 32) + '</div>';
+  } else {
+    var maxFlags = 6;
+    var showCodes = isoCodes.slice(0, maxFlags);
+    flagHtml = '<div class="gpkg-flags">';
+    showCodes.forEach(function(iso){ flagHtml += flagImg(iso, 24); });
+    if (isoCodes.length > maxFlags) flagHtml += '<span class="gpkg-flag-more">+' + (isoCodes.length - maxFlags) + '</span>';
+    flagHtml += '</div>';
+  }
 
   for (var i = 0; i < pkgs.length; i++) {
     var p = pkgs[i];
