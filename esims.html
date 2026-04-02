@@ -1273,16 +1273,40 @@ async function initiateEsimPayment() {
 
 /* ═══════════════════════════════════════════════════════════════
    POST-PAYMENT: UPLOAD RECORD + SUBSCRIPTION
+   Step 1: Resolve CUS_xxx from worker BEFORE generating PDF
+   Step 2: Generate PDF (now includes CUS_xxx as Client ID)
+   Step 3: Send everything to worker /esim-signup
 ═══════════════════════════════════════════════════════════════ */
 async function uploadEsimSignupRecord(clientData, idFile) {
   try {
+    // Step 1: Resolve CUS_xxx — must happen BEFORE PDF generation
+    try {
+      var resolveRes = await fetch('https://esim-worker.153-1c7.workers.dev/esim-resolve', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({paystackRef: clientData.paystackRef})
+      });
+      var resolveData = await resolveRes.json();
+      if (resolveData.cusCode) {
+        clientData.paystackCustomerCode = resolveData.cusCode;
+        console.log('CUS_xxx resolved:', resolveData.cusCode);
+      } else {
+        console.error('Resolve returned no cusCode:', JSON.stringify(resolveData));
+      }
+    } catch(e) {
+      console.error('Resolve call failed:', e);
+    }
+
+    // Step 2: Generate PDF — now includes CUS_xxx as Client ID
     var pdfBuffer = generateSignupPdf(clientData);
-    var formData  = new FormData();
+
+    // Step 3: Send everything to worker
+    var formData = new FormData();
     formData.append('clientData', JSON.stringify(clientData));
     formData.append('pdf', new Blob([pdfBuffer], {type:'application/pdf'}), '153Mobile-eSIM-Signup.pdf');
     if (idFile) formData.append('idFile', idFile, idFile.name);
     formData.append('idFilename', idFile ? idFile.name : 'id-document.pdf');
-    var res  = await fetch(WORKER_URL + '/esim-signup', {method:'POST', body:formData});
+    var res  = await fetch('https://esim-worker.153-1c7.workers.dev/esim-signup', {method:'POST', body:formData});
     var data = await res.json();
     console.log('eSIM signup result:', JSON.stringify(data));
   } catch(e) { console.error('eSIM signup upload failed:', e); }
