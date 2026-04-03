@@ -663,138 +663,56 @@ function flagImg(iso, size) {
 }
 
 var GLOBAL_REGIONS = {
-  // ── GLOBAL (200+ countries) — eu-connect operator ──────────
-  global: {
-    label:'Global (200+ Countries)',
-    countries:null,
-    isoCodes:['za','us','gb','de','jp','au'],
-    packages:[
-      {data:'1GB',  usdNum:4,  usd:'$4',  validity:'7 days',  popular:false, airaloId:'eu-connect-in-7days-1gb'},
-      {data:'3GB',  usdNum:9.5,usd:'$10', validity:'30 days', popular:false, airaloId:'eu-connect-in-30days-3gb'},
-      {data:'5GB',  usdNum:15.5,usd:'$16',validity:'30 days', popular:true,  airaloId:'eu-connect-in-30days-5gb'},
-      {data:'10GB', usdNum:28, usd:'$28', validity:'30 days', popular:false, airaloId:'eu-connect-in-30days-10gb'},
-      {data:'20GB', usdNum:39, usd:'$39', validity:'30 days', popular:false, airaloId:'eu-connect-in-30days-20gb'}
-    ]
-  },
-  // ── EUROPE — eurolink operator ──────────────────────────────
-  europe: {
-    label:'Europe & UK',
-    countries:[
-      {iso:'de',name:'Germany'},    {iso:'fr',name:'France'},
-      {iso:'it',name:'Italy'},      {iso:'es',name:'Spain'},
-      {iso:'gb',name:'UK'},         {iso:'nl',name:'Netherlands'},
-      {iso:'ch',name:'Switzerland'},{iso:'at',name:'Austria'},
-      {iso:'pt',name:'Portugal'},   {iso:'be',name:'Belgium'},
-      {iso:'dk',name:'Denmark'},    {iso:'se',name:'Sweden'},
-      {iso:'no',name:'Norway'},     {iso:'fi',name:'Finland'},
-      {iso:'pl',name:'Poland'},     {iso:'cz',name:'Czech Rep.'},
-      {iso:'hu',name:'Hungary'},    {iso:'ro',name:'Romania'},
-      {iso:'gr',name:'Greece'},     {iso:'hr',name:'Croatia'}
-    ],
+  global:   { label:'Global (200+ Countries)', countries:null,
+    isoCodes:['za','us','gb','de','jp','au'] },
+  europe:   { label:'Europe & UK',
     isoCodes:['de','fr','gb','it','es','nl'],
-    packages:[
-      {data:'1GB',  usdNum:5,  usd:'$5',  validity:'7 days',  popular:false, airaloId:'eurolink-7days-1gb'},
-      {data:'3GB',  usdNum:13, usd:'$13', validity:'30 days', popular:false, airaloId:'eurolink-30days-3gb'},
-      {data:'5GB',  usdNum:20, usd:'$20', validity:'30 days', popular:true,  airaloId:'eurolink-30days-5gb'},
-      {data:'10GB', usdNum:37, usd:'$37', validity:'30 days', popular:false, airaloId:'eurolink-30days-10gb'},
-      {data:'20GB', usdNum:49, usd:'$49', validity:'30 days', popular:false, airaloId:'eurolink-30days-20gb'}
-    ]
-  },
-  // ── NORTH AMERICA — americanmex operator ────────────────────
-  namerica: {
-    label:'North America',
     countries:[
-      {iso:'us',name:'USA'},
-      {iso:'ca',name:'Canada'},
-      {iso:'mx',name:'Mexico'}
-    ],
+      {iso:'de',name:'Germany'},{iso:'fr',name:'France'},{iso:'it',name:'Italy'},
+      {iso:'es',name:'Spain'},{iso:'gb',name:'UK'},{iso:'nl',name:'Netherlands'},
+      {iso:'ch',name:'Switzerland'},{iso:'at',name:'Austria'},{iso:'pt',name:'Portugal'},
+      {iso:'be',name:'Belgium'},{iso:'dk',name:'Denmark'},{iso:'se',name:'Sweden'},
+      {iso:'no',name:'Norway'},{iso:'fi',name:'Finland'},{iso:'pl',name:'Poland'},
+      {iso:'cz',name:'Czech Rep.'},{iso:'hu',name:'Hungary'},{iso:'ro',name:'Romania'},
+      {iso:'gr',name:'Greece'},{iso:'hr',name:'Croatia'}
+    ]},
+  namerica: { label:'North America',
     isoCodes:['us','ca','mx'],
-    packages:[
-      {data:'1GB',  usdNum:6.5, usd:'$7',  validity:'7 days',  popular:false, airaloId:'americanmex-in-7days-1gb'},
-      {data:'3GB',  usdNum:17,  usd:'$17', validity:'30 days', popular:false, airaloId:'americanmex-in-30days-3gb'},
-      {data:'5GB',  usdNum:25.5,usd:'$26', validity:'30 days', popular:true,  airaloId:'americanmex-in-30days-5gb'},
-      {data:'10GB', usdNum:46,  usd:'$46', validity:'30 days', popular:false, airaloId:'americanmex-in-30days-10gb'},
-      {data:'2GB',  usdNum:12,  usd:'$12', validity:'15 days', popular:false, airaloId:'americanmex-in-15days-2gb'}
-    ]
-  },
-  // ── SOUTH AMERICA — latamlink operator ──────────────────────
-  samerica: {
-    label:'South America',
     countries:[
-      {iso:'br',name:'Brazil'},    {iso:'ar',name:'Argentina'},
-      {iso:'cl',name:'Chile'},     {iso:'co',name:'Colombia'},
-      {iso:'pe',name:'Peru'},      {iso:'uy',name:'Uruguay'},
-      {iso:'bo',name:'Bolivia'},   {iso:'ec',name:'Ecuador'}
-    ],
+      {iso:'us',name:'USA'},{iso:'ca',name:'Canada'},{iso:'mx',name:'Mexico'}
+    ]},
+  samerica: { label:'South America',
     isoCodes:['br','ar','cl','co','pe','uy'],
-    packages:[
-      {data:'1GB',  usdNum:8.5, usd:'$9',  validity:'7 days',  popular:false, airaloId:'latamlink-7days-1gb'},
-      {data:'3GB',  usdNum:21.5,usd:'$22', validity:'30 days', popular:false, airaloId:'latamlink-30days-3gb'},
-      {data:'10GB', usdNum:42,  usd:'$42', validity:'30 days', popular:true,  airaloId:'latamlink-30days-10gb'},
-      {data:'20GB', usdNum:59,  usd:'$59', validity:'30 days', popular:false, airaloId:'latamlink-30days-20gb'},
-      {data:'2GB',  usdNum:15.5,usd:'$16', validity:'15 days', popular:false, airaloId:'latamlink-15days-2gb'}
-    ]
-  },
-  // ── ASIA & MIDDLE EAST — asialink + menalink operators ──────
-  asia: {
-    label:'Asia & Middle East',
     countries:[
-      {iso:'jp',name:'Japan'},      {iso:'sg',name:'Singapore'},
-      {iso:'th',name:'Thailand'},   {iso:'ae',name:'Dubai/UAE'},
-      {iso:'in',name:'India'},      {iso:'hk',name:'Hong Kong'},
-      {iso:'id',name:'Indonesia'},  {iso:'vn',name:'Vietnam'},
-      {iso:'kr',name:'South Korea'},{iso:'my',name:'Malaysia'},
-      {iso:'ph',name:'Philippines'},{iso:'tw',name:'Taiwan'},
-      {iso:'qa',name:'Qatar'},      {iso:'sa',name:'Saudi Arabia'},
-      {iso:'il',name:'Israel'},     {iso:'jo',name:'Jordan'},
-      {iso:'kw',name:'Kuwait'},     {iso:'bd',name:'Bangladesh'}
-    ],
+      {iso:'br',name:'Brazil'},{iso:'ar',name:'Argentina'},{iso:'cl',name:'Chile'},
+      {iso:'co',name:'Colombia'},{iso:'pe',name:'Peru'},{iso:'uy',name:'Uruguay'},
+      {iso:'bo',name:'Bolivia'},{iso:'ec',name:'Ecuador'}
+    ]},
+  asia:     { label:'Asia & Middle East',
     isoCodes:['jp','sg','ae','in','th','kr'],
-    packages:[
-      {data:'1GB',  usdNum:5,  usd:'$5',  validity:'7 days',  popular:false, airaloId:'asialink-7-days-1gb'},
-      {data:'3GB',  usdNum:13, usd:'$13', validity:'30 days', popular:false, airaloId:'asialink-30-days-3gb'},
-      {data:'5GB',  usdNum:15, usd:'$15', validity:'30 days', popular:true,  airaloId:'asialink-30-days-5gb'},
-      {data:'10GB', usdNum:25, usd:'$25', validity:'30 days', popular:false, airaloId:'asialink-30-days-10gb'},
-      {data:'20GB', usdNum:39, usd:'$39', validity:'30 days', popular:false, airaloId:'asialink-30-days-20gb'}
-    ]
-  },
-  // ── AFRICA — safarilink operator ────────────────────────────
-  africa: {
-    label:'Africa',
     countries:[
-      {iso:'za',name:'South Africa'},{iso:'ke',name:'Kenya'},
-      {iso:'tz',name:'Tanzania'},   {iso:'ng',name:'Nigeria'},
-      {iso:'gh',name:'Ghana'},      {iso:'eg',name:'Egypt'},
-      {iso:'ma',name:'Morocco'},    {iso:'mu',name:'Mauritius'},
-      {iso:'zm',name:'Zambia'},     {iso:'mz',name:'Mozambique'},
-      {iso:'na',name:'Namibia'},    {iso:'zw',name:'Zimbabwe'},
-      {iso:'bw',name:'Botswana'},   {iso:'ug',name:'Uganda'}
-    ],
+      {iso:'jp',name:'Japan'},{iso:'sg',name:'Singapore'},{iso:'th',name:'Thailand'},
+      {iso:'ae',name:'Dubai/UAE'},{iso:'in',name:'India'},{iso:'hk',name:'Hong Kong'},
+      {iso:'id',name:'Indonesia'},{iso:'vn',name:'Vietnam'},{iso:'kr',name:'South Korea'},
+      {iso:'my',name:'Malaysia'},{iso:'ph',name:'Philippines'},{iso:'tw',name:'Taiwan'},
+      {iso:'qa',name:'Qatar'},{iso:'sa',name:'Saudi Arabia'},{iso:'il',name:'Israel'},
+      {iso:'jo',name:'Jordan'},{iso:'kw',name:'Kuwait'},{iso:'bd',name:'Bangladesh'}
+    ]},
+  africa:   { label:'Africa',
     isoCodes:['za','ke','ng','gh','eg','ma'],
-    packages:[
-      {data:'1GB',  usdNum:6,   usd:'$6',  validity:'7 days',  popular:false, airaloId:'safarilink-in-7days-1gb'},
-      {data:'3GB',  usdNum:13,  usd:'$13', validity:'30 days', popular:false, airaloId:'safarilink-in-30days-3gb'},
-      {data:'5GB',  usdNum:20.5,usd:'$21', validity:'30 days', popular:true,  airaloId:'safarilink-in-30days-5gb'},
-      {data:'10GB', usdNum:35.5,usd:'$36', validity:'30 days', popular:false, airaloId:'safarilink-in-30days-10gb'},
-      {data:'20GB', usdNum:58,  usd:'$58', validity:'30 days', popular:false, airaloId:'safarilink-in-30days-20gb'}
-    ]
-  },
-  // ── OCEANIA — oceanlink operator ────────────────────────────
-  oceania: {
-    label:'Oceania',
     countries:[
-      {iso:'au',name:'Australia'}, {iso:'nz',name:'New Zealand'},
-      {iso:'fj',name:'Fiji'},      {iso:'pg',name:'Papua NG'}
-    ],
+      {iso:'za',name:'South Africa'},{iso:'ke',name:'Kenya'},{iso:'tz',name:'Tanzania'},
+      {iso:'ng',name:'Nigeria'},{iso:'gh',name:'Ghana'},{iso:'eg',name:'Egypt'},
+      {iso:'ma',name:'Morocco'},{iso:'mu',name:'Mauritius'},{iso:'zm',name:'Zambia'},
+      {iso:'mz',name:'Mozambique'},{iso:'na',name:'Namibia'},{iso:'zw',name:'Zimbabwe'},
+      {iso:'bw',name:'Botswana'},{iso:'ug',name:'Uganda'}
+    ]},
+  oceania:  { label:'Oceania',
     isoCodes:['au','nz','fj','pg'],
-    packages:[
-      {data:'1GB',  usdNum:4.5, usd:'$5',  validity:'7 days',  popular:false, airaloId:'oceanlink-in-7days-1gb'},
-      {data:'3GB',  usdNum:10.5,usd:'$11', validity:'30 days', popular:false, airaloId:'oceanlink-in-30days-3gb'},
-      {data:'5GB',  usdNum:15.5,usd:'$16', validity:'30 days', popular:true,  airaloId:'oceanlink-in-30days-5gb'},
-      {data:'10GB', usdNum:25.5,usd:'$26', validity:'30 days', popular:false, airaloId:'oceanlink-in-30days-10gb'},
-      {data:'20GB', usdNum:49,  usd:'$49', validity:'30 days', popular:false, airaloId:'oceanlink-in-30days-20gb'}
-    ]
-  }
+    countries:[
+      {iso:'au',name:'Australia'},{iso:'nz',name:'New Zealand'},
+      {iso:'fj',name:'Fiji'},{iso:'pg',name:'Papua NG'}
+    ]}
 };
 
 /* ═══════════════════════════════════════════════════════════════
@@ -966,14 +884,19 @@ function switchNetwork(net) {
 /* ═══════════════════════════════════════════════════════════════
    GLOBAL REGION + COUNTRY
 ═══════════════════════════════════════════════════════════════ */
-function switchRegion(region, btn) {
+/* ═══════════════════════════════════════════════════════════════
+   GLOBAL REGION + COUNTRY — both fetch live from worker
+═══════════════════════════════════════════════════════════════ */
+async function switchRegion(region, btn) {
   currentRegion = region;
   document.querySelectorAll('.region-tab').forEach(function(t){t.classList.remove('active')});
   if (btn) btn.classList.add('active');
 
-  var rd = GLOBAL_REGIONS[region];
+  var rd   = GLOBAL_REGIONS[region];
+  var grid = document.getElementById('globalPkgGrid');
   if (!rd) return;
 
+  // Render country grid (metadata only — no package data needed here)
   var cg = document.getElementById('countryGrid');
   if (rd.countries && rd.countries.length) {
     cg.style.display = 'grid';
@@ -988,7 +911,35 @@ function switchRegion(region, btn) {
     cg.style.display = 'none';
     cg.innerHTML = '';
   }
-  renderGlobalPkgs(rd.label, rd, null);
+
+  // Loading state
+  grid.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--muted);font-family:Poppins,sans-serif;font-size:0.85rem;">Loading ' + rd.label + ' packages...</div>';
+
+  try {
+    var res  = await fetch('https://esim-worker.153-1c7.workers.dev/airalo-packages?slug=' + region);
+    var data = await res.json();
+
+    if (data.packages && data.packages.length > 0) {
+      var allPkgs = data.packages.map(function(p) {
+        return {
+          data:     p.data,
+          usdNum:   p.price_usd,
+          usd:      '$' + p.price_usd,
+          validity: p.days + ' days',
+          popular:  false,
+          airaloId: p.package_id,
+          operator: p.operator
+        };
+      });
+      var liveRegionData = { packages: allPkgs, isoCodes: rd.isoCodes };
+      renderGlobalPkgs(rd.label, liveRegionData, null);
+    } else {
+      grid.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--muted);font-family:Poppins,sans-serif;font-size:0.85rem;">No packages available for this region.</div>';
+    }
+  } catch(e) {
+    console.error('Region package fetch failed:', e.message);
+    grid.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--muted);font-family:Poppins,sans-serif;font-size:0.85rem;">Could not load packages. Please try again.</div>';
+  }
 }
 
 async function selectCountry(el, name, iso) {
