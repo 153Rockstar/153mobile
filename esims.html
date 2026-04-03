@@ -663,18 +663,20 @@ function flagImg(iso, size) {
 }
 
 var GLOBAL_REGIONS = {
+  // ── GLOBAL (200+ countries) — eu-connect operator ──────────
   global: {
     label:'Global (200+ Countries)',
     countries:null,
     isoCodes:['za','us','gb','de','jp','au'],
     packages:[
-      {data:'1GB',  usdNum:10, usd:'$10', validity:'7 days',  popular:false},
-      {data:'3GB',  usdNum:23, usd:'$23', validity:'15 days', popular:false},
-      {data:'5GB',  usdNum:38, usd:'$38', validity:'30 days', popular:true},
-      {data:'10GB', usdNum:59, usd:'$59', validity:'30 days', popular:false},
-      {data:'20GB', usdNum:97, usd:'$97', validity:'30 days', popular:false}
+      {data:'1GB',  usdNum:4,  usd:'$4',  validity:'7 days',  popular:false, airaloId:'eu-connect-in-7days-1gb'},
+      {data:'3GB',  usdNum:9.5,usd:'$10', validity:'30 days', popular:false, airaloId:'eu-connect-in-30days-3gb'},
+      {data:'5GB',  usdNum:15.5,usd:'$16',validity:'30 days', popular:true,  airaloId:'eu-connect-in-30days-5gb'},
+      {data:'10GB', usdNum:28, usd:'$28', validity:'30 days', popular:false, airaloId:'eu-connect-in-30days-10gb'},
+      {data:'20GB', usdNum:39, usd:'$39', validity:'30 days', popular:false, airaloId:'eu-connect-in-30days-20gb'}
     ]
   },
+  // ── EUROPE — eurolink operator ──────────────────────────────
   europe: {
     label:'Europe & UK',
     countries:[
@@ -691,13 +693,14 @@ var GLOBAL_REGIONS = {
     ],
     isoCodes:['de','fr','gb','it','es','nl'],
     packages:[
-      {data:'1GB',  usdNum:4,  usd:'$4',  validity:'7 days',  popular:false},
-      {data:'3GB',  usdNum:8,  usd:'$8',  validity:'15 days', popular:false},
-      {data:'5GB',  usdNum:11, usd:'$11', validity:'30 days', popular:true},
-      {data:'10GB', usdNum:16, usd:'$16', validity:'30 days', popular:false},
-      {data:'20GB', usdNum:27, usd:'$27', validity:'30 days', popular:false}
+      {data:'1GB',  usdNum:5,  usd:'$5',  validity:'7 days',  popular:false, airaloId:'eurolink-7days-1gb'},
+      {data:'3GB',  usdNum:13, usd:'$13', validity:'30 days', popular:false, airaloId:'eurolink-30days-3gb'},
+      {data:'5GB',  usdNum:20, usd:'$20', validity:'30 days', popular:true,  airaloId:'eurolink-30days-5gb'},
+      {data:'10GB', usdNum:37, usd:'$37', validity:'30 days', popular:false, airaloId:'eurolink-30days-10gb'},
+      {data:'20GB', usdNum:49, usd:'$49', validity:'30 days', popular:false, airaloId:'eurolink-30days-20gb'}
     ]
   },
+  // ── NORTH AMERICA — americanmex operator ────────────────────
   namerica: {
     label:'North America',
     countries:[
@@ -707,13 +710,14 @@ var GLOBAL_REGIONS = {
     ],
     isoCodes:['us','ca','mx'],
     packages:[
-      {data:'1GB',  usdNum:5,  usd:'$5',  validity:'7 days',  popular:false},
-      {data:'3GB',  usdNum:10, usd:'$10', validity:'15 days', popular:false},
-      {data:'5GB',  usdNum:13, usd:'$13', validity:'30 days', popular:true},
-      {data:'10GB', usdNum:22, usd:'$22', validity:'30 days', popular:false},
-      {data:'20GB', usdNum:35, usd:'$35', validity:'30 days', popular:false}
+      {data:'1GB',  usdNum:6.5, usd:'$7',  validity:'7 days',  popular:false, airaloId:'americanmex-in-7days-1gb'},
+      {data:'3GB',  usdNum:17,  usd:'$17', validity:'30 days', popular:false, airaloId:'americanmex-in-30days-3gb'},
+      {data:'5GB',  usdNum:25.5,usd:'$26', validity:'30 days', popular:true,  airaloId:'americanmex-in-30days-5gb'},
+      {data:'10GB', usdNum:46,  usd:'$46', validity:'30 days', popular:false, airaloId:'americanmex-in-30days-10gb'},
+      {data:'2GB',  usdNum:12,  usd:'$12', validity:'15 days', popular:false, airaloId:'americanmex-in-15days-2gb'}
     ]
   },
+  // ── SOUTH AMERICA — latamlink operator ──────────────────────
   samerica: {
     label:'South America',
     countries:[
@@ -724,13 +728,14 @@ var GLOBAL_REGIONS = {
     ],
     isoCodes:['br','ar','cl','co','pe','uy'],
     packages:[
-      {data:'1GB',  usdNum:4,  usd:'$4',  validity:'7 days',  popular:false},
-      {data:'3GB',  usdNum:9,  usd:'$9',  validity:'15 days', popular:false},
-      {data:'5GB',  usdNum:12, usd:'$12', validity:'30 days', popular:true},
-      {data:'10GB', usdNum:20, usd:'$20', validity:'30 days', popular:false},
-      {data:'20GB', usdNum:32, usd:'$32', validity:'30 days', popular:false}
+      {data:'1GB',  usdNum:8.5, usd:'$9',  validity:'7 days',  popular:false, airaloId:'latamlink-7days-1gb'},
+      {data:'3GB',  usdNum:21.5,usd:'$22', validity:'30 days', popular:false, airaloId:'latamlink-30days-3gb'},
+      {data:'10GB', usdNum:42,  usd:'$42', validity:'30 days', popular:true,  airaloId:'latamlink-30days-10gb'},
+      {data:'20GB', usdNum:59,  usd:'$59', validity:'30 days', popular:false, airaloId:'latamlink-30days-20gb'},
+      {data:'2GB',  usdNum:15.5,usd:'$16', validity:'15 days', popular:false, airaloId:'latamlink-15days-2gb'}
     ]
   },
+  // ── ASIA & MIDDLE EAST — asialink + menalink operators ──────
   asia: {
     label:'Asia & Middle East',
     countries:[
@@ -746,13 +751,14 @@ var GLOBAL_REGIONS = {
     ],
     isoCodes:['jp','sg','ae','in','th','kr'],
     packages:[
-      {data:'1GB',  usdNum:4,  usd:'$4',  validity:'7 days',  popular:false},
-      {data:'3GB',  usdNum:9,  usd:'$9',  validity:'15 days', popular:false},
-      {data:'5GB',  usdNum:11, usd:'$11', validity:'30 days', popular:true},
-      {data:'10GB', usdNum:18, usd:'$18', validity:'30 days', popular:false},
-      {data:'20GB', usdNum:30, usd:'$30', validity:'30 days', popular:false}
+      {data:'1GB',  usdNum:5,  usd:'$5',  validity:'7 days',  popular:false, airaloId:'asialink-7-days-1gb'},
+      {data:'3GB',  usdNum:13, usd:'$13', validity:'30 days', popular:false, airaloId:'asialink-30-days-3gb'},
+      {data:'5GB',  usdNum:15, usd:'$15', validity:'30 days', popular:true,  airaloId:'asialink-30-days-5gb'},
+      {data:'10GB', usdNum:25, usd:'$25', validity:'30 days', popular:false, airaloId:'asialink-30-days-10gb'},
+      {data:'20GB', usdNum:39, usd:'$39', validity:'30 days', popular:false, airaloId:'asialink-30-days-20gb'}
     ]
   },
+  // ── AFRICA — safarilink operator ────────────────────────────
   africa: {
     label:'Africa',
     countries:[
@@ -766,13 +772,14 @@ var GLOBAL_REGIONS = {
     ],
     isoCodes:['za','ke','ng','gh','eg','ma'],
     packages:[
-      {data:'1GB',  usdNum:4,  usd:'$4',  validity:'7 days',  popular:false},
-      {data:'3GB',  usdNum:8,  usd:'$8',  validity:'15 days', popular:false},
-      {data:'5GB',  usdNum:11, usd:'$11', validity:'30 days', popular:true},
-      {data:'10GB', usdNum:18, usd:'$18', validity:'30 days', popular:false},
-      {data:'20GB', usdNum:30, usd:'$30', validity:'30 days', popular:false}
+      {data:'1GB',  usdNum:6,   usd:'$6',  validity:'7 days',  popular:false, airaloId:'safarilink-in-7days-1gb'},
+      {data:'3GB',  usdNum:13,  usd:'$13', validity:'30 days', popular:false, airaloId:'safarilink-in-30days-3gb'},
+      {data:'5GB',  usdNum:20.5,usd:'$21', validity:'30 days', popular:true,  airaloId:'safarilink-in-30days-5gb'},
+      {data:'10GB', usdNum:35.5,usd:'$36', validity:'30 days', popular:false, airaloId:'safarilink-in-30days-10gb'},
+      {data:'20GB', usdNum:58,  usd:'$58', validity:'30 days', popular:false, airaloId:'safarilink-in-30days-20gb'}
     ]
   },
+  // ── OCEANIA — oceanlink operator ────────────────────────────
   oceania: {
     label:'Oceania',
     countries:[
@@ -781,11 +788,11 @@ var GLOBAL_REGIONS = {
     ],
     isoCodes:['au','nz','fj','pg'],
     packages:[
-      {data:'1GB',  usdNum:5,  usd:'$5',  validity:'7 days',  popular:false},
-      {data:'3GB',  usdNum:10, usd:'$10', validity:'15 days', popular:false},
-      {data:'5GB',  usdNum:13, usd:'$13', validity:'30 days', popular:true},
-      {data:'10GB', usdNum:22, usd:'$22', validity:'30 days', popular:false},
-      {data:'20GB', usdNum:35, usd:'$35', validity:'30 days', popular:false}
+      {data:'1GB',  usdNum:4.5, usd:'$5',  validity:'7 days',  popular:false, airaloId:'oceanlink-in-7days-1gb'},
+      {data:'3GB',  usdNum:10.5,usd:'$11', validity:'30 days', popular:false, airaloId:'oceanlink-in-30days-3gb'},
+      {data:'5GB',  usdNum:15.5,usd:'$16', validity:'30 days', popular:true,  airaloId:'oceanlink-in-30days-5gb'},
+      {data:'10GB', usdNum:25.5,usd:'$26', validity:'30 days', popular:false, airaloId:'oceanlink-in-30days-10gb'},
+      {data:'20GB', usdNum:49,  usd:'$49', validity:'30 days', popular:false, airaloId:'oceanlink-in-30days-20gb'}
     ]
   }
 };
@@ -984,11 +991,50 @@ function switchRegion(region, btn) {
   renderGlobalPkgs(rd.label, rd, null);
 }
 
-function selectCountry(el, name, iso) {
+async function selectCountry(el, name, iso) {
   document.querySelectorAll('.country-btn').forEach(function(b){b.classList.remove('active')});
   el.classList.add('active');
-  // Pass single country ISO so package cards show only that flag
-  var rd = GLOBAL_REGIONS[currentRegion];
+
+  var rd   = GLOBAL_REGIONS[currentRegion];
+  var grid = document.getElementById('globalPkgGrid');
+
+  // Loading state
+  grid.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--muted);font-family:Poppins,sans-serif;font-size:0.85rem;">Loading ' + name + ' packages...</div>';
+
+  try {
+    var res  = await fetch('https://esim-worker.153-1c7.workers.dev/airalo-packages?slug=' + iso.toUpperCase());
+    var data = await res.json();
+
+    if (data.packages && data.packages.length > 0) {
+      // ALL packages — no cap, no deduplication
+      // Sort: by validity days (ascending), then by price (ascending)
+      var allPkgs = data.packages
+        .slice()
+        .sort(function(a, b) {
+          if (a.days !== b.days) return a.days - b.days;
+          return a.price_usd - b.price_usd;
+        })
+        .map(function(p) {
+          return {
+            data:     p.data,
+            usdNum:   p.price_usd,
+            usd:      '$' + p.price_usd,
+            validity: p.days + ' days',
+            popular:  false,
+            airaloId: p.package_id,
+            operator: p.operator
+          };
+        });
+
+      var liveRegionData = { packages: allPkgs, isoCodes: [iso] };
+      renderGlobalPkgs(name, liveRegionData, iso);
+      return;
+    }
+  } catch(e) {
+    console.warn('Country package fetch failed, falling back to regional:', e.message);
+  }
+
+  // Fallback — show regional packages with country flag
   renderGlobalPkgs(name, rd, iso);
 }
 
@@ -1017,15 +1063,17 @@ function renderGlobalPkgs(label, regionData, selectedIso) {
 
   for (var i = 0; i < pkgs.length; i++) {
     var p = pkgs[i];
-    var zarPrice = usdToZar(p.usdNum);
+    var zarPrice  = usdToZar(p.usdNum);
     var safeLabel = label.replace(/'/g,"\\'");
     var safeData  = p.data.replace(/'/g,"\\'");
+    var safeId    = (p.airaloId || '').replace(/'/g,"\\'");
     html += '<div class="global-pkg-card' + (p.popular?' popular':'') + '" ';
-    html += 'onclick="onGlobalPkgClick(this,\'' + safeLabel + '\',\'' + safeData + '\',\'' + p.validity + '\',' + zarPrice + ')">';
+    html += 'onclick="onGlobalPkgClick(this,\'' + safeLabel + '\',\'' + safeData + '\',\'' + p.validity + '\',' + zarPrice + ',\'' + safeId + '\')">';
     if (p.popular) html += '<div class="popular-badge">Popular</div>';
     html += flagHtml;
     html += '<div class="gpkg-data">' + p.data + '</div>';
     html += '<div class="gpkg-validity">' + p.validity + '</div>';
+    if (p.operator) html += '<div style="font-size:0.65rem;color:var(--muted);margin-bottom:0.25rem;font-family:Poppins,sans-serif;">' + p.operator + '</div>';
     html += '<div class="gpkg-price-usd">' + p.usd + '</div>';
     html += '<div class="gpkg-price-zar">≈ R' + zarPrice.toLocaleString() + ' ZAR</div>';
     html += '<button class="pkg-select-btn" style="font-size:0.73rem;padding:0.45rem;">Select Plan →</button></div>';
@@ -1033,11 +1081,10 @@ function renderGlobalPkgs(label, regionData, selectedIso) {
   grid.innerHTML = html;
 }
 
-function onGlobalPkgClick(el, region, data, validity, zarPrice) {
+function onGlobalPkgClick(el, region, data, validity, zarPrice, airaloId) {
   document.querySelectorAll('.global-pkg-card').forEach(function(c){c.classList.remove('selected')});
   el.classList.add('selected');
-  // For sandbox Airalo, no real packageId yet — pass null
-  selectPackage(region, data, validity, zarPrice, true, null);
+  selectPackage(region, data, validity, zarPrice, true, airaloId || null);
 }
 
 /* ═══════════════════════════════════════════════════════════════
